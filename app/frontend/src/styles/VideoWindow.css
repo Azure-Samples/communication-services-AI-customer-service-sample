@@ -1,0 +1,46 @@
+.video-dialog {
+    font-family: Arial, sans-serif;
+    width: 70vw;
+    height: 96vh;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.titlebar {
+    background-color: #00894F;
+    color: white;
+    padding: 8px 16px;
+    font-weight: bold;
+}
+
+.callControl{
+    width: 70vw;
+    height: 90vh;
+}
+
+/* Add styles for the modal overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.closeModal {
+    background: transparent;
+    border: none;
+    background-image: url('../assets/images/icon_dismiss.svg');
+    background-repeat: no-repeat;
+    width: 18px;
+    display: block;
+    text-indent: -9999px;
+    float: right;
+    cursor:pointer;
+}

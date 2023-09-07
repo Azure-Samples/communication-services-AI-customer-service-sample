@@ -1,0 +1,38 @@
+.assistant {
+    width: 300px;
+    font-family: Arial, sans-serif;
+  }
+
+  .section h2 {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .bullet {
+    display: inline-block;
+    margin-right: 2px;
+    transition: all 0.3s ease;
+    text-indent: -9999px;
+    background-image: url('../assets/images/icon_chevron_right.svg');
+    background-repeat: no-repeat;
+    background-position: left center;
+    width: 18px;
+    height: 18px;
+  }
+
+  .bullet.open {
+    transform: rotate(90deg);
+  }
+
+  .section p {
+    transition: all 0.8s ease;
+    margin-bottom: 12px;
+  }
+
+  .section {
+    border-bottom: solid 1px #E6E6E6;
+    width: 426px;
+    padding: 0px 20px 0 6px;
+    transition: all 0.8s ease;
+  }

@@ -1,0 +1,112 @@
+.dialog {
+    font-family: Arial, sans-serif;
+    width: 1000px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    overflow: hidden;
+    border-radius: 8px;
+}
+.titlebar {
+    background-color: #00894F;
+    color: white;
+    padding: 8px 16px;
+    font-weight: bold;
+}
+
+.summary-section,
+.tasks-section,
+.communication-section {
+    padding: 16px;
+}
+
+.bordered-content {
+    border: 1px solid grey;
+    padding: 8px;
+    margin-top: 8px;
+    width: 900px;
+    overflow-y: scroll;
+    height: 50px;
+}
+
+.customer-communication {
+    border: 1px solid grey;
+    padding: 8px;
+    margin-top: 8px;
+    width: 900px;
+    white-space:pre-line;
+    height:100px;
+    overflow-y:scroll;
+}
+
+.tasks-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.tasks-section li {
+    margin: 8px 0;
+}
+
+.tasks-section input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* Add styles for the modal overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.send-summary-container {
+    text-align: right;
+}
+
+.send-summary-button
+{
+    background-color: #00894F;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
+    text-align: right;
+}
+
+.send-summary-button:hover {
+    background-color: #00894F; /* Darker shade when hovered for visual feedback */
+}
+
+.button-group {
+    display: flex;
+    justify-content:flex-start;  /* Align the buttons to the right */
+    margin-top: 20px;           /* Add some spacing from the content above */
+    margin-bottom: 20px;           /* Add some spacing from the content bottom */
+    margin-left: 5px;
+}
+
+.action-button {
+    padding: 10px 15px;
+    margin-left: 10px;  /* Add some spacing between the buttons */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.email-button {
+    background-color: #00894F;  /* A blue color for email */
+    color: white;
+}
+
+.sms-button {
+    background-color: #00894F;  /* A red color for SMS */
+    color: white;
+}

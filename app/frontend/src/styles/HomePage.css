@@ -1,0 +1,90 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Outfit', Arial, sans-serif;
+    background-image: linear-gradient(rgba(255,255,255,0) 50%,rgba(255,255,255,1)), url('../assets/images/forest.jpg');
+    background-size: cover, cover;
+    background-repeat: no-repeat, no-repeat;
+    background-position: bottom, center;
+    overflow:hidden;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #00894F;
+    padding: 10px 50px;
+}
+
+.logo {
+    color: white;
+    font-size: 20px;
+    padding: 6px 0;
+}
+
+.menu-items, .right-items {
+    display: flex;
+    gap: 20px;
+}
+
+.menu-items a, .right-items a {
+    text-decoration: none;
+    color: white;
+    transition: 0.2s;
+    font-weight: bold;
+}
+
+    .menu-items a.search {
+        background-image: url('../assets/images/icon_search.svg');
+        background-position: left center;
+        background-repeat: no-repeat;
+        padding-left: 24px;
+    }
+
+    .right-items a.language {
+        background-image: url('../assets/images/icon_chevron_down.svg');
+        background-position: right center;
+        background-repeat: no-repeat;
+        padding-right: 20px;
+    }
+
+    .right-items a.account {
+        background-image: url('../assets/images/icon_person.svg');
+        background-position: left center;
+        background-repeat: no-repeat;
+        padding-left: 24px;
+    }
+
+.menu-items a:hover, .right-items a:hover {
+    opacity: 0.7;
+}
+
+.content {
+    max-width: 650px;
+    margin: 150px auto;
+    padding: 50px;
+    background-color: white;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.title {
+    font-size: 30px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+.subtitle {
+    font-size: 20px;
+    margin: 5px;
+}
+
+hr {
+    width: 15%;
+    border: 2px solid #00894F;
+    margin: 40px auto;
+}
+

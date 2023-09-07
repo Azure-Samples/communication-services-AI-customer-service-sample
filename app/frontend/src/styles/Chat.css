@@ -1,0 +1,132 @@
+﻿
+/* ChatPopup.css */
+
+.chat-container {
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,.5);
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: flex-end; /* align items to the end (right) */
+}
+
+.chat-control {
+    height:75vh;
+    width:35vw;
+}
+
+.chat-popup {
+    border-radius: 12px;
+    background-color: #fff;
+    width: 35vw;
+}
+
+    .chat-popup .ui-chat__messageheader,
+    .chat-popup span {
+        display: none;
+    }
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #00894F;
+    border-radius: 10px 10px 0 0;
+}
+
+/* .chat-popup .ms-Persona-initials {
+    background-color: #00894F;
+  } */
+
+[data-icon-name="MessageSeen"] {
+    color: #00894F;
+}
+
+[data-ui-id="chat-composite-message"].eq {
+    background-color: #FFF;
+    border: solid 2px #E5F3ED;
+}
+
+/* .ms-Persona-initials {
+    background-image: url('images/icon_bot.svg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    display: block;
+    width: 32px;
+    height: 32px;
+  } */
+
+.chat-popup .jm {
+    background-color: #E5F3ED;
+}
+
+.chat-header button {
+    background: transparent;
+    border: none;
+    background-image: url('../assets/images/icon_dismiss.svg');
+    background-repeat: no-repeat;
+    width: 18px;
+    display: block;
+    text-indent: -9999px;
+}
+
+.chat-messages {
+    max-height: 600px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+    .chat-messages > div {
+        margin: 5px 0;
+        font-size: 0.8em;
+        display: block; /* make the div take a full line */
+    }
+
+        .chat-messages > div > p {
+            background-color: #E5F3ED;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block; /* make the background only as wide as the content */
+        }
+
+
+
+.chat-input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.open-chat-button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #00894F;
+    color: #fff;
+    align-items: right;
+    font-weight: bold;
+    background-image: url('../assets//images/icon_question_circle.svg');
+    background-position: 10px center;
+    background-repeat: no-repeat;
+    padding-left: 40px;
+}
+
+.You {
+    text-align: right;
+}
+
+.chat-title {
+    color: white;
+    margin: 0;
+}
+
+.chat-control {
+    height: 80vh
+}
+
+/* Additional styles can be added to refine the UI */
+  

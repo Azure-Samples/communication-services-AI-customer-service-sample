@@ -1,0 +1,103 @@
+* {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    list-style-type: none;
+  }
+
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #00894F;
+    padding: 10px 20px;
+  }
+
+  .agent-logo {
+    color: white;
+    font-size: 20px;
+    padding: 6px 0;
+  }
+
+  body {
+    /*background-color: #00894F;*/
+    font: .9em "Outfit",sans-serif;
+  }
+
+  h2 {
+    font-size: 1.0em;
+    line-height: 32px;
+  }
+
+  h3 {
+    font-size: .8em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  #conversation {
+    background-color: #FFF;
+    position: absolute;
+    top: 50px;
+    right: 428px;
+    bottom: 0px;
+    left: 0px;
+  }
+
+  #copilot {
+    background-color: #FFF;
+    position: absolute;
+    top: 50px;
+    right: 0px;
+    bottom: 0px;
+    /* left: 14px; */
+    width: 428px;
+    border: solid 1px #E6E6E6;
+  }
+
+  #conversation .agent-header,
+  #copilot .agent-header {
+    padding: 14px 16px;
+    border-bottom: solid 1px #E6E6E6;
+  }
+
+  [data-icon-name="MessageSeen"] {
+    color: #00894F;
+  }
+
+  [data-ui-id="chat-composite-message"].eq {
+    background-color: #FFF;
+    border: solid 2px #E5F3ED;
+  }
+
+  #conversation .jm {
+    background-color: #E5F3ED;
+  }
+
+  #conversation .agent-header h2 span,
+  #copilot .agent-header h2 span {
+    background-color: #00894F;
+    background-position: center center;
+    background-repeat: no-repeat;
+    text-indent: -9999px;
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    display: block;
+    float: left;
+    margin-right: 10px;
+  }
+
+  #conversation .agent-header h2 span {
+    background-image: url("../assets/images/icon_conversation.svg");
+    background-size: 20px;
+  }
+
+  #copilot .agent-header h2 span {
+    background-image: url("../assets/images/icon_sparkle.svg");
+  }
+
+  .agent-chat-control
+  {
+    height: 80vh;
+  }
