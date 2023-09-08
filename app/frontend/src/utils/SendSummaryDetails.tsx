@@ -1,4 +1,4 @@
-﻿import config from '../appsettings.json';
+import config from '../appsettings.json';
 
 const BASE_URL = config.baseUrl;
 
@@ -20,7 +20,6 @@ export const SendSummaryDetails = async (summaryDetails: SummaryEmailData) => {
             body: JSON.stringify(summaryDetails),
         });
         if (response.ok) {
-            console.log('summary data sent successfully');
             return response.json();
             
             

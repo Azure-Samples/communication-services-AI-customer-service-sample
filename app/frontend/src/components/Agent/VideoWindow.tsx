@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { AzureCommunicationTokenCredential, CommunicationUserIdentifier } from '@azure/communication-common';
 import { useAzureCommunicationCallAdapter, CallComposite, CallAdapterLocator, CallAdapter, CallCompositeOptions } from '@azure/communication-react';
 import '../../styles/VideoWindow.css';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 type VideoWindowProps = {
     userId: CommunicationUserIdentifier;
@@ -37,12 +38,15 @@ const VideoWindow: React.FC<VideoWindowProps> = (props: VideoWindowProps) => {
         [props.userId, props.displayName, props.callLocator, credential]
     );
       // Call composite options
-    const callOptions:CallCompositeOptions ={
-        callControls: { 
-        participantsButton:false,
-        screenShareButton:false
-        } 
-    }
+      const callOptions: CallCompositeOptions = useMemo(() => {
+        return {
+          callControls: {
+            participantsButton: false,
+            screenShareButton: false,
+          },
+        };
+      }, []);
+      
     const afterCallAdapterCreate = useCallback(
         async (adapter: CallAdapter): Promise<CallAdapter> => {
           adapter.joinCall({microphoneOn:false,cameraOn:false})
@@ -87,7 +91,7 @@ const VideoWindow: React.FC<VideoWindowProps> = (props: VideoWindowProps) => {
             </div>
         );
     }
-    return <h3>Initializing...</h3>;
+    return <div><LoadingSpinner /></div>;
 };
 
 export default VideoWindow;

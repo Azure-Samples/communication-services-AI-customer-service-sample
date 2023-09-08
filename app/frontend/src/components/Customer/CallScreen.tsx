@@ -9,16 +9,11 @@ import {
   CallAdapterState,
   useAzureCommunicationCallAdapter,
   CommonCallAdapter,
-  CallAdapter,
-  createStatefulCallClient,
-  fromFlatCommunicationIdentifier,
-  createAzureCommunicationCallAdapterFromClient
+  CallAdapter
 } from '@azure/communication-react';
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { CallCompositeContainer } from './CallCompositeContainer';
-import { GroupCallLocator, GroupLocator } from '@azure/communication-calling';
-import { v1 } from 'uuid';
 
 export interface CallScreenProps {
   token: string;
@@ -33,7 +28,7 @@ export interface CallScreenProps {
 
 
 export const CallScreen = (props: CallScreenProps): JSX.Element => {
-  const { token, userId } = props;
+  const { token } = props;
   const callIdRef = useRef<string>();
     
     const subscribeAdapterEvents = useCallback((adapter: CommonCallAdapter) => {
@@ -63,32 +58,6 @@ export const CallScreen = (props: CallScreenProps): JSX.Element => {
     });
   }, []);
 
-  const [serverCallId, setServerCallId] = useState('');
-  const [recordingId, setRecordingId] = useState('');
-  const [callAdapter, setCallAdapter] = useState<CallAdapter>();
-  const groupId = v1();
-
-  //const afterCallAdapterCreate = useCallback(
-  //  async (adapter: CallAdapter): Promise<CallAdapter> => {
-
-  //    const callClient = createStatefulCallClient({
-  //      userId: fromFlatCommunicationIdentifier(userId.communicationUserId) as CommunicationUserIdentifier,
-  //    })
-  //    const callAgent = await callClient.createCallAgent(new AzureCommunicationTokenCredential(token), { displayName: "displayName" });
-  //    const newAdapter = await createAzureCommunicationCallAdapterFromClient(callClient, callAgent, { groupId });
-  //    setCallAdapter(newAdapter);
-  //    newAdapter.onStateChange(async (state) => {
-  //      if (state.call?.state === 'Connected') {
-  //        const call = callAgent.calls.find((call) => call.id === state.call?.id);
-  //        if (call) {
-  //          //setServerCallId(await call.info.getServerCallId());
-  //        }
-  //      }
-  //    })
-  //    return adapter;
-  //  },
-  //  [subscribeAdapterEvents]
-  //);
 
     const afterCallAdapterCreate = useCallback(
         async (adapter: CallAdapter): Promise<CallAdapter> => {
@@ -103,7 +72,7 @@ export const CallScreen = (props: CallScreenProps): JSX.Element => {
  
       return new AzureCommunicationTokenCredential(token);
   
-  }, [userId]);
+  }, [token]);
 
   return <AzureCommunicationCallScreen afterCreate={afterCallAdapterCreate} credential={credential} {...props} />;
 };

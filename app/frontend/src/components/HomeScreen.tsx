@@ -2,42 +2,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import {
-    IImageStyles,
-    Icon,
-    Image,
-    Link,
-    List,
-    PrimaryButton,
-    Spinner,
-    Stack,
-    Text,
-    mergeStyles
-} from '@fluentui/react';
-import React, { useCallback, useEffect, useState } from 'react';
 
-import { useTheme } from '@azure/communication-react';
-
-import { Chat20Filled } from '@fluentui/react-icons';
-import heroSVG from '../assets/hero.svg';
-import heroDarkModeSVG from '../assets/hero_dark.svg';
-import Navbar from './NavBar/Navbar';
+import React, { useEffect, useState } from 'react';
 import Chat from './Chat';
 import '../styles/HomePage.css';
+import { ChatDetailsData, getChatDetails } from '../utils/ChatClientDetails';
 
 
-
-const imageStyleProps: IImageStyles = {
-    image: {
-        height: '100%'
-    },
-    root: {}
-};
-
-export interface ScreenProps {
-    joinChatHandler(): void;
-
-}
 
 /**
  * HomeScreen has two states:
@@ -46,36 +17,23 @@ export interface ScreenProps {
  *
  * @param props
  */
-export default (props: ScreenProps): JSX.Element => {
-    const { joinChatHandler } = props;
-    const spinnerLabel = 'Creating a new chat thread...';
-    const startChatButtonText = 'Start chat';
-
-    const [name, setName] = useState('');
+export default (): JSX.Element => {
 
 
-
-    const displayLoadingSpinner = (spinnerLabel: string): JSX.Element => {
-        return <Spinner label={spinnerLabel} ariaLive="assertive" labelPosition="top" />;
-    };
-
-
-    const setupAndJoinChatThreadWithNewUser = useCallback(() => {
-        const internalSetupAndJoinChatThread = async (): Promise<void> => {
-
-            joinChatHandler();
-        };
-        internalSetupAndJoinChatThread();
-    }, [joinChatHandler]);
-
-
-
-    const onCreateThread = async (): Promise<void> => {
-        setupAndJoinChatThreadWithNewUser();
-    };
-
+    const [chatData, setChatData] = useState<ChatDetailsData>();
+    useEffect(() => {
+        getChatDetails()
+            .then(apiData => {
+                setChatData(apiData);
+                localStorage.setItem("chatThreadId", apiData.threadId);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }, []);
 
     const displayHomeScreen = (): JSX.Element => {
+       
         return (
             <div className="home-container">
                 <nav>
@@ -99,7 +57,7 @@ export default (props: ScreenProps): JSX.Element => {
                     <p className="subtitle">Chat with customer support to learn more</p>
 
                 </div>
-                <Chat />
+                {chatData && <Chat {...chatData} userId={chatData.identity} />}
             </div>
         );
     };

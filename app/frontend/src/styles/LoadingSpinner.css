@@ -21,6 +21,14 @@
     animation: spin 1s linear infinite;
 }
 
+.loader-text {
+    margin-top: 85px;
+    color: white;
+    z-index: 9999;
+    position: fixed;
+    font-weight:bold;
+}
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);

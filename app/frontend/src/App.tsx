@@ -3,21 +3,17 @@
 // Licensed under the MIT license.
 
 import { setLogLevel } from '@azure/logger';
-import { initializeIcons, Spinner } from '@fluentui/react';
+import { initializeIcons } from '@fluentui/react';
 import React, { useEffect, useState } from 'react';
 import HomeScreen from './components/HomeScreen';
 import { initializeFileTypeIcons } from '@fluentui/react-file-type-icons';
-import Chat from './components/Chat';
-import Navbar from './components/NavBar/Navbar';
-import { AgentPage } from './components/newAgent/Agent';
+import { AgentPage } from './components/Agent/Agent';
 import { CallScreen } from './components/Customer/CallScreen';
 import { CommunicationUserIdentifier } from '@azure/communication-common';
-import { useIsMobile } from './utils/useIsMobile';
 import { CallAdapterLocator } from '@azure/communication-react';
 import { GroupLocator } from '@azure/communication-calling';
-import { v1 as generateGUID } from 'uuid';
-import { CallUserDetails, getCallUserDetails } from './utils/CallAuthenicationDetails';
-import { AgentPageData, getAgentPageData } from './components/newAgent/InitAgentData';
+import { CustomerDetails, getCustomerDetails } from './utils/CallAuthenicationDetails';
+import { AgentPageData, getAgentPageData } from './components/Agent/InitAgentData';
 
 
 setLogLevel('warning');
@@ -44,21 +40,22 @@ else {
 const webAppTitle = document.title;
 
 export default (): JSX.Element => {
-    const [page, setPage] = useState(loadpage);
-    const [callerData, setCallerData] = useState<CallUserDetails>();
+    const [page] = useState(loadpage);
+    const [customerData, setCustomerData] = useState<CustomerDetails>();
     const [agentData, setAgentData] = useState<AgentPageData>();
 
     useEffect(() => {
-        if (callerData === undefined && loadpage === "Customer") {
-            getCallUserDetails()
+        if (customerData === undefined && loadpage === "Customer") {
+            getCustomerDetails()
                 .then(apiData => {
-                    setCallerData(apiData);
+                    setCustomerData(apiData);
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error);
                 });
         }
-        if (agentData === undefined) 
+        
+        if (agentData === undefined && loadpage !== "home") 
         {
             getAgentPageData()
                 .then(apiData => {
@@ -68,27 +65,14 @@ export default (): JSX.Element => {
                     console.error('Error fetching data:', error);
             });
         }
-    },[]);
+    },[agentData,customerData]);
 
-    let callLocator: CallAdapterLocator
-    const createGroupId = (): GroupLocator => ({ groupId: agentData?.CallId !== undefined ? agentData.CallId : '' });
-       const isLandscape = (): boolean => window.innerWidth < window.innerHeight;
-      const isMobileSession = useIsMobile();
-      const isLandscapeSession = isLandscape();
-      useEffect(() => {
-        if (isMobileSession && isLandscapeSession) {
-          console.log('ACS Calling sample: Mobile landscape view is experimental behavior');
-        }
-      }, [isMobileSession, isLandscapeSession]);
-
+    let customerCallLocator: CallAdapterLocator
     const renderPage = (): JSX.Element => {
         switch (page) {
             case 'home': {
                 document.title = `Home - ${webAppTitle}`;
-                return <HomeScreen
-                    joinChatHandler={() => {
-                        setPage('chat');
-                    }} />;
+                return <HomeScreen/>;
             }
             
             case 'Agent': {
@@ -97,8 +81,7 @@ export default (): JSX.Element => {
                     document.title = `Technician - ${webAppTitle}`;
                     let threadId = agentData?.ThreadId ?? '';
                     let callId = agentData?.CallId ?? '';
-                    console.log('Loading Technician view');
-                    console.log('ThreadId: %s, CallId: %s, UserId: %s, EndPointUrl: %s', agentData.ThreadId, agentData.CallId, agentData.AgentId, agentData.EndPointUrl);
+            
 
                     return <AgentPage
                       token={agentData.Token}
@@ -114,19 +97,18 @@ export default (): JSX.Element => {
             }
 
             case 'Customer': {
-                if (callerData !== undefined && agentData?.CallId !== undefined) {
-
+                if (customerData !== undefined && agentData?.CallId !== undefined) {
+                    const createGroupId = (): GroupLocator => ({ groupId: agentData?.CallId !== undefined ? agentData.CallId : '' });
+                    /*const createGroupId = (): GroupLocator => ({ groupId: customerData?.CallId !== undefined ? customerData.CallId : '' });*/
                     const ACSUserid: CommunicationUserIdentifier = {
-                        communicationUserId: callerData.UserId
+                        communicationUserId: customerData.UserId
                     }
-                    const token = callerData.Token;
+                    const token = customerData.Token;
                     const displayName = "Customer";
                     document.title = `Customer - ${webAppTitle}`;
-                    console.log('Customer');
-                    console.log(callLocator);
-                    callLocator = createGroupId();
+                    customerCallLocator = createGroupId();
                     return (
-                        <CallScreen token={token} userId={ACSUserid} displayName={displayName} callLocator={callLocator} />
+                        <CallScreen token={token} userId={ACSUserid} displayName={displayName} callLocator={customerCallLocator} />
                     );
                 }
                 else {

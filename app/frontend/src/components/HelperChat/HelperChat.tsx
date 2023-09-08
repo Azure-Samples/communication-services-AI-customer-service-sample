@@ -1,4 +1,4 @@
-﻿import {
+import {
     AzureCommunicationTokenCredential,
     CommunicationUserIdentifier,
 } from '@azure/communication-common';
@@ -8,24 +8,27 @@ import {
     useAzureCommunicationChatAdapter,
 } from '@azure/communication-react';
 import React, {
-    useEffect,
     useMemo,
     useState,
 } from 'react';
 import '../../styles/HelperChat.css'
 
 import { initializeIcons } from '@fluentui/react';
-import { ChatDetailsData, getHelperChatDetails } from '../../utils/ChatClientDetails';
-
 
 const DISPLAY_NAME = 'Agent';
 
 initializeIcons();
 
-function HelperChat(): JSX.Element {
+interface HelperChatProps{
+    threadId: string;
+    token: string;
+    userId: string;
+    endpointUrl: string;
+}
+function HelperChat(props: HelperChatProps): JSX.Element {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const { endpointUrl, userId, token, displayName, threadId } =
-        useAzureCommunicationServiceArgs();
+    const { endpointUrl, userId, token, threadId } = props;
+    const displayName = DISPLAY_NAME;
     const credential = useMemo(() => {
         try {
             return new AzureCommunicationTokenCredential(token);
@@ -45,7 +48,7 @@ function HelperChat(): JSX.Element {
             credential,
             threadId,
         }),
-        [endpointUrl, userId, displayName, credential, threadId]
+        [endpointUrl, userId, displayName,credential, threadId]
     );
     const chatAdapter = useAzureCommunicationChatAdapter(chatAdapterArgs);
 
@@ -72,35 +75,6 @@ function HelperChat(): JSX.Element {
     }
 
     return <h3>Initializing...</h3>;
-}
-
-
-function useAzureCommunicationServiceArgs(): {
-    endpointUrl: string;
-    userId: string;
-    token: string;
-    displayName: string;
-    threadId: string;
-} {
-    const [helperChatData, setHelperChatData] = useState<ChatDetailsData>();
-
-    useEffect(() => {
-        getHelperChatDetails()
-            .then(helperChatApiData => {
-                setHelperChatData(helperChatApiData);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-    }, []);
-
-    return {
-        endpointUrl: helperChatData !== undefined ? helperChatData.endpointUrl : '',
-        userId: helperChatData !== undefined ? helperChatData.identity : '',
-        token: helperChatData !== undefined ? helperChatData.token : '',
-        displayName: DISPLAY_NAME,
-        threadId: helperChatData !== undefined ? helperChatData.threadId : '',
-    };
 }
 
 export default HelperChat;

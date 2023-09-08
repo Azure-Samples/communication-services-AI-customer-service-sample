@@ -1,6 +1,7 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { ChatAdapter, ChatComposite, useAzureCommunicationChatAdapter } from '@azure/communication-react';
 import { AzureCommunicationTokenCredential, CommunicationUserIdentifier } from '@azure/communication-common';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 type ChatWindowProps = {
     endpoint: string,
@@ -8,9 +9,11 @@ type ChatWindowProps = {
     token: string;
     displayName: string;
     threadId: string
- }
+}
 
 const ChatWindow: React.FC<ChatWindowProps> = (props: ChatWindowProps) => {
+    const [isError, setIsError] = useState<boolean>(false);
+
     // A well-formed token is required to initialize the chat and calling adapters.
     const credential = useMemo(() => {
         try {
@@ -24,8 +27,14 @@ const ChatWindow: React.FC<ChatWindowProps> = (props: ChatWindowProps) => {
     // load old chat messages right after useAzureCommunicationChatAdapter creates the adapter
     const adapterAfterCreate = useCallback(
         async (adapter: ChatAdapter): Promise<ChatAdapter> => {
-            const loadMessagesResult = await adapter.loadPreviousChatMessages(100);
-            console.log('loaded messages', loadMessagesResult);
+            try {
+                const loadMessagesResult = await adapter.loadPreviousChatMessages(100);
+                console.log('loaded messages', loadMessagesResult);
+            }
+            catch (error) {
+                setIsError(true);
+            }
+
             return adapter;
         },
         []
@@ -47,17 +56,27 @@ const ChatWindow: React.FC<ChatWindowProps> = (props: ChatWindowProps) => {
     const chatAdapter = useAzureCommunicationChatAdapter(chatAdapterArgs, adapterAfterCreate);
 
     if (credential === undefined) {
-        return (<div className="agent-chat-control"/>);
-    }
-
-    if (!!chatAdapter) {
         return (
-            <div className="agent-chat-control" >
-                <ChatComposite adapter={chatAdapter} options={{ topic: false }} />
+            <div>
+                <div className="agent-chat-control">
+                    Failed to construct credential. Provided token is malformed.
+                </div>
             </div>
         );
     }
-    return <h3>Initializing...</h3>;
+
+    if (!isError) {
+        if (!!chatAdapter) {
+            return (
+                <div className="agent-chat-control" >
+                    <ChatComposite adapter={chatAdapter} options={{ topic: false }} />
+                </div>
+            );
+        }
+        return <div><LoadingSpinner /></div>
+    } else {
+        return <div></div>
+    }
 };
 
 export default ChatWindow;

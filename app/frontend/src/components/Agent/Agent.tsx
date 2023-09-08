@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { AzureCommunicationTokenCredential, CommunicationUserIdentifier } from "@azure/communication-common";
+import { useEffect, useState } from "react";
+import { CommunicationUserIdentifier } from "@azure/communication-common";
 import { GroupLocator } from "@azure/communication-calling";
 import VideoWindow from "./VideoWindow";
 import ChatWindow from "./ChatWindow";
@@ -8,6 +8,7 @@ import '../../styles/AgentPage.css';
 import { ConversationalInsights, getSummaryDetails } from "../../utils/SummaryList";
 import Section from "./OpenAIAssistant";
 import HelperChat from "../HelperChat/HelperChat";
+import { ChatDetailsData, getHelperChatDetails } from "../../utils/ChatClientDetails";
 
 export interface AgentPageProps {
     token: string;
@@ -21,12 +22,20 @@ export interface AgentPageProps {
 export const AgentPage = (props: AgentPageProps): JSX.Element => {
     const ACSUserid: CommunicationUserIdentifier = { communicationUserId: props.agentId }
     const callLocator: GroupLocator = { groupId: props.callId !== undefined ? props.callId : '' };
-
     const [assistantPanelData, setassistantPanelData] = useState<ConversationalInsights>();
     const chatThreadId = localStorage.getItem("chatThreadId");
+    const [helperChatData, setHelperChatData] = useState<ChatDetailsData>();
 
     useEffect(() => {
+        getHelperChatDetails()
+            .then(helperChatApiData => {
+                setHelperChatData(helperChatApiData);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
         loadAssistantPanelData();
+
     }, []);
 
     /*Refresh assistant panel data on closing call. */
@@ -69,7 +78,7 @@ export const AgentPage = (props: AgentPageProps): JSX.Element => {
                 ))}
                 <SummaryWindow />
                 <div>
-                    <HelperChat/>
+                    {helperChatData && <HelperChat {...helperChatData} userId={helperChatData.identity} />}
                 </div>
             </div>
         </div>

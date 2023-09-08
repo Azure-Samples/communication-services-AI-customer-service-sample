@@ -1,4 +1,4 @@
-﻿import {
+import {
     AzureCommunicationTokenCredential,
     CommunicationUserIdentifier,
 } from '@azure/communication-common';
@@ -8,27 +8,27 @@ import {
     useAzureCommunicationChatAdapter,
 } from '@azure/communication-react';
 import React, {
-    CSSProperties,
-    ElementRef,
-    useEffect,
     useMemo,
-    useRef,
     useState,
 } from 'react';
 import '../styles/Chat.css'
 
 import { initializeIcons } from '@fluentui/react';
-import { ChatDetailsData, getChatDetails } from '../utils/ChatClientDetails';
-
 
 const DISPLAY_NAME = 'Customer';
 
 initializeIcons();
 
-function Chat(): JSX.Element { 
+interface ChatProps {
+    threadId: string;
+    token: string;
+    userId: string;
+    endpointUrl: string;
+}
+function Chat(props: ChatProps): JSX.Element { 
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const { endpointUrl, userId, token, displayName, threadId } =
-        useAzureCommunicationServiceArgs();
+    const { endpointUrl, userId, token, threadId } = props;
+    const displayName = DISPLAY_NAME;
     const credential = useMemo(() => {
         try {
             return new AzureCommunicationTokenCredential(token);
@@ -75,44 +75,6 @@ function Chat(): JSX.Element {
     }
     
     return <h3>Initializing...</h3>;
-}
-
-
-function useAzureCommunicationServiceArgs(): {
-    endpointUrl: string;
-    userId: string;
-    token: string;
-    displayName: string;
-    
-    threadId: string;
-} {
-    const [threadId, setThreadId] = useState('');
-    const [data, setData] = useState<ChatDetailsData>();
-
-    useEffect(() => {
-        getChatDetails()
-            .then(apiData => {
-                setData(apiData);
-                localStorage.setItem("chatThreadId", apiData.threadId);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-    }, []);
-
-      useEffect(() => {
-        if (data !== undefined) {
-          setThreadId(data.threadId);
-        }
-      }, [data]);
-
-    return {
-        endpointUrl: data !== undefined ? data.endpointUrl:'',
-        userId: data !== undefined ? data.identity : '',
-        token: data !== undefined ? data.token : '',
-        displayName: DISPLAY_NAME,
-        threadId: data !== undefined ? data.threadId : '',
-    };
 }
 
 export default Chat;

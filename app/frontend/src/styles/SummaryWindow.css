@@ -1,6 +1,7 @@
 .dialog {
     font-family: Arial, sans-serif;
-    width: 1000px;
+    width: 980px;
+    height: 590px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #fff;
     overflow: hidden;

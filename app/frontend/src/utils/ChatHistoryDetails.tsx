@@ -1,4 +1,4 @@
-﻿import { ChatMessage } from "@azure/communication-react";
+import { ChatMessage } from "@azure/communication-react";
 import config from '../appsettings.json';
 
 const BASE_URL = config.baseUrl;

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import AccordionItem, { AccordionItemProps } from './AccordionItem';
+import AccordionItem from './AccordionItem';
 import {getSummaryDetails, ConversationalInsights} from "../../utils/SummaryList"
 import "../../styles/Accordion.css";
 

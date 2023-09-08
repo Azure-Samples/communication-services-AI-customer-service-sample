@@ -5,10 +5,9 @@ import { CommonCallAdapter, CallComposite, CallCompositeOptions } from '@azure/c
 
 import { Spinner } from '@fluentui/react';
 import { useIsMobile } from '../../utils/useIsMobile';
-import React, { useEffect } from 'react';
-
+import React, { useMemo } from 'react';
 import { CallScreenProps } from './CallScreen';
-import { LocalVideoStream } from '@azure/communication-calling';
+
 
 export type CallCompositeContainerProps = CallScreenProps & { adapter?: CommonCallAdapter };
 
@@ -22,12 +21,15 @@ export const CallCompositeContainer = (props: CallCompositeContainerProps): JSX.
   // closed the browser tab during an active call.
  
   // Call composite options
-const callOptions:CallCompositeOptions ={
-   callControls: { 
-    participantsButton:false,
-    screenShareButton:false
-   } 
-}
+  const callOptions: CallCompositeOptions = useMemo(() => {
+    return {
+      callControls: {
+        participantsButton: false,
+        screenShareButton: false,
+      },
+    };
+  }, []);
+  
   if (!adapter) {
     return <Spinner   ariaLive="assertive" labelPosition="top" />;
   }

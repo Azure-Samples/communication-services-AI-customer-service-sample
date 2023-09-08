@@ -1,4 +1,4 @@
-﻿import config from '../../appsettings.json';
+import config from '../../appsettings.json';
 
 const BASE_URL = config.baseUrl;
 

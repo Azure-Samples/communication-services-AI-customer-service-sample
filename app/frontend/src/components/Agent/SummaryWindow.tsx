@@ -55,7 +55,6 @@ const SummaryWindow: React.FC = () => {
             alert("Email sent successfully")
 
         } else {
-            console.log(response);
             alert("Email failed.")
         }
 
