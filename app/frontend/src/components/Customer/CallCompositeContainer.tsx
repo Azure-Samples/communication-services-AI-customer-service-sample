@@ -8,7 +8,6 @@ import { useIsMobile } from '../../utils/useIsMobile';
 import React, { useMemo } from 'react';
 import { CallScreenProps } from './CallScreen';
 
-
 export type CallCompositeContainerProps = CallScreenProps & { adapter?: CommonCallAdapter };
 
 export const CallCompositeContainer = (props: CallCompositeContainerProps): JSX.Element => {
@@ -31,9 +30,8 @@ export const CallCompositeContainer = (props: CallCompositeContainerProps): JSX.
   }, []);
   
   if (!adapter) {
-    return <Spinner   ariaLive="assertive" labelPosition="top" />;
+    return <Spinner ariaLive="assertive" labelPosition="top" />;
   }
-
 
   return (
     <CallComposite

@@ -15,7 +15,6 @@ import { GroupLocator } from '@azure/communication-calling';
 import { CustomerDetails, getCustomerDetails } from './utils/CallAuthenicationDetails';
 import { AgentPageData, getAgentPageData } from './components/Agent/InitAgentData';
 
-
 setLogLevel('warning');
 
 initializeIcons();
@@ -23,8 +22,6 @@ initializeFileTypeIcons();
 
 // Extract "callerType" query parameter from the URL
 const queryParams = new URLSearchParams(window.location.search);
-// const accessToken = queryParams.get('accessToken');
-// const userId = queryParams.get('userId');
 let callerType: string | null | undefined = queryParams.get('callerType');
 let loadpage = "";
 if (callerType?.trim().toLowerCase() === "customer") {

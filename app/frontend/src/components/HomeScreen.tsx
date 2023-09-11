@@ -34,6 +34,7 @@ export default (): JSX.Element => {
 
     const displayHomeScreen = (): JSX.Element => {
        
+        /* eslint-disable jsx-a11y/anchor-is-valid */
         return (
             <div className="home-container">
                 <nav>

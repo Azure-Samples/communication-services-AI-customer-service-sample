@@ -35,7 +35,7 @@ export const AgentPage = (props: AgentPageProps): JSX.Element => {
                 console.error('Error fetching data:', error);
             });
         loadAssistantPanelData();
-
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     /*Refresh assistant panel data on closing call. */

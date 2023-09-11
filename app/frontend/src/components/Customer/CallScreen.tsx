@@ -23,55 +23,46 @@ export interface CallScreenProps {
   displayName: string;
 }
 
-
-
-
-
 export const CallScreen = (props: CallScreenProps): JSX.Element => {
   const { token } = props;
   const callIdRef = useRef<string>();
-    
-    const subscribeAdapterEvents = useCallback((adapter: CommonCallAdapter) => {
-        
+
+  const subscribeAdapterEvents = useCallback((adapter: CommonCallAdapter) => {
     adapter.on('error', (e) => {
       // Error is already acted upon by the Call composite, but the surrounding application could
       // add top-level error handling logic here (e.g. reporting telemetry).
       console.log('Adapter error event:', e);
-
     });
-        adapter.onStateChange((state: CallAdapterState) => {
-            
+
+    adapter.onStateChange((state: CallAdapterState) => {
       if (state?.call?.id && callIdRef.current !== state?.call?.id) {
-          callIdRef.current = state?.call?.id;
-          console.log(`Call Recording: ${state?.call?.recording.isRecordingActive}`);
-          if (state?.call?.id && callIdRef.current !== state?.call?.id) {
-              if (state?.call?.state === 'Connecting') {
-              }
-              console.log(`Call State: ${state?.call?.state}`);
-              console.log(`Call Recording: ${state?.call?.recording.isRecordingActive}`);
-              console.log(`Call State: ${state?.call?.state}`);
-              console.log(`Call Recording: ${state?.call?.recording.isRecordingActive}`);
-              callIdRef.current = state?.call?.id;
-              console.log(`Call Id: ${callIdRef.current}`);
+        callIdRef.current = state?.call?.id;
+        console.log(`Call Recording: ${state?.call?.recording.isRecordingActive}`);
+        if (state?.call?.id && callIdRef.current !== state?.call?.id) {
+          if (state?.call?.state === 'Connecting') {
           }
+          console.log(`Call State: ${state?.call?.state}`);
+          console.log(`Call Recording: ${state?.call?.recording.isRecordingActive}`);
+          console.log(`Call State: ${state?.call?.state}`);
+          console.log(`Call Recording: ${state?.call?.recording.isRecordingActive}`);
+          callIdRef.current = state?.call?.id;
+          console.log(`Call Id: ${callIdRef.current}`);
+        }
       }
     });
   }, []);
 
-
-    const afterCallAdapterCreate = useCallback(
-        async (adapter: CallAdapter): Promise<CallAdapter> => {
-            adapter.joinCall({ microphoneOn: false, cameraOn: false })
-            subscribeAdapterEvents(adapter);
-            return adapter;
-        },
-        [subscribeAdapterEvents]
-    );
+  const afterCallAdapterCreate = useCallback(
+    async (adapter: CallAdapter): Promise<CallAdapter> => {
+      adapter.joinCall({ microphoneOn: false, cameraOn: false })
+      subscribeAdapterEvents(adapter);
+      return adapter;
+    },
+    [subscribeAdapterEvents]
+  );
 
   const credential = useMemo(() => {
- 
-      return new AzureCommunicationTokenCredential(token);
-  
+    return new AzureCommunicationTokenCredential(token);
   }, [token]);
 
   return <AzureCommunicationCallScreen afterCreate={afterCallAdapterCreate} credential={credential} {...props} />;
@@ -98,17 +89,15 @@ const AzureCommunicationCallScreen = (props: AzureCommunicationCallScreenProps):
     afterCreate
   );
 
-  return ( 
-      <div className="main-container">
-          <div className="header-content"><p>Customer Support</p></div>
-          <div className="top-content">
-              <div>
-                  <CallCompositeContainer {...props} adapter={adapter} />
-              </div>
-          </div>
-          <div className="footer-content">powercompany.com</div>
+  return (
+    <div className="main-container">
+      <div className="header-content"><p>Customer Support</p></div>
+      <div className="top-content">
+        <div>
+          <CallCompositeContainer {...props} adapter={adapter} />
+        </div>
       </div>
+      <div className="footer-content">powercompany.com</div>
+    </div>
   );
 };
-
- 
