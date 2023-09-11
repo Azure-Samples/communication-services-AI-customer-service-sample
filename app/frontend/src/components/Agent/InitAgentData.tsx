@@ -15,7 +15,7 @@ export const getAgentPageData = async (): Promise<AgentPageData> => {
         const getRequestOptions = {
             method: 'GET'
         };
-        const response = await fetch(`${BASE_URL}/api/agent/GetAgentData`, getRequestOptions);
+        const response = await fetch(`${BASE_URL}/api/agent/info`, getRequestOptions);
         if (!response.ok) {
             throw new Error(`Failed to to get agent page data. Status: ${response.status}`);
         }

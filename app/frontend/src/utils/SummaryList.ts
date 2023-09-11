@@ -1,5 +1,6 @@
-import config from '../appsettings.json';
+// Copyright (c) Microsoft Corporation.
 
+import config from '../appsettings.json';
 const BASE_URL = config.baseUrl;
 
 export interface ConversationalInsights {
@@ -17,7 +18,7 @@ export const getSummaryDetails = async (threadId:string | null): Promise<Convers
     try {
         const getRequestOptions = { method: 'GET' };
         // eslint-disable-next-line no-template-curly-in-string
-        const response = await fetch(`${BASE_URL}/api/conversation/summary/${threadId}`, getRequestOptions);
+        const response = await fetch(`${BASE_URL}/api/conversation/insights/${threadId}`, getRequestOptions);
         if (!response.ok) {
             throw new Error(`Failed to fetch summary details. Status: ${response.status}`);
         }

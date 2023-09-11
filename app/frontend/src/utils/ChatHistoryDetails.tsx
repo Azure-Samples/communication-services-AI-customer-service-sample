@@ -1,6 +1,7 @@
+// Copyright (c) Microsoft Corporation.
+
 import { ChatMessage } from "@azure/communication-react";
 import config from '../appsettings.json';
-
 const BASE_URL = config.baseUrl;
 
 export const getChatHistoryDetails = async (threadId: string | null): Promise<ChatMessage[]> => {

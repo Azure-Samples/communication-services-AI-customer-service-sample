@@ -1,4 +1,6 @@
 
+// Copyright (c) Microsoft Corporation.
+
 export async function getEmailTemplate(summaryDetails: string | undefined) {
     const emailBody = `<!DOCTYPE html>
 <html lang="en">

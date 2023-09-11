@@ -1,5 +1,8 @@
+// Copyright (c) Microsoft Corporation.
+
 import config from '../appsettings.json';
 const BASE_URL = config.baseUrl;
+
 export interface CustomerDetails {
     UserId: string;
     Token: string;
@@ -11,7 +14,7 @@ export const getCustomerDetails = async (): Promise<CustomerDetails> => {
         const getRequestOptions = {
             method: 'GET'
         };
-        const response = await fetch(`${BASE_URL}/customer/info`, getRequestOptions);
+        const response = await fetch(`${BASE_URL}/api/customer/info`, getRequestOptions);
         if (!response.ok) {
             throw new Error(`Failed to fetch user details. Status: ${response.status}`);
         }

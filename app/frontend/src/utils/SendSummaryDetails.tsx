@@ -1,5 +1,6 @@
-import config from '../appsettings.json';
+// Copyright (c) Microsoft Corporation.
 
+import config from '../appsettings.json';
 const BASE_URL = config.baseUrl;
 
 export interface SummaryEmailData {
@@ -12,7 +13,7 @@ export interface FinalSummary {
 
 export const SendSummaryDetails = async (summaryDetails: SummaryEmailData) => {
     try {
-        const response = await fetch(`${BASE_URL}/api/conversation/send/summary`, {
+        const response = await fetch(`${BASE_URL}/api/conversation/emailSummary/sendEmail`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
