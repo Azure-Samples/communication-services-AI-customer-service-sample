@@ -1,8 +1,10 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 // Copyright (c) Microsoft Corporation.
-
+// Licensed under the MIT license.
 export async function getEmailTemplate(summaryDetails: string | undefined) {
-    const emailBody = `<!DOCTYPE html>
+  const emailBody = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -72,7 +74,9 @@ export async function getEmailTemplate(summaryDetails: string | undefined) {
             <p class="header-text"><strong>Power</strong> Company</p>
         </div>
         <div class="content">
-            <p>${summaryDetails ?summaryDetails.replace(/\n/g, '<br>'):''}</p>
+            <p>${
+              summaryDetails ? summaryDetails.replace(/\n/g, "<br>") : ""
+            }</p>
         </div>
         <div class="links-content">
             <p>Contact customer Support</p>
@@ -90,5 +94,5 @@ export async function getEmailTemplate(summaryDetails: string | undefined) {
 </html>
 `;
 
-    return emailBody;
+  return emailBody;
 }

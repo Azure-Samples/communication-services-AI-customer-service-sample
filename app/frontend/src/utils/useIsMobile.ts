@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { useEffect, useState } from 'react';
-import MobileDetect from 'mobile-detect';
+import { useEffect, useState } from "react";
+import MobileDetect from "mobile-detect";
 
-const detectMobileSession = (): boolean => !!new MobileDetect(window.navigator.userAgent).mobile();
+const detectMobileSession = (): boolean =>
+  !!new MobileDetect(window.navigator.userAgent).mobile();
 
 /**
  * Detect if the app is running in a mobile browser and updated if that changes (e.g. when switching to a mobile browser in a browser emulator)
@@ -12,7 +13,9 @@ const detectMobileSession = (): boolean => !!new MobileDetect(window.navigator.u
  */
 export const useIsMobile = (): boolean => {
   // Whenever the sample is changed from desktop -> mobile using the emulator, make sure we update the formFactor.
-  const [isMobileSession, setIsMobileSession] = useState<boolean>(detectMobileSession());
+  const [isMobileSession, setIsMobileSession] = useState<boolean>(
+    detectMobileSession()
+  );
   useEffect(() => {
     const updateIsMobile = (): void => {
       // The userAgent string is sometimes not updated synchronously when the `resize` event fires.
@@ -20,8 +23,8 @@ export const useIsMobile = (): boolean => {
         setIsMobileSession(detectMobileSession());
       });
     };
-    window.addEventListener('resize', updateIsMobile);
-    return () => window.removeEventListener('resize', updateIsMobile);
+    window.addEventListener("resize", updateIsMobile);
+    return () => window.removeEventListener("resize", updateIsMobile);
   }, []);
 
   return isMobileSession;

@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import '../../styles/Assistant.css';
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+import React, { useState } from "react";
+import "../../styles/Assistant.css";
 
 type SectionProps = {
   title: string;
@@ -12,7 +14,7 @@ const Section: React.FC<SectionProps> = ({ title, details }) => {
   return (
     <div className="section">
       <h2 onClick={() => setIsOpen(!isOpen)}>
-        <span className={`bullet ${isOpen ? 'open' : ''}`}>&gt;</span>
+        <span className={`bullet ${isOpen ? "open" : ""}`}>&gt;</span>
         {title}
       </h2>
       {isOpen && <p>{details}</p>}
