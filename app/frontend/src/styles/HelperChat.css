@@ -1,4 +1,4 @@
-﻿
+﻿/*Helper chat css for Agent page helper chat component.*/
 
 .helper-chat-container {
     border-radius: 10px;
@@ -56,7 +56,7 @@
     width: 18px;
     display: block;
     text-indent: -9999px;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .chat-messages {
@@ -78,8 +78,6 @@
             display: inline-block;
         }
 
-
-
 .chat-input {
     display: flex;
     justify-content: space-between;
@@ -95,7 +93,7 @@
     background-color: #00894F;
     color: #fff;
     align-items: right;
-    background-image: url('../assets//images/icon_question_circle.svg');
+    background-image: url('../assets/images/icon_question_circle.svg');
     background-position: 10px center;
     background-repeat: no-repeat;
     padding-left: 40px;
@@ -109,4 +107,3 @@
     color: white;
     margin: 0;
 }
-

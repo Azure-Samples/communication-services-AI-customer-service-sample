@@ -1,89 +1,39 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+    height: 40vmin;
+    pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.chatbottomright {
-    position: fixed;
-    right: 0px;
-    bottom: 0px;
-    padding: 5px;
-}
-
-.customer-support-button {
-    background-color: #088c4c;
-    color: white;
-    position: fixed;
-    right: 20px;
-    bottom: 10px;
-    padding: 10px 16px;
-    margin: 10px;
-    border: 1px solid #088c4c;
-    border-radius: 25px;
-    font-weight: 400;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.background-image-container {
-    background-image: url('../assets/images/homeImage.png');
-    background-size: cover;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    background-position:inherit;
-    align-items: center;
-    justify-content: center;
-}
-
-    .background-image-container::before {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 50%;
-        background: linear-gradient(to top, rgb(255 255 255), transparent);
+    from {
+        transform: rotate(0deg);
     }
 
-.navbar-top-div {
-    display:inline-block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    to {
+        transform: rotate(360deg);
+    }
 }

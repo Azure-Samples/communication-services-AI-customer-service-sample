@@ -11,7 +11,7 @@ export const getCustomerDetails = async (): Promise<CustomerDetails> => {
         const getRequestOptions = {
             method: 'GET'
         };
-        const response = await fetch(`${BASE_URL}/api/identity/get/token`, getRequestOptions);
+        const response = await fetch(`${BASE_URL}/customer/info`, getRequestOptions);
         if (!response.ok) {
             throw new Error(`Failed to fetch user details. Status: ${response.status}`);
         }

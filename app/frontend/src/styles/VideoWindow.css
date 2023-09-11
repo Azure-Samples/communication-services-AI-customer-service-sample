@@ -15,12 +15,11 @@
     font-weight: bold;
 }
 
-.callControl{
+.call-control {
     width: 70vw;
     height: 90vh;
 }
 
-/* Add styles for the modal overlay */
 .overlay {
     position: fixed;
     top: 0;
@@ -33,7 +32,7 @@
     align-items: center;
 }
 
-.closeModal {
+.close-modal {
     background: transparent;
     border: none;
     background-image: url('../assets/images/icon_dismiss.svg');
@@ -42,5 +41,5 @@
     display: block;
     text-indent: -9999px;
     float: right;
-    cursor:pointer;
+    cursor: pointer;
 }

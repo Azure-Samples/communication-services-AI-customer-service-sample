@@ -107,13 +107,7 @@ const AzureCommunicationCallScreen = (props: AzureCommunicationCallScreenProps):
               </div>
           </div>
           <div className="footer-content">powercompany.com</div>
-          <div className="line-content">
-              <p className="dark-line"></p>
-          </div>
-          
       </div>
-  
-
   );
 };
 

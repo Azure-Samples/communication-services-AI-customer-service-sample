@@ -55,7 +55,7 @@ export default (): JSX.Element => {
                 });
         }
         
-        if (agentData === undefined && loadpage !== "home") 
+        if (agentData === undefined && loadpage === "Agent") 
         {
             getAgentPageData()
                 .then(apiData => {
@@ -81,7 +81,6 @@ export default (): JSX.Element => {
                     document.title = `Technician - ${webAppTitle}`;
                     let threadId = agentData?.ThreadId ?? '';
                     let callId = agentData?.CallId ?? '';
-            
 
                     return <AgentPage
                       token={agentData.Token}
@@ -97,9 +96,8 @@ export default (): JSX.Element => {
             }
 
             case 'Customer': {
-                if (customerData !== undefined && agentData?.CallId !== undefined) {
-                    const createGroupId = (): GroupLocator => ({ groupId: agentData?.CallId !== undefined ? agentData.CallId : '' });
-                    /*const createGroupId = (): GroupLocator => ({ groupId: customerData?.CallId !== undefined ? customerData.CallId : '' });*/
+                if (customerData !== undefined) {
+                    const createGroupId = (): GroupLocator => ({ groupId: customerData.CallId });
                     const ACSUserid: CommunicationUserIdentifier = {
                         communicationUserId: customerData.UserId
                     }

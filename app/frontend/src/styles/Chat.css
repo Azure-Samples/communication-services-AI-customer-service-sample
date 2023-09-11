@@ -1,19 +1,16 @@
-﻿
-/* ChatPopup.css */
-
-.chat-container {
+﻿.chat-container {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,.5);
     position: fixed;
     bottom: 20px;
     right: 20px;
     display: flex;
-    justify-content: flex-end; /* align items to the end (right) */
+    justify-content: flex-end;
 }
 
 .chat-control {
-    height:75vh;
-    width:35vw;
+    height: 75vh;
+    width: 35vw;
 }
 
 .chat-popup {
@@ -26,7 +23,7 @@
     .chat-popup span {
         display: none;
     }
-
+    
 .chat-header {
     display: flex;
     justify-content: space-between;
@@ -36,10 +33,6 @@
     border-radius: 10px 10px 0 0;
 }
 
-/* .chat-popup .ms-Persona-initials {
-    background-color: #00894F;
-  } */
-
 [data-icon-name="MessageSeen"] {
     color: #00894F;
 }
@@ -48,15 +41,6 @@
     background-color: #FFF;
     border: solid 2px #E5F3ED;
 }
-
-/* .ms-Persona-initials {
-    background-image: url('images/icon_bot.svg');
-    background-repeat: no-repeat;
-    background-position: center center;
-    display: block;
-    width: 32px;
-    height: 32px;
-  } */
 
 .chat-popup .jm {
     background-color: #E5F3ED;
@@ -81,17 +65,15 @@
     .chat-messages > div {
         margin: 5px 0;
         font-size: 0.8em;
-        display: block; /* make the div take a full line */
+        display: block;
     }
 
         .chat-messages > div > p {
             background-color: #E5F3ED;
             padding: 10px;
             border-radius: 5px;
-            display: inline-block; /* make the background only as wide as the content */
+            display: inline-block;
         }
-
-
 
 .chat-input {
     display: flex;
@@ -109,7 +91,7 @@
     color: #fff;
     align-items: right;
     font-weight: bold;
-    background-image: url('../assets//images/icon_question_circle.svg');
+    background-image: url('../assets/images/icon_question_circle.svg');
     background-position: 10px center;
     background-repeat: no-repeat;
     padding-left: 40px;
@@ -127,6 +109,3 @@
 .chat-control {
     height: 80vh
 }
-
-/* Additional styles can be added to refine the UI */
-  

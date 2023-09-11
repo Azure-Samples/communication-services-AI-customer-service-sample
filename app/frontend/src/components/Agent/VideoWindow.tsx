@@ -84,9 +84,9 @@ const VideoWindow: React.FC<VideoWindowProps> = (props: VideoWindowProps) => {
                     ariaHideApp={false}
                 >
                     <div className="titlebar">Customer
-                        <button className="closeModal" onClick={handleModalClose}>X</button>
+                        <button className="close-modal" onClick={handleModalClose}>X</button>
                     </div>
-                    <div className="callControl"><CallComposite adapter={callAdapter}  options={callOptions}/></div>
+                    <div className="call-control"><CallComposite adapter={callAdapter}  options={callOptions}/></div>
                 </Modal>
             </div>
         );

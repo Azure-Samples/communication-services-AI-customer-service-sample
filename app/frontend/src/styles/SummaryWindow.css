@@ -7,6 +7,7 @@
     overflow: hidden;
     border-radius: 8px;
 }
+
 .titlebar {
     background-color: #00894F;
     color: white;
@@ -34,9 +35,9 @@
     padding: 8px;
     margin-top: 8px;
     width: 900px;
-    white-space:pre-line;
-    height:100px;
-    overflow-y:scroll;
+    white-space: pre-line;
+    height: 100px;
+    overflow-y: scroll;
 }
 
 .tasks-section ul {
@@ -52,7 +53,6 @@
     margin-right: 8px;
 }
 
-/* Add styles for the modal overlay */
 .overlay {
     position: fixed;
     top: 0;
@@ -70,8 +70,7 @@
     text-align: right;
 }
 
-.send-summary-button
-{
+.send-summary-button {
     background-color: #00894F;
     color: white;
     border-radius: 8px;
@@ -82,32 +81,32 @@
     text-align: right;
 }
 
-.send-summary-button:hover {
-    background-color: #00894F; /* Darker shade when hovered for visual feedback */
-}
+    .send-summary-button:hover {
+        background-color: #00894F;
+    }
 
 .button-group {
     display: flex;
-    justify-content:flex-start;  /* Align the buttons to the right */
-    margin-top: 20px;           /* Add some spacing from the content above */
-    margin-bottom: 20px;           /* Add some spacing from the content bottom */
+    justify-content: flex-start;
+    margin-top: 20px;
+    margin-bottom: 20px;
     margin-left: 5px;
 }
 
 .action-button {
     padding: 10px 15px;
-    margin-left: 10px;  /* Add some spacing between the buttons */
+    margin-left: 10px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
 }
 
 .email-button {
-    background-color: #00894F;  /* A blue color for email */
+    background-color: #00894F;
     color: white;
 }
 
 .sms-button {
-    background-color: #00894F;  /* A red color for SMS */
+    background-color: #00894F;
     color: white;
 }
