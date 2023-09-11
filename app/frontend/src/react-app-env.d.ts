@@ -1,1 +1,2 @@
-/// <reference types="react-scripts" />
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
