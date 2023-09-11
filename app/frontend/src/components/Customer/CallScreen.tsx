@@ -97,7 +97,7 @@ const AzureCommunicationCallScreen = (props: AzureCommunicationCallScreenProps):
           <CallCompositeContainer {...props} adapter={adapter} />
         </div>
       </div>
-      <div className="footer-content">powercompany.com</div>
+      <div className="footer-content">Contoso Energy</div>
     </div>
   );
 };
