@@ -34,7 +34,7 @@ namespace CustomerSupportServiceSample.Controllers
         }
 
         [HttpGet]
-        [Route("join/thread")]
+        [Route("startconversation")]
         public async Task<ActionResult> GetOrCreateCustomerConversation()
         {
             var chatThreadResponse = await chatService.GetOrCreateCustomerConversation();

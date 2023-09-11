@@ -27,7 +27,7 @@ namespace CustomerSupportServiceSample.Controllers
         }
 
         [HttpGet]
-        [Route("GetAgentData")]
+        [Route("info")]
         public async Task<IActionResult> GetAgentData()
         {
             var agentId = cacheService.GetCache("AgentId");
@@ -45,6 +45,13 @@ namespace CustomerSupportServiceSample.Controllers
                 { "EndPointUrl", endPointUrl },
             };
             return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("chatassistant")]
+        public async Task<IActionResult> GetChatAssistant()
+        {
+            return Ok(new ChatClientResponse());
         }
     }
 }
