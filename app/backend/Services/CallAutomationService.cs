@@ -262,6 +262,7 @@ namespace CustomerSupportServiceSample.Services
                 agentId = identityService.GetNewUserId();
                 cacheService.UpdateCache("AgentId", agentId);
             }
+            cacheService.UpdateCache("GroupId", Guid.NewGuid().ToString());
             await AssignAgentToCustomerAsync(agentId, threadId, targetParticipant);
         }
     }

@@ -34,6 +34,18 @@ namespace CustomerSupportServiceSample.Services
 
         private const string SystemAnswerPromptWithHistory =
             SystemAnswerPrompt + """For context, here is the chat history so far: {0}""";
+        
+        private const string EmailSummaryPrompt = """
+        Generate a summary of the below conversation to send an email in the following 
+        format: 
+        Summary of the discussion between the customer and the agent: 
+        Outcome of the conversation: 
+        Action items for follow-up: {0}
+        and convert the above to sample email format starts with 
+        greeting {1} without using subject and end with best regards from {2}
+        """;
+
+        private const string SystemAssistantPrompt = "You are a helpful assistant";
 
         public OpenAIService(
             IConfiguration configuration,
@@ -50,7 +62,7 @@ namespace CustomerSupportServiceSample.Services
 
         public async Task<bool> HasIntent(string userQuery, string intentDescription)
         {
-            var systemPrompt = "You are a helpful assistant";
+            var systemPrompt = SystemAssistantPrompt;
             var baseUserPrompt = "In 1 word: does {0} have similar meaning as {1}?";
             var combinedPrompt = string.Format(baseUserPrompt, userQuery, intentDescription);
 
@@ -77,7 +89,36 @@ namespace CustomerSupportServiceSample.Services
             return await GetChatCompletions(systemPrompt, userPrompt, maxTokens);
         }
 
-        public async Task<string> GetChatCompletions(string systemPrompt, string userPrompt, int maxTokens = 30)
+        public async Task<ConversationInsights> GenerateChatInsights(string text)
+        {
+            var systemPrompt = SystemAssistantPrompt;
+            var summaryPrompt = "Summarize conversation between Customer and Agent: {0}";
+            var highlightsPrompt = "What are the highlights on the conversation between Customer and Agent: {0}";
+            var actionPrompt = "Follow up action on Internet plans for agent from this conversation: {0}";
+
+            var summary = await GetChatCompletions(systemPrompt, string.Format(summaryPrompt, text), 200);
+            var highlights = await GetChatCompletions(systemPrompt, string.Format(highlightsPrompt, text), 200);
+            var action = await GetChatCompletions(systemPrompt, string.Format(actionPrompt, text), 200);
+
+            return new ConversationInsights()
+            {
+                SummaryItems = new List<SummaryItem>()
+                {
+                   new SummaryItem() { Title = "Summary", Description = summary },
+                   new SummaryItem() { Title = "Highlights", Description = highlights },
+                   new SummaryItem() { Title = "Actions", Description = action },
+                },
+            };
+        }
+
+        public async Task<string> GenerateChatInsightsForEmail(string text, string recipient, string sender)
+        {
+            var systemPrompt = SystemAssistantPrompt;
+            var userPrompt = string.Format(EmailSummaryPrompt, text, recipient, sender);
+            return await GetChatCompletions(systemPrompt, userPrompt);
+        }
+
+        private async Task<string> GetChatCompletions(string systemPrompt, string userPrompt, int maxTokens = 30)
         {
             var chatCompletionsOptions = new ChatCompletionsOptions()
             {

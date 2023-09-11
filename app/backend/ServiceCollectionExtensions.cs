@@ -47,6 +47,7 @@ internal static class ServiceCollectionExtensions
         services.AddSingleton<IIdentityService, IdentityService>();
         services.AddSingleton<IMessageService, MessageService>();
         services.AddSingleton<IOpenAIService, OpenAIService>();
+        services.AddSingleton<ISummaryService, SummaryService>();
         services.AddSingleton<ITranscriptionService, TranscriptionService>();
         return services;
     }

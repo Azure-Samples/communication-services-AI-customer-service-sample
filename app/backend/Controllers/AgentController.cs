@@ -27,7 +27,7 @@ namespace CustomerSupportServiceSample.Controllers
         }
 
         [HttpGet]
-        [Route("info")]
+        [Route("GetAgentData")]
         public async Task<IActionResult> GetAgentData()
         {
             var agentId = cacheService.GetCache("AgentId");
