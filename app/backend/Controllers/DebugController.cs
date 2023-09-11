@@ -10,14 +10,17 @@ namespace CustomerSupportServiceSample.Controllers
         private readonly ICacheService cacheService;
         private readonly ICallAutomationService callAutomationService;
         private readonly IConfiguration configuration;
+        private readonly IMessageService messageService;
 
         public DebugController(
             ICacheService cacheService,
             ICallAutomationService callAutomationService,
+            IMessageService messageService,
             IConfiguration configuration)
         {
             this.cacheService = cacheService;
             this.callAutomationService = callAutomationService;
+            this.messageService = messageService;
             this.configuration = configuration;
         }
 
@@ -35,6 +38,13 @@ namespace CustomerSupportServiceSample.Controllers
         {
             string callerId = configuration["AcsSettings:AcsPhoneNumber"] ?? "";
             return Ok(await callAutomationService.CreateCallAsync(callerId, targetPSTNNumber, threadId));
+        }
+
+        [HttpPost]
+        [Route("SendSMS")]
+        public async Task<IActionResult> SendSms(string targetPSTNNumber = "")
+        {
+            return Ok(await messageService.SendTextMessage(targetPSTNNumber));
         }
     }
 }

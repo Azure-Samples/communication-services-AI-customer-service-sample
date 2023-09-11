@@ -6,8 +6,9 @@ namespace CustomerSupportServiceSample.Services
     {
         private readonly CallAutomationClient client;
         private readonly IConfiguration configuration;
-        private readonly IOpenAIService openAIService;
         private readonly IIdentityService identityService;
+        private readonly IMessageService messageService;
+        private readonly IOpenAIService openAIService;
         private readonly ITranscriptionService transcriptionService;
         private readonly ICacheService cacheService;
         private readonly ILogger logger;
@@ -27,6 +28,7 @@ namespace CustomerSupportServiceSample.Services
             ICacheService cacheService,
             IConfiguration configuration,
             IIdentityService identityService,
+            IMessageService messageService,
             IOpenAIService openAIService,
             ITranscriptionService transcriptionService,
             ILogger<CallAutomationService> logger)
@@ -34,6 +36,7 @@ namespace CustomerSupportServiceSample.Services
             this.cacheService = cacheService;
             this.configuration = configuration;
             this.identityService = identityService;
+            this.messageService = messageService;
             this.openAIService = openAIService;
             this.transcriptionService = transcriptionService;
             this.logger = logger;
@@ -106,7 +109,17 @@ namespace CustomerSupportServiceSample.Services
                 var playOptions = GetPlaySpeechOptions(goodbye, targetParticipant);
                 await callMedia.PlayAsync(playOptions);
                 await TranscribeBotVoice(goodbye);
-                // TODO: invoke transfer to agent via JobRouter
+
+                // Invoke transfer to agent
+                if (configuration["UseJobRouter"] == "true")
+                {
+                    // TODO: invoke transfer to agent via JobRouter
+                }
+                else
+                {
+                    // Alternative: Connect directly /
+                    await AssignAgentToCustomerDirectly(recognizeCompleted.OperationContext!, targetParticipant);
+                }
             }
             // 3. Detect if customer is ready to end call
             else if (await DetectEndCallIntent(speech_result))
@@ -153,11 +166,36 @@ namespace CustomerSupportServiceSample.Services
             await TranscribeBotVoice(replyText);
         }
 
+        public async Task AssignAgentToCustomerAsync(string agentId, string threadId, string customerPhoneNumber)
+        {
+            // 1. Invite the agent to same chat thread; allow them to see past messages
+            // As bot is the owner of the thread, it has permissions to add more participants
+            var botUserId = cacheService.GetCache("BotUserId");
+            var botToken = await identityService.GetTokenForUserId(botUserId);
+            var chatClient = new ChatClient(
+                endpoint: new Uri(acsEndpoint),
+                communicationTokenCredential: new CommunicationTokenCredential(botToken));
+            var chatThreadClient = chatClient.GetChatThreadClient(threadId: threadId);
+            var chatParticipant = new ChatParticipant(new CommunicationUserIdentifier(agentId))
+            {
+                ShareHistoryTime = DateTimeOffset.UtcNow - TimeSpan.FromDays(1),
+                DisplayName = "Technician"
+            };
+            await chatThreadClient.AddParticipantAsync(chatParticipant);
+
+            // 2. Send voip call join link via SMS to customer
+            var msgResp = await messageService.SendTextMessage($"{customerPhoneNumber.Trim()}".Trim());
+            if (!msgResp.Successful)
+            {
+                logger.LogError("Failed to send text message to customer {phone}", customerPhoneNumber);
+            }
+        }
+
         private CallConnection GetCallConnection(string callConnectionId) =>
             client.GetCallConnection(callConnectionId);
 
         private async Task<bool> DetectEscalateToAgentIntent(string speechText) =>
-            await openAIService.HasIntent(userQuery: speechText, intentDescription: "talk to agent, talk to technician, talk to company representative, talk to human");
+            await openAIService.HasIntent(userQuery: speechText, intentDescription: "talk to power company technician");
 
         private async Task<bool> DetectEndCallIntent(string speechText) =>
             await openAIService.HasIntent(userQuery: speechText, intentDescription: "end call, hang up, end the call, goodbye");
@@ -214,6 +252,17 @@ namespace CustomerSupportServiceSample.Services
             return new PlayOptions(
                 playSource: new TextSource(content) { VoiceName = SpeechToTextVoice },
                 playTo: new[] { new PhoneNumberIdentifier(targetParticipant) }); 
+        }
+
+        private async Task AssignAgentToCustomerDirectly(string threadId, string targetParticipant)
+        {
+            var agentId = cacheService.GetCache("AgentId");
+            if (string.IsNullOrEmpty(agentId))
+            {
+                agentId = identityService.GetNewUserId();
+                cacheService.UpdateCache("AgentId", agentId);
+            }
+            await AssignAgentToCustomerAsync(agentId, threadId, targetParticipant);
         }
     }
 }

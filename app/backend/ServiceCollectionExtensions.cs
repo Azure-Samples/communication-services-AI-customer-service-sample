@@ -35,7 +35,8 @@ internal static class ServiceCollectionExtensions
             ArgumentException.ThrowIfNullOrEmpty(azureOpenAiServiceEndpoint);
             ArgumentException.ThrowIfNullOrEmpty(azureOpenAiKey);
 
-            var openAIClient = new OpenAIClient(new Uri(azureOpenAiServiceEndpoint), new AzureKeyCredential(azureOpenAiKey));
+            var openAIClient = new OpenAIClient(
+                new Uri(azureOpenAiServiceEndpoint), new AzureKeyCredential(azureOpenAiKey));
 
             return openAIClient;
         });
@@ -44,6 +45,7 @@ internal static class ServiceCollectionExtensions
         services.AddSingleton<ICallAutomationService, CallAutomationService>();
         services.AddSingleton<IChatService, ChatService>();
         services.AddSingleton<IIdentityService, IdentityService>();
+        services.AddSingleton<IMessageService, MessageService>();
         services.AddSingleton<IOpenAIService, OpenAIService>();
         services.AddSingleton<ITranscriptionService, TranscriptionService>();
         return services;
