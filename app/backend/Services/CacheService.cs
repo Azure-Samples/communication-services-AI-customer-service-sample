@@ -1,4 +1,6 @@
-﻿namespace CustomerSupportServiceSample.Services
+﻿// Copyright (c) Microsoft. All rights reserved.
+
+namespace CustomerSupportServiceSample.Services
 {
     using CustomerSupportServiceSample.Interfaces;
     using Microsoft.Extensions.Caching.Memory;
