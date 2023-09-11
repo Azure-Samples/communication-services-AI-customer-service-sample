@@ -22,6 +22,10 @@ namespace CustomerSupportServiceSample.Services
             string text,
             string displayName)
         {
+            if (string.IsNullOrEmpty(threadId) || string.IsNullOrEmpty(userId))
+            {
+                return;
+            }
             // Retrieve user access token to be able to post the message on behalf of user
             var userToken = await identityService.GetTokenForUserId(userId);
 

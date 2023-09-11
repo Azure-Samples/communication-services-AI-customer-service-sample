@@ -134,7 +134,7 @@ namespace CustomerSupportServiceSample.Services
             {
                 // 5. For better OpenAI results, include complete conversation history to query
                 // Using the original chat thread ID that was stored to OperationContext
-                List<ChatHistory> chatHistory = await GetFormattedChatHistory(threadId: recognizeCompleted.OperationContext!);
+                List<ChatHistory>? chatHistory = await GetFormattedChatHistory(threadId: recognizeCompleted.OperationContext!);
 
                 var chatGPTResponse = await openAIService.AnswerAsync(speech_result, chatHistory);
 
@@ -217,6 +217,10 @@ namespace CustomerSupportServiceSample.Services
         private async Task<List<ChatHistory>> GetFormattedChatHistory(string threadId)
         {
             var botUserId = cacheService.GetCache("BotUserId");
+            if (string.IsNullOrEmpty(threadId) || string.IsNullOrEmpty(botUserId))
+            {
+                return null;
+            }
             var botToken = await identityService.GetTokenForUserId(botUserId);
 
             var chatClient = new ChatClient(
