@@ -101,7 +101,7 @@ namespace CustomerSupportServiceSample.Services
             foreach (var convItem in history)
             {
                 string speakerName = convItem["speaker"];
-                sbConversation.AppendLine($"{spkrName}:{convItem["text"]}");
+                sbConversation.AppendLine($"{speakerName}:{convItem["text"]}");
             }
 
             return sbConversation.ToString();

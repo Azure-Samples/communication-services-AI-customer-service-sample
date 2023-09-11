@@ -46,6 +46,28 @@ namespace CustomerSupportServiceSample.Controllers
                         await chatService.HandleEvents(chatEventData);
                     }
                 }
+                else if (eventGridEvent.EventType == "Microsoft.Communication.CallStarted")
+                {
+                    var callEventData = eventGridEvent.Data.ToObjectFromJson<CallStartedEventData>();
+                    var groupId = callEventData?.group?.id;
+                    var cachedGroupId = cacheService.GetCache("GroupId");
+
+                    if (!string.IsNullOrEmpty(groupId) && groupId == cachedGroupId)
+                    {
+                        logger.LogInformation("Group call started, groupCallId={}", groupId);
+                    }
+                }
+                else if (eventGridEvent.EventType == "Microsoft.Communication.CallEnded")
+                {
+                    var callEventData = eventGridEvent.Data.ToObjectFromJson<CallStartedEventData>();
+                    var groupId = callEventData?.group?.id;
+                    var cachedGroupId = cacheService.GetCache("GroupId");
+
+                    if (!string.IsNullOrWhiteSpace(groupId) && groupId == cachedGroupId)
+                    {
+                        logger.LogInformation("Group call finished, groupCallId={}", groupId);
+                    }
+                }
             }
             return Ok();
         }
@@ -89,6 +111,16 @@ namespace CustomerSupportServiceSample.Controllers
                 }
             }
             return Ok();
+        }
+        private class CallStartedEventData
+        {
+            public string? serverCallId { get; set; }
+            public Group? group { get; set; }
+            public string? correlationId { get; set; }
+        }
+        private class Group
+        {
+            public string? id { get; set; }
         }
     }
 }

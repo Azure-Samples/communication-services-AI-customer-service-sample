@@ -33,7 +33,7 @@ namespace CustomerSupportServiceSample.Controllers
         }
 
         [HttpPost]
-        [Route("CallToPSTN")]
+        [Route("callToPstn")]
         public async Task<IActionResult> CreateCall(string targetPSTNNumber = "", string threadId = "")
         {
             string callerId = configuration["AcsSettings:AcsPhoneNumber"] ?? "";
@@ -41,7 +41,7 @@ namespace CustomerSupportServiceSample.Controllers
         }
 
         [HttpPost]
-        [Route("SendSMS")]
+        [Route("sendSms")]
         public async Task<IActionResult> SendSms(string targetPSTNNumber = "")
         {
             return Ok(await messageService.SendTextMessage(targetPSTNNumber));
