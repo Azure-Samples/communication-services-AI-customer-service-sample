@@ -100,7 +100,7 @@ namespace CustomerSupportServiceSample.Services
             StringBuilder sbConversation = new StringBuilder();
             foreach (var convItem in history)
             {
-                string spkrName = convItem["speaker"];
+                string speakerName = convItem["speaker"];
                 sbConversation.AppendLine($"{spkrName}:{convItem["text"]}");
             }
 
