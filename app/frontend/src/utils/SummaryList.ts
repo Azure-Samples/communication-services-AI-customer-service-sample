@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import config from "../appsettings.json";
+import config from '../appsettings.json';
 const BASE_URL = config.baseUrl;
 
 export interface ConversationalInsights {
@@ -15,27 +15,20 @@ export interface SummaryItem {
   description: string;
 }
 
-export const getSummaryDetails = async (
-  threadId: string | null
-): Promise<ConversationalInsights> => {
+export const getSummaryDetails = async (threadId: string | null): Promise<ConversationalInsights> => {
   try {
-    const getRequestOptions = { method: "GET" };
+    const getRequestOptions = { method: 'GET' };
     // eslint-disable-next-line no-template-curly-in-string
-    const response = await fetch(
-      `${BASE_URL}/api/conversation/insights/${threadId}`,
-      getRequestOptions
-    );
+    const response = await fetch(`${BASE_URL}/api/conversation/insights/${threadId}`, getRequestOptions);
     if (!response.ok) {
-      throw new Error(
-        `Failed to fetch summary details. Status: ${response.status}`
-      );
+      throw new Error(`Failed to fetch summary details. Status: ${response.status}`);
     }
 
     const values = await response.json();
 
     return values;
   } catch (error) {
-    console.error("Failed at getting environment url, Error: ", error);
-    throw new Error("Failed at getting environment url");
+    console.error('Failed at getting environment url, Error: ', error);
+    throw new Error('Failed at getting environment url');
   }
 };

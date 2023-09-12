@@ -1,20 +1,18 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
-import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
+
+import React, { useEffect, useState } from 'react';
+import Modal from 'react-modal';
 import {
   FinalSummary,
   getCustomerCommunicationDetails,
   SendSummaryDetails,
-  SummaryEmailData,
-} from "../../utils/SendSummaryDetails";
-import { getEmailTemplate } from "../../utils/SummaryEmailTemplate";
-import {
-  ConversationalInsights,
-  getSummaryDetails,
-} from "../../utils/SummaryList";
-import "../../styles/SummaryWindow.css";
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+  SummaryEmailData
+} from '../../utils/SendSummaryDetails';
+import { getEmailTemplate } from '../../utils/SummaryEmailTemplate';
+import { ConversationalInsights, getSummaryDetails } from '../../utils/SummaryList';
+import '../../styles/SummaryWindow.css';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 type TaskType = {
   id: number;
@@ -22,19 +20,17 @@ type TaskType = {
 };
 
 const tasks: TaskType[] = [
-  { id: 1, description: "Schedule on site assessment" },
-  { id: 2, description: "Assign field technician" },
-  { id: 3, description: "Verify customer information" },
+  { id: 1, description: 'Schedule on site assessment' },
+  { id: 2, description: 'Assign field technician' },
+  { id: 3, description: 'Verify customer information' }
 ];
 
 const SummaryWindow: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [summaryDetails, setSummaryDetails] =
-    useState<ConversationalInsights>();
-  const [summaryConversation, setSummaryConversation] =
-    useState<FinalSummary>();
-  const chatThreadId = localStorage.getItem("chatThreadId");
+  const [summaryDetails, setSummaryDetails] = useState<ConversationalInsights>();
+  const [summaryConversation, setSummaryConversation] = useState<FinalSummary>();
+  const chatThreadId = localStorage.getItem('chatThreadId');
   useEffect(() => {
     if (isModalOpen) {
       setIsLoading(true);
@@ -59,27 +55,21 @@ const SummaryWindow: React.FC = () => {
   }, [chatThreadId, isModalOpen]);
 
   const handleSendSummary = async () => {
-    const emailBodyTemplate = await getEmailTemplate(
-      summaryConversation?.result
-    );
+    const emailBodyTemplate = await getEmailTemplate(summaryConversation?.result);
     const email: SummaryEmailData = {
-      body: emailBodyTemplate,
+      body: emailBodyTemplate
     };
+
     const response = await SendSummaryDetails(email);
-    if (response.status === "Succeeded") {
-      alert("Email sent successfully");
-    } else {
-      alert("Email failed.");
+    if (response.status !== 'Succeeded') {
+      alert('Email failed with error code: ' + response.status);
     }
   };
 
   return (
     <div>
       <div className="send-summary-container">
-        <button
-          className="send-summary-button"
-          onClick={() => setIsModalOpen(true)}
-        >
+        <button className="send-summary-button" onClick={() => setIsModalOpen(true)}>
           Send Summary
         </button>
       </div>
@@ -94,9 +84,7 @@ const SummaryWindow: React.FC = () => {
         <div className="titlebar">Case Summary</div>
         <section className="summary-section">
           <h2>Summary</h2>
-          <p className="bordered-content">
-            {summaryDetails?.summaryItems[0].description}
-          </p>
+          <p className="bordered-content">{summaryDetails?.summaryItems[0].description}</p>
         </section>
         <section className="tasks-section">
           <h2>Tasks</h2>
@@ -111,15 +99,10 @@ const SummaryWindow: React.FC = () => {
         </section>
         <section className="communication-section">
           <h2>Customer Communication</h2>
-          <p className="customer-communication">
-            {summaryConversation?.result}
-          </p>
+          <p className="customer-communication">{summaryConversation?.result}</p>
         </section>
         <div className="button-group">
-          <button
-            className="action-button send-summary-button"
-            onClick={handleSendSummary}
-          >
+          <button className="action-button send-summary-button" onClick={handleSendSummary}>
             Send Summary
           </button>
         </div>

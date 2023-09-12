@@ -1,22 +1,18 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
-import { useEffect, useState } from "react";
-import { CommunicationUserIdentifier } from "@azure/communication-common";
-import { GroupLocator } from "@azure/communication-calling";
-import VideoWindow from "./VideoWindow";
-import ChatWindow from "./ChatWindow";
-import SummaryWindow from "./SummaryWindow";
-import "../../styles/AgentPage.css";
-import {
-  ConversationalInsights,
-  getSummaryDetails,
-} from "../../utils/SummaryList";
-import Section from "./OpenAIAssistant";
-import HelperChat from "../HelperChat/HelperChat";
-import {
-  ChatDetailsData,
-  getHelperChatDetails,
-} from "../../utils/ChatClientDetails";
+
+import { useEffect, useState } from 'react';
+import { CommunicationUserIdentifier } from '@azure/communication-common';
+import { GroupLocator } from '@azure/communication-calling';
+import VideoWindow from './VideoWindow';
+import ChatWindow from './ChatWindow';
+import SummaryWindow from './SummaryWindow';
+import '../../styles/AgentPage.css';
+import { ConversationalInsights, getSummaryDetails } from '../../utils/SummaryList';
+import Section from './OpenAIAssistant';
+import HelperChat from '../HelperChat/HelperChat';
+import { ChatDetailsData, getHelperChatDetails } from '../../utils/ChatClientDetails';
+import { clearCacheHistory } from '../../utils/CacheHistoryDetails';
 
 export interface AgentPageProps {
   token: string;
@@ -28,15 +24,10 @@ export interface AgentPageProps {
 }
 
 export const AgentPage = (props: AgentPageProps): JSX.Element => {
-  const ACSUserid: CommunicationUserIdentifier = {
-    communicationUserId: props.agentId,
-  };
-  const callLocator: GroupLocator = {
-    groupId: props.callId !== undefined ? props.callId : "",
-  };
-  const [assistantPanelData, setassistantPanelData] =
-    useState<ConversationalInsights>();
-  const chatThreadId = localStorage.getItem("chatThreadId");
+  const ACSUserid: CommunicationUserIdentifier = { communicationUserId: props.agentId };
+  const callLocator: GroupLocator = { groupId: props.callId !== undefined ? props.callId : '' };
+  const [assistantPanelData, setassistantPanelData] = useState<ConversationalInsights>();
+  const chatThreadId = localStorage.getItem('chatThreadId');
   const [helperChatData, setHelperChatData] = useState<ChatDetailsData>();
 
   useEffect(() => {
@@ -45,7 +36,7 @@ export const AgentPage = (props: AgentPageProps): JSX.Element => {
         setHelperChatData(helperChatApiData);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       });
     loadAssistantPanelData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -62,11 +53,25 @@ export const AgentPage = (props: AgentPageProps): JSX.Element => {
     });
   };
 
+  async function handleClearHistory() {
+    const response = await clearCacheHistory();
+    if (response) {
+      alert('Cache history cleared.');
+    } else {
+      alert('failed.');
+    }
+  }
+
   return (
     <div>
       <nav>
         <div className="agent-logo">
           <b>Contoso</b> Energy | Technician
+        </div>
+        <div>
+          <button className="clear-history-btn" onClick={handleClearHistory}>
+            Clear History
+          </button>
         </div>
       </nav>
       <div id="conversation">
@@ -77,12 +82,12 @@ export const AgentPage = (props: AgentPageProps): JSX.Element => {
         </div>
         <div
           style={{
-            width: "100%",
-            position: "absolute",
-            top: "0",
-            bottom: "0",
-            display: "flex",
-            flexDirection: "column",
+            width: '100%',
+            position: 'absolute',
+            top: '0',
+            bottom: '0',
+            display: 'flex',
+            flexDirection: 'column'
           }}
         >
           <ChatWindow {...props} userId={ACSUserid} />
@@ -104,18 +109,9 @@ export const AgentPage = (props: AgentPageProps): JSX.Element => {
         </div>
         {assistantPanelData &&
           assistantPanelData.summaryItems.map((section, index) => (
-            <Section
-              key={index}
-              title={section.title}
-              details={section.description}
-            />
+            <Section key={index} title={section.title} details={section.description} />
           ))}
         <SummaryWindow />
-        <div>
-          {helperChatData && (
-            <HelperChat {...helperChatData} userId={helperChatData.identity} />
-          )}
-        </div>
       </div>
     </div>
   );

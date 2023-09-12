@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
 
-import React, { useEffect, useState } from "react";
-import Chat from "./Chat";
-import "../styles/HomePage.css";
-import { ChatDetailsData, getChatDetails } from "../utils/ChatClientDetails";
+import React, { useEffect, useState } from 'react';
+import Chat from './Chat';
+import '../styles/HomePage.css';
+import { ChatDetailsData, getChatDetails } from '../utils/ChatClientDetails';
+import { clearCacheHistory } from '../utils/CacheHistoryDetails';
 
 /**
  * HomeScreen has two states:
@@ -21,12 +20,21 @@ export default (): JSX.Element => {
     getChatDetails()
       .then((apiData) => {
         setChatData(apiData);
-        localStorage.setItem("chatThreadId", apiData.threadId);
+        localStorage.setItem('chatThreadId', apiData.threadId);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       });
   }, []);
+
+  async function handleClearHistory() {
+    const response = await clearCacheHistory();
+    if (response) {
+      alert('Cache history cleared.');
+    } else {
+      alert('failed.');
+    }
+  }
 
   const displayHomeScreen = (): JSX.Element => {
     /* eslint-disable jsx-a11y/anchor-is-valid */
@@ -52,14 +60,15 @@ export default (): JSX.Element => {
             <a href="#" className="account">
               Account
             </a>
+            <a className="clear-history-btn" onClick={handleClearHistory}>
+              Clear History
+            </a>
           </div>
         </nav>
         <div className="content">
           <p className="title">Looking for ways to save? Try solar</p>
           <hr />
-          <p className="subtitle">
-            You may qualify for tax savings and other benefits.
-          </p>
+          <p className="subtitle">You may qualify for tax savings and other benefits.</p>
           <p className="subtitle">Chat with customer support to learn more</p>
         </div>
         {chatData && <Chat {...chatData} userId={chatData.identity} />}

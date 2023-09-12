@@ -1,3 +1,6 @@
+/*Copyright (c) Microsoft Corporation.
+Licensed under the MIT License.*/
+
 * {
     padding: 0;
     margin: 0;
@@ -97,4 +100,14 @@ h3 {
 
 .agent-chat-control {
     height: 80vh;
+}
+
+.clear-history-btn {
+    background-color: #04643c;
+    color:white;
+    font-weight:bold;
+    padding: 8px 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
 }

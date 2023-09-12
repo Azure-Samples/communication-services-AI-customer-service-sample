@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
-import React from "react";
-import "../../styles/LoadingSpinner.css";
+
+import React from 'react';
+import '../../styles/LoadingSpinner.css';
 
 const LoadingSpinner: React.FC = () => {
   return (

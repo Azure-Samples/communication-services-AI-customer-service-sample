@@ -1,4 +1,7 @@
-﻿.main-container {
+﻿/*Copyright (c) Microsoft Corporation.
+Licensed under the MIT License.*/
+
+.main-container {
     display: flex;
     flex-direction: column;
     background-color: white;

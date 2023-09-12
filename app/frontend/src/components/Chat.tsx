@@ -1,20 +1,18 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
-import {
-  AzureCommunicationTokenCredential,
-  CommunicationUserIdentifier,
-} from "@azure/communication-common";
+
+import { AzureCommunicationTokenCredential, CommunicationUserIdentifier } from '@azure/communication-common';
 import {
   ChatComposite,
   fromFlatCommunicationIdentifier,
-  useAzureCommunicationChatAdapter,
-} from "@azure/communication-react";
-import React, { useMemo, useState } from "react";
-import "../styles/Chat.css";
+  useAzureCommunicationChatAdapter
+} from '@azure/communication-react';
+import React, { useMemo, useState } from 'react';
+import '../styles/Chat.css';
 
-import { initializeIcons } from "@fluentui/react";
+import { initializeIcons } from '@fluentui/react';
 
-const DISPLAY_NAME = "Customer";
+const DISPLAY_NAME = 'Customer';
 
 initializeIcons();
 
@@ -32,7 +30,7 @@ function Chat(props: ChatProps): JSX.Element {
     try {
       return new AzureCommunicationTokenCredential(token);
     } catch {
-      console.error("Failed to construct token credential");
+      console.error('Failed to construct token credential');
       return undefined;
     }
   }, [token]);
@@ -40,12 +38,10 @@ function Chat(props: ChatProps): JSX.Element {
   const chatAdapterArgs = useMemo(
     () => ({
       endpoint: endpointUrl,
-      userId: fromFlatCommunicationIdentifier(
-        userId
-      ) as CommunicationUserIdentifier,
+      userId: fromFlatCommunicationIdentifier(userId) as CommunicationUserIdentifier,
       displayName,
       credential,
-      threadId,
+      threadId
     }),
     [endpointUrl, userId, displayName, credential, threadId]
   );

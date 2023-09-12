@@ -1,16 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
-import React, { useCallback, useMemo, useState } from "react";
-import {
-  ChatAdapter,
-  ChatComposite,
-  useAzureCommunicationChatAdapter,
-} from "@azure/communication-react";
-import {
-  AzureCommunicationTokenCredential,
-  CommunicationUserIdentifier,
-} from "@azure/communication-common";
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+
+import React, { useCallback, useMemo, useState } from 'react';
+import { ChatAdapter, ChatComposite, useAzureCommunicationChatAdapter } from '@azure/communication-react';
+import { AzureCommunicationTokenCredential, CommunicationUserIdentifier } from '@azure/communication-common';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 type ChatWindowProps = {
   endpoint: string;
@@ -28,25 +22,22 @@ const ChatWindow: React.FC<ChatWindowProps> = (props: ChatWindowProps) => {
     try {
       return new AzureCommunicationTokenCredential(props.token);
     } catch {
-      console.error("Failed to construct token credential");
+      console.error('Failed to construct token credential');
       return undefined;
     }
   }, [props.token]);
 
   // load old chat messages right after useAzureCommunicationChatAdapter creates the adapter
-  const adapterAfterCreate = useCallback(
-    async (adapter: ChatAdapter): Promise<ChatAdapter> => {
-      try {
-        const loadMessagesResult = await adapter.loadPreviousChatMessages(100);
-        console.log("loaded messages", loadMessagesResult);
-      } catch (error) {
-        setIsError(true);
-      }
+  const adapterAfterCreate = useCallback(async (adapter: ChatAdapter): Promise<ChatAdapter> => {
+    try {
+      const loadMessagesResult = await adapter.loadPreviousChatMessages(100);
+      console.log('loaded messages', loadMessagesResult);
+    } catch (error) {
+      setIsError(true);
+    }
 
-      return adapter;
-    },
-    []
-  );
+    return adapter;
+  }, []);
 
   // Memoize arguments to `useAzureCommunicationCallAdapter` so that
   // a new adapter is only created when an argument changes.
@@ -56,28 +47,17 @@ const ChatWindow: React.FC<ChatWindowProps> = (props: ChatWindowProps) => {
       userId: props.userId,
       displayName: props.displayName,
       credential: credential,
-      threadId: props.threadId,
+      threadId: props.threadId
     }),
-    [
-      props.endpoint,
-      props.userId,
-      props.displayName,
-      credential,
-      props.threadId,
-    ]
+    [props.endpoint, props.userId, props.displayName, credential, props.threadId]
   );
 
-  const chatAdapter = useAzureCommunicationChatAdapter(
-    chatAdapterArgs,
-    adapterAfterCreate
-  );
+  const chatAdapter = useAzureCommunicationChatAdapter(chatAdapterArgs, adapterAfterCreate);
 
   if (credential === undefined) {
     return (
       <div>
-        <div className="agent-chat-control">
-          Failed to construct credential. Provided token is malformed.
-        </div>
+        <div className="agent-chat-control">Failed to construct credential. Provided token is malformed.</div>
       </div>
     );
   }

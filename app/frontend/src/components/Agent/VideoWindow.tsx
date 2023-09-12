@@ -1,20 +1,18 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
-import React, { useCallback, useMemo, useState } from "react";
-import Modal from "react-modal";
-import {
-  AzureCommunicationTokenCredential,
-  CommunicationUserIdentifier,
-} from "@azure/communication-common";
+
+import React, { useCallback, useMemo, useState } from 'react';
+import Modal from 'react-modal';
+import { AzureCommunicationTokenCredential, CommunicationUserIdentifier } from '@azure/communication-common';
 import {
   useAzureCommunicationCallAdapter,
   CallComposite,
   CallAdapterLocator,
   CallAdapter,
-  CallCompositeOptions,
-} from "@azure/communication-react";
-import "../../styles/VideoWindow.css";
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+  CallCompositeOptions
+} from '@azure/communication-react';
+import '../../styles/VideoWindow.css';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 type VideoWindowProps = {
   userId: CommunicationUserIdentifier;
@@ -26,13 +24,14 @@ type VideoWindowProps = {
 
 const VideoWindow: React.FC<VideoWindowProps> = (props: VideoWindowProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   // A well-formed token is required to initialize the chat and calling adapters.
   const credential = useMemo(() => {
     try {
       return new AzureCommunicationTokenCredential(props.token);
     } catch {
-      console.error("Failed to construct token credential");
+      console.error('Failed to construct token credential');
       return undefined;
     }
   }, [props.token]);
@@ -44,7 +43,7 @@ const VideoWindow: React.FC<VideoWindowProps> = (props: VideoWindowProps) => {
       userId: props.userId,
       displayName: props.displayName,
       credential: credential,
-      locator: props.callLocator,
+      locator: props.callLocator
     }),
     [props.userId, props.displayName, props.callLocator, credential]
   );
@@ -53,29 +52,24 @@ const VideoWindow: React.FC<VideoWindowProps> = (props: VideoWindowProps) => {
     return {
       callControls: {
         participantsButton: false,
-        screenShareButton: false,
-      },
+        screenShareButton: false
+      }
     };
   }, []);
-
-  const afterCallAdapterCreate = useCallback(
-    async (adapter: CallAdapter): Promise<CallAdapter> => {
+  const afterCallAdapterCreate = useCallback(async (adapter: CallAdapter): Promise<CallAdapter> => {
+    try {
       adapter.joinCall({ microphoneOn: false, cameraOn: false });
-      return adapter;
-    },
-    []
-  );
-  const callAdapter = useAzureCommunicationCallAdapter(
-    callAdapterArgs,
-    afterCallAdapterCreate
-  );
+    } catch (error) {
+      setIsError(true);
+    }
+    return adapter;
+  }, []);
+  const callAdapter = useAzureCommunicationCallAdapter(callAdapterArgs, afterCallAdapterCreate);
 
   if (credential === undefined) {
     return (
       <div>
-        <div className="sendSummaryContainer">
-          Failed to construct credential. Provided token is malformed.
-        </div>
+        <div className="sendSummaryContainer">Failed to construct credential. Provided token is malformed.</div>
       </div>
     );
   }
@@ -85,41 +79,37 @@ const VideoWindow: React.FC<VideoWindowProps> = (props: VideoWindowProps) => {
     props.refreshAssistantPanelData();
   };
 
-  if (callAdapter) {
-    return (
-      <div>
-        <div className="send-summary-container">
-          <button
-            className="send-summary-button"
-            onClick={() => setIsModalOpen(true)}
-          >
-            Answer Call
-          </button>
-        </div>
-        <Modal
-          isOpen={isModalOpen}
-          className="video-dialog"
-          overlayClassName="overlay"
-          ariaHideApp={false}
-        >
-          <div className="titlebar">
-            Customer
-            <button className="close-modal" onClick={handleModalClose}>
-              X
+  if (!isError) {
+    if (callAdapter) {
+      return (
+        <div>
+          <div className="send-summary-container">
+            <button className="send-summary-button" onClick={() => setIsModalOpen(true)}>
+              Answer Call
             </button>
           </div>
-          <div className="call-control">
-            <CallComposite adapter={callAdapter} options={callOptions} />
-          </div>
-        </Modal>
+          <Modal isOpen={isModalOpen} className="video-dialog" overlayClassName="overlay" ariaHideApp={false}>
+            <div className="titlebar">
+              Customer
+              <button className="close-modal" onClick={handleModalClose}>
+                X
+              </button>
+            </div>
+            <div className="call-control">
+              <CallComposite adapter={callAdapter} options={callOptions} />
+            </div>
+          </Modal>
+        </div>
+      );
+    }
+    return (
+      <div>
+        <LoadingSpinner />
       </div>
     );
+  } else {
+    return <div></div>;
   }
-  return (
-    <div>
-      <LoadingSpinner />
-    </div>
-  );
 };
 
 export default VideoWindow;

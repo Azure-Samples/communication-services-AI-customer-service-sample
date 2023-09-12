@@ -1,6 +1,9 @@
+/*Copyright (c) Microsoft Corporation.
+Licensed under the MIT License.*/
+
 .dialog {
     font-family: Arial, sans-serif;
-    width: 980px;
+    width: 950px;
     height: 590px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #fff;
@@ -18,25 +21,28 @@
 .summary-section,
 .tasks-section,
 .communication-section {
-    padding: 16px;
+    padding: 4px;
+    padding-left: 16px;
 }
 
 .bordered-content {
-    border: 1px solid grey;
+    border: 2px solid lightgray;
+    border-radius: 5px;
     padding: 8px;
     margin-top: 8px;
     width: 900px;
     overflow-y: scroll;
-    height: 50px;
+    height: 65px;
 }
 
 .customer-communication {
-    border: 1px solid grey;
+    border: 2px solid lightgray;
+    border-radius: 5px;
     padding: 8px;
     margin-top: 8px;
     width: 900px;
     white-space: pre-line;
-    height: 100px;
+    height: 190px;
     overflow-y: scroll;
 }
 
@@ -88,9 +94,8 @@
 .button-group {
     display: flex;
     justify-content: flex-start;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 5px;
+    margin-top: -10px;
+    margin-left: 6px;
 }
 
 .action-button {

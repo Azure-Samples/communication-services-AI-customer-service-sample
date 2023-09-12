@@ -1,3 +1,6 @@
+/*Copyright (c) Microsoft Corporation.
+Licensed under the MIT License.*/
+
 body, html {
     height: 100%;
     margin: 0;
@@ -27,6 +30,7 @@ nav {
 .menu-items, .right-items {
     display: flex;
     gap: 20px;
+    align-items: center;
 }
 
     .menu-items a, .right-items a {
@@ -85,4 +89,12 @@ hr {
     width: 15%;
     border: 2px solid #00894F;
     margin: 40px auto;
+}
+
+.clear-history-btn {
+    background-color: #04643c;
+    padding: 8px 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
 }

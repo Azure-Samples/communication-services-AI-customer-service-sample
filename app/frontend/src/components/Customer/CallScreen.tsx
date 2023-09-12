@@ -1,22 +1,19 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import "../../styles/CallScreen.css";
-import {
-  AzureCommunicationTokenCredential,
-  CommunicationUserIdentifier,
-} from "@azure/communication-common";
+import '../../styles/CallScreen.css';
+import { AzureCommunicationTokenCredential, CommunicationUserIdentifier } from '@azure/communication-common';
 
 import {
   CallAdapterLocator,
   CallAdapterState,
   useAzureCommunicationCallAdapter,
   CommonCallAdapter,
-  CallAdapter,
-} from "@azure/communication-react";
+  CallAdapter
+} from '@azure/communication-react';
 
-import React, { useCallback, useMemo, useRef } from "react";
-import { CallCompositeContainer } from "./CallCompositeContainer";
+import React, { useCallback, useMemo, useRef } from 'react';
+import { CallCompositeContainer } from './CallCompositeContainer';
 
 export interface CallScreenProps {
   token: string;
@@ -31,29 +28,23 @@ export const CallScreen = (props: CallScreenProps): JSX.Element => {
   const callIdRef = useRef<string>();
 
   const subscribeAdapterEvents = useCallback((adapter: CommonCallAdapter) => {
-    adapter.on("error", (e) => {
+    adapter.on('error', (e) => {
       // Error is already acted upon by the Call composite, but the surrounding application could
       // add top-level error handling logic here (e.g. reporting telemetry).
-      console.log("Adapter error event:", e);
+      console.log('Adapter error event:', e);
     });
 
     adapter.onStateChange((state: CallAdapterState) => {
       if (state?.call?.id && callIdRef.current !== state?.call?.id) {
         callIdRef.current = state?.call?.id;
-        console.log(
-          `Call Recording: ${state?.call?.recording.isRecordingActive}`
-        );
+        console.log(`Call Recording: ${state?.call?.recording.isRecordingActive}`);
         if (state?.call?.id && callIdRef.current !== state?.call?.id) {
-          if (state?.call?.state === "Connecting") {
+          if (state?.call?.state === 'Connecting') {
           }
           console.log(`Call State: ${state?.call?.state}`);
-          console.log(
-            `Call Recording: ${state?.call?.recording.isRecordingActive}`
-          );
+          console.log(`Call Recording: ${state?.call?.recording.isRecordingActive}`);
           console.log(`Call State: ${state?.call?.state}`);
-          console.log(
-            `Call Recording: ${state?.call?.recording.isRecordingActive}`
-          );
+          console.log(`Call Recording: ${state?.call?.recording.isRecordingActive}`);
           callIdRef.current = state?.call?.id;
           console.log(`Call Id: ${callIdRef.current}`);
         }
@@ -74,13 +65,7 @@ export const CallScreen = (props: CallScreenProps): JSX.Element => {
     return new AzureCommunicationTokenCredential(token);
   }, [token]);
 
-  return (
-    <AzureCommunicationCallScreen
-      afterCreate={afterCallAdapterCreate}
-      credential={credential}
-      {...props}
-    />
-  );
+  return <AzureCommunicationCallScreen afterCreate={afterCallAdapterCreate} credential={credential} {...props} />;
 };
 
 type AzureCommunicationCallScreenProps = CallScreenProps & {
@@ -88,22 +73,18 @@ type AzureCommunicationCallScreenProps = CallScreenProps & {
   credential: AzureCommunicationTokenCredential;
 };
 
-const AzureCommunicationCallScreen = (
-  props: AzureCommunicationCallScreenProps
-): JSX.Element => {
+const AzureCommunicationCallScreen = (props: AzureCommunicationCallScreenProps): JSX.Element => {
   const { afterCreate, callLocator: locator, userId, ...adapterArgs } = props;
 
-  if (!("communicationUserId" in userId)) {
-    throw new Error(
-      "A MicrosoftTeamsUserIdentifier must be provided for Teams Identity Call."
-    );
+  if (!('communicationUserId' in userId)) {
+    throw new Error('A MicrosoftTeamsUserIdentifier must be provided for Teams Identity Call.');
   }
 
   const adapter = useAzureCommunicationCallAdapter(
     {
       ...adapterArgs,
       userId,
-      locator,
+      locator
     },
     afterCreate
   );
@@ -118,7 +99,7 @@ const AzureCommunicationCallScreen = (
           <CallCompositeContainer {...props} adapter={adapter} />
         </div>
       </div>
-      <div className="footer-content">Contoso Energy</div>
+      <div className="footer-content">powercompany.com</div>
     </div>
   );
 };

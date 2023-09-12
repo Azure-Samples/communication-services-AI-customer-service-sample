@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
-import config from "../../appsettings.json";
+
+import config from '../../appsettings.json';
 
 const BASE_URL = config.baseUrl;
 
@@ -15,21 +16,16 @@ export interface AgentPageData {
 export const getAgentPageData = async (): Promise<AgentPageData> => {
   try {
     const getRequestOptions = {
-      method: "GET",
+      method: 'GET'
     };
-    const response = await fetch(
-      `${BASE_URL}/api/agent/info`,
-      getRequestOptions
-    );
+    const response = await fetch(`${BASE_URL}/api/agent/info`, getRequestOptions);
     if (!response.ok) {
-      throw new Error(
-        `Failed to to get agent page data. Status: ${response.status}`
-      );
+      throw new Error(`Failed to to get agent page data. Status: ${response.status}`);
     }
     const details = await response.json().then((data) => data);
     return details;
   } catch (error) {
-    console.error("Failed to get agent page data. Error: ", error);
-    throw new Error("Failed to get agent page data");
+    console.error('Failed to get agent page data. Error: ', error);
+    throw new Error('Failed to get agent page data');
   }
 };

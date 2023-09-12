@@ -28,9 +28,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint --max-warnings 0 \"*/**/*.{ts,tsx}\"",
-    "lint:fix": "eslint */**/*.{ts,tsx} --fix",
-    "lint:quiet": "eslint */**/*.{ts,tsx} --quiet"
+    "lint": "eslint --max-warnings 0 \"*/**/*.{ts,tsx}\""
   },
   "eslintConfig": {
     "extends": [
@@ -54,21 +52,6 @@
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@types/react-modal": "^3.16.0",
-    "@types/uuid": "^9.0.2",
-    "@typescript-eslint/eslint-plugin": "^4.12.0",
-    "@typescript-eslint/parser": "^4.12.0",
-    "babel-eslint": "^10.0.0",
-    "eslint-config-prettier": "^6.12.0",
-    "eslint-config-react-app": "^6.0.0",
-    "eslint-plugin-flowtype": "^5.2.0",
-    "eslint-plugin-header": "^3.1.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react-hooks": "^4.1.2",
-    "eslint-plugin-react": "^7.18.3",
-    "eslint": "^7.7.0",
-    "prettier": "2.3.1",
-    "typescript": "4.3.5"
+    "@types/uuid": "^9.0.2"
   }
 }

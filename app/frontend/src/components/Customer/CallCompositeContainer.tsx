@@ -1,24 +1,16 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import {
-  CommonCallAdapter,
-  CallComposite,
-  CallCompositeOptions,
-} from "@azure/communication-react";
+import { CommonCallAdapter, CallComposite, CallCompositeOptions } from '@azure/communication-react';
 
-import { Spinner } from "@fluentui/react";
-import { useIsMobile } from "../../utils/useIsMobile";
-import React, { useMemo } from "react";
-import { CallScreenProps } from "./CallScreen";
+import { Spinner } from '@fluentui/react';
+import { useIsMobile } from '../../utils/useIsMobile';
+import React, { useMemo } from 'react';
+import { CallScreenProps } from './CallScreen';
 
-export type CallCompositeContainerProps = CallScreenProps & {
-  adapter?: CommonCallAdapter;
-};
+export type CallCompositeContainerProps = CallScreenProps & { adapter?: CommonCallAdapter };
 
-export const CallCompositeContainer = (
-  props: CallCompositeContainerProps
-): JSX.Element => {
+export const CallCompositeContainer = (props: CallCompositeContainerProps): JSX.Element => {
   const { adapter } = props;
   //const { currentTheme, currentRtl } = useSwitchableFluentTheme();
   const isMobileSession = useIsMobile();
@@ -32,8 +24,8 @@ export const CallCompositeContainer = (
     return {
       callControls: {
         participantsButton: false,
-        screenShareButton: false,
-      },
+        screenShareButton: false
+      }
     };
   }, []);
 
@@ -41,11 +33,5 @@ export const CallCompositeContainer = (
     return <Spinner ariaLive="assertive" labelPosition="top" />;
   }
 
-  return (
-    <CallComposite
-      adapter={adapter}
-      formFactor={isMobileSession ? "mobile" : "desktop"}
-      options={callOptions}
-    />
-  );
+  return <CallComposite adapter={adapter} formFactor={isMobileSession ? 'mobile' : 'desktop'} options={callOptions} />;
 };
