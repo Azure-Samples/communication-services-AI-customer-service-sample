@@ -39,8 +39,6 @@ export const CallScreen = (props: CallScreenProps): JSX.Element => {
         callIdRef.current = state?.call?.id;
         console.log(`Call Recording: ${state?.call?.recording.isRecordingActive}`);
         if (state?.call?.id && callIdRef.current !== state?.call?.id) {
-          if (state?.call?.state === 'Connecting') {
-          }
           console.log(`Call State: ${state?.call?.state}`);
           console.log(`Call Recording: ${state?.call?.recording.isRecordingActive}`);
           console.log(`Call State: ${state?.call?.state}`);
