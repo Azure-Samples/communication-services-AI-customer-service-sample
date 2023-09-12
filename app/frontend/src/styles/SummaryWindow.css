@@ -1,0 +1,117 @@
+/*Copyright (c) Microsoft Corporation.
+Licensed under the MIT License.*/
+
+.dialog {
+    font-family: Arial, sans-serif;
+    width: 950px;
+    height: 590px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.titlebar {
+    background-color: #00894F;
+    color: white;
+    padding: 8px 16px;
+    font-weight: bold;
+}
+
+.summary-section,
+.tasks-section,
+.communication-section {
+    padding: 4px;
+    padding-left: 16px;
+}
+
+.bordered-content {
+    border: 2px solid lightgray;
+    border-radius: 5px;
+    padding: 8px;
+    margin-top: 8px;
+    width: 900px;
+    overflow-y: scroll;
+    height: 65px;
+}
+
+.customer-communication {
+    border: 2px solid lightgray;
+    border-radius: 5px;
+    padding: 8px;
+    margin-top: 8px;
+    width: 900px;
+    white-space: pre-line;
+    height: 190px;
+    overflow-y: scroll;
+}
+
+.tasks-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.tasks-section li {
+    margin: 8px 0;
+}
+
+.tasks-section input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.send-summary-container {
+    text-align: right;
+}
+
+.send-summary-button {
+    background-color: #00894F;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
+    text-align: right;
+}
+
+    .send-summary-button:hover {
+        background-color: #00894F;
+    }
+
+.button-group {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: -10px;
+    margin-left: 6px;
+}
+
+.action-button {
+    padding: 10px 15px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.email-button {
+    background-color: #00894F;
+    color: white;
+}
+
+.sms-button {
+    background-color: #00894F;
+    color: white;
+}
