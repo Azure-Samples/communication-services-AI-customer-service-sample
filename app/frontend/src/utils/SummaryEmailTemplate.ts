@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
+// Licensed under the MIT License.
 
 export async function getEmailTemplate(summaryDetails: string | undefined) {
   const emailBody = `<!DOCTYPE html>

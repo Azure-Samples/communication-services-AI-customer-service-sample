@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
+// Licensed under the MIT License.
 
 import React, { useCallback, useMemo, useState } from 'react';
 import { ChatAdapter, ChatComposite, useAzureCommunicationChatAdapter } from '@azure/communication-react';
