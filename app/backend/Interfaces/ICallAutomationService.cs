@@ -13,5 +13,7 @@ namespace CustomerSupportServiceSample.Interfaces
         Task HandleEvent(RecognizeFailed recognizeFailedEvent, string targetParticipant);
 
         Task HandleEvent(PlayCompleted playCompletedEvent, string targetParticipant);
+
+        Task HandleEvent(PlayFailed playFailedEvent, string targetParticipant);
     }
 }

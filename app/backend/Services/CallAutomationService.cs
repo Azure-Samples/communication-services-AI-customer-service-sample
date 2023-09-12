@@ -166,6 +166,18 @@ namespace CustomerSupportServiceSample.Services
             await TranscribeBotVoice(replyText);
         }
 
+        public async Task HandleEvent(PlayFailed playFailedEvent, string targetParticipant)
+        {
+            var callConnection = this.GetCallConnection(playFailedEvent.CallConnectionId);
+            var callMedia = callConnection.GetCallMedia();
+            var resultInformation = playFailedEvent.ResultInformation;
+            logger.LogError("Encountered error during play, message={msg}, code={code}, subCode={subCode}", resultInformation?.Message, resultInformation?.Code, resultInformation?.SubCode);
+            var reasonCode = playFailedEvent.ReasonCode;
+
+            // In production, depending on the reason code (playFailedEvent.ReasonCode)  we could try to retry the play operation or do some more robust error handling to have a better customer experience
+            await callConnection.HangUpAsync(true);
+        }
+
         public async Task AssignAgentToCustomerAsync(string agentId, string threadId, string customerPhoneNumber)
         {
             // 1. Invite the agent to same chat thread; allow them to see past messages
