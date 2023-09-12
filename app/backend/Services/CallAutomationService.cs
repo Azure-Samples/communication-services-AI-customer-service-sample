@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT License.
 
 namespace CustomerSupportServiceSample.Services
 {
@@ -255,7 +256,7 @@ namespace CustomerSupportServiceSample.Services
         {
             return new PlayOptions(
                 playSource: new TextSource(content) { VoiceName = SpeechToTextVoice },
-                playTo: new[] { new PhoneNumberIdentifier(targetParticipant) }); 
+                playTo: new[] { new PhoneNumberIdentifier(targetParticipant) });
         }
 
         private async Task AssignAgentToCustomerDirectly(string threadId, string targetParticipant)

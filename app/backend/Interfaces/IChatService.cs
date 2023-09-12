@@ -1,6 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-
-using ChatMessage = Azure.Communication.Chat.ChatMessage;
+﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT License.
 
 namespace CustomerSupportServiceSample.Interfaces
 {

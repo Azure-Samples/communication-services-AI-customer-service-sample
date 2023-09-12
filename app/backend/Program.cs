@@ -1,4 +1,5 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT License.
 
 /*
 * Note: This sample app supports only one customer conversation at any given time.

@@ -1,4 +1,5 @@
 // Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT License.
 
 namespace CustomerSupportServiceSample.Extensions;
 
@@ -17,7 +18,7 @@ internal static class ServiceCollectionExtensions
             ArgumentException.ThrowIfNullOrEmpty(azureSearchServiceEndpoint);
             ArgumentException.ThrowIfNullOrEmpty(azureSearchKey);
 
-            Azure.AzureKeyCredential credential = new(azureSearchKey);
+            Azure.AzureKeyCredential credential = new (azureSearchKey);
 
             var searchClient = new SearchClient(
                 new Uri(azureSearchServiceEndpoint), azureSearchIndex, credential);
