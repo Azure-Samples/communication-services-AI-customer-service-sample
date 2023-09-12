@@ -1,4 +1,5 @@
 // Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT License.
 
 namespace CustomerSupportServiceSample.Models
 {
@@ -18,4 +19,3 @@ namespace CustomerSupportServiceSample.Models
         public string? Description { get; set; }
     }
 }
-    

@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT License.
 
 namespace CustomerSupportServiceSample.Controllers
 {
@@ -112,12 +113,16 @@ namespace CustomerSupportServiceSample.Controllers
             }
             return Ok();
         }
+
         private class CallStartedEventData
         {
             public string? serverCallId { get; set; }
+
             public Group? group { get; set; }
+
             public string? correlationId { get; set; }
         }
+
         private class Group
         {
             public string? id { get; set; }

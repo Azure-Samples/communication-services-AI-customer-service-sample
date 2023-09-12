@@ -1,4 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
+﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT License.
 
 namespace CustomerSupportServiceSample.Services
 {
@@ -154,7 +155,7 @@ namespace CustomerSupportServiceSample.Services
 
         private static bool TryGetPhoneNumber(string message, out string phoneNumber)
         {
-            Regex regex = new(PSTNRegex);
+            Regex regex = new (PSTNRegex);
             MatchCollection matches = regex.Matches(message);
             if (matches.Count > 0)
             {

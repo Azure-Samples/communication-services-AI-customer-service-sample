@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT License.
 
 namespace CustomerSupportServiceSample.Controllers
 {
@@ -28,7 +29,7 @@ namespace CustomerSupportServiceSample.Controllers
         [Route("clearCache")]
         public ActionResult ClearCache()
         {
-            var result =  cacheService.ClearCache();
+            var result = cacheService.ClearCache();
             return Ok(result);
         }
 
