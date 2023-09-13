@@ -63,7 +63,7 @@ namespace CustomerSupportServiceSample.Services
                     WaitUntil.Completed,
                     sender,
                     recipient,
-                    "Follow up on Acs chat",
+                    "Follow up on support conversation",
                     htmlContent);
                 return emailSendOperation.Value.Status.ToString();
             }
