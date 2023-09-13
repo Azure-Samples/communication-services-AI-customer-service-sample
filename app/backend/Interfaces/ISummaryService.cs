@@ -8,7 +8,7 @@ namespace CustomerSupportServiceSample.Interfaces
         Task<ConversationInsights> GetConversationInsights(string threadId);
 
         Task<string> GetEmailSummary(string threadId);
-                    
+
         Task<string> SendSummaryEmail(SummaryRequest summary);
     }
 }

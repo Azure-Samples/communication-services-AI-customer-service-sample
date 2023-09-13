@@ -95,6 +95,11 @@ namespace CustomerSupportServiceSample.Services
                 return; // don't respond to call transcript messages
             }
 
+            if (eventSenderType != null && eventSenderType.Equals("bot", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
             (var chatThreadClient, _) = await GetOrCreateBotChatThreadClient(eventThreadId);
 
             // 1. Handle handoff to voice call
@@ -107,6 +112,7 @@ namespace CustomerSupportServiceSample.Services
                     Content = "Thank you, I'm calling you now, and you can close this chat if you'd like.",
                     MessageType = ChatMessageType.Text
                 };
+                sendChatMessageOptions.Metadata.Add("SenderType", "bot");
 
                 await chatThreadClient.SendMessageAsync(sendChatMessageOptions);
                 await InitiateCallFromBot(phoneNumber, eventThreadId);
@@ -115,6 +121,12 @@ namespace CustomerSupportServiceSample.Services
             else
             {
                 var chatGptResponse = await openAIService.AnswerAsync(eventMessage, GetFormattedChatHistory(chatThreadClient));
+                var sendChatMessageOptions = new SendChatMessageOptions()
+                {
+                    Content = chatGptResponse,
+                    MessageType = ChatMessageType.Text
+                };
+                sendChatMessageOptions.Metadata.Add("SenderType", "bot");
                 await chatThreadClient.SendMessageAsync(chatGptResponse, ChatMessageType.Text);
             }
         }
