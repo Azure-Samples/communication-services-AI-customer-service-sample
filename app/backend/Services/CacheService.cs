@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT License.
 
 namespace CustomerSupportServiceSample.Services
 {
@@ -40,9 +41,8 @@ namespace CustomerSupportServiceSample.Services
         {
             memoryCache.Remove("Token");
             memoryCache.Remove("UserId");
-            memoryCache.Remove("AgentId");
-            memoryCache.Remove("BotUserId");
             memoryCache.Remove("ThreadId");
+            memoryCache.Remove("GroupId");
             return true;
         }
     }

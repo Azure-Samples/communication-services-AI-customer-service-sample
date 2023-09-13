@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT License.
 
 using ChatMessage = Azure.AI.OpenAI.ChatMessage;
 
@@ -57,7 +58,7 @@ namespace CustomerSupportServiceSample.Services
 
         private const string SystemAnswerPromptWithHistory =
             SystemAnswerPrompt + """For context, here is the chat history so far: {0}""";
-        
+
         private const string EmailSummaryPrompt = """
         Generate a summary of the below conversation to send an email in the following 
         format: 
@@ -172,7 +173,7 @@ namespace CustomerSupportServiceSample.Services
         {
             string? result = null;
 
-            SearchOptions options = new() { Size = 3 };
+            SearchOptions options = new () { Size = 3 };
             var searchResultResponse = await searchClient.SearchAsync<SearchDocument>(text, options);
             SearchResults<SearchDocument> searchResult = searchResultResponse.Value;
 

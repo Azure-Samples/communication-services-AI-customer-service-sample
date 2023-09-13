@@ -1,4 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
+﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT License.
 
 namespace CustomerSupportServiceSample.Controllers
 {
@@ -37,8 +38,12 @@ namespace CustomerSupportServiceSample.Controllers
         [Route("emailSummary/sendEmail")]
         public async Task<ActionResult> SendSummaryEmail(SummaryRequest summaryRequest)
         {
-            var result = await summaryService.SendSummaryEmail(summaryRequest);
-            return Ok(result);
+            var resultStatus = await summaryService.SendSummaryEmail(summaryRequest);
+            var response = new Dictionary<string, string>
+            {
+                { "result", resultStatus }
+            };
+            return Ok(response);
         }
     }
 }
