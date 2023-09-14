@@ -46,6 +46,30 @@ internal static class ServiceCollectionExtensions
         services.AddSingleton<ICallAutomationService, CallAutomationService>();
         services.AddSingleton<IChatService, ChatService>();
         services.AddSingleton<IIdentityService, IdentityService>();
+        services.AddSingleton<IJobRouterEventsService, JobRouterEventsService>();
+        services.AddSingleton<IJobRouterService, JobRouterService>(js =>
+        {
+            var config = js.GetRequiredService<IConfiguration>();
+
+            var identityService = js.GetRequiredService<IIdentityService>();
+            var cacheService = js.GetRequiredService<ICacheService>();
+            var logger = js.GetRequiredService<ILogger<JobRouterService>>();
+            var jobService = new JobRouterService(config, logger);
+
+            // set up the policies and queue
+            jobService.SetUpRouter();
+
+            // Identify agent who will handle the case
+            var agentUserId = identityService.GetNewUserId();
+
+            // update agent id in the cache
+            cacheService.UpdateCache("AgentId", agentUserId);
+
+            // create the worker
+            jobService.CreateWorker(agentUserId);
+            return jobService;
+        });
+
         services.AddSingleton<IMessageService, MessageService>();
         services.AddSingleton<IOpenAIService, OpenAIService>();
         services.AddSingleton<ISummaryService, SummaryService>();
