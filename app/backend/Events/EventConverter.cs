@@ -22,7 +22,7 @@ namespace CustomerSupportServiceSample.Events
             return ParseEventType(eventGridEvent.EventType) switch
             {
                 ChatMessageReceivedInThreadName => data.ToObjectFromJson<AcsChatMessageReceivedInThreadEventData>(JsonOptions),
-                CallEndedEventName => data.ToObjectFromJson<CallEndedEvent>(),
+                CallEndedEventName => data.ToObjectFromJson<CallEndedEvent>(JsonOptions),
                 _ => null
             };
         }
