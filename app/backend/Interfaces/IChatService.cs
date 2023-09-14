@@ -9,6 +9,6 @@ namespace CustomerSupportServiceSample.Interfaces
 
         Task<List<ChatHistory>> GetChatHistory(string threadId);
 
-        Task HandleEvent(AcsChatMessageReceivedInThreadEventData eventGridEvent);
+        Task HandleEvent(AcsChatMessageReceivedInThreadEventData chatMessageReceivedEvent);
     }
 }
