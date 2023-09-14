@@ -73,7 +73,7 @@ namespace CustomerSupportServiceSample.Services
             };
         }
 
-        public async Task HandleEvents(AcsChatMessageReceivedInThreadEventData chatEvent)
+        public async Task HandleEvent(AcsChatMessageReceivedInThreadEventData chatEvent)
         {
             var eventSender = chatEvent.SenderCommunicationIdentifier.RawId;
             var eventMessage = chatEvent.MessageBody;

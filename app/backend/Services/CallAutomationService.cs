@@ -112,9 +112,9 @@ namespace CustomerSupportServiceSample.Services
                 await TranscribeBotVoice(goodbye);
 
                 // Invoke transfer to agent
-                if (configuration["UseJobRouter"] == "true")
+                if (configuration.GetValue<bool>("UseJobRouter") == true)
                 {
-                    // TODO: invoke transfer to agent via JobRouter
+                    // TODO: transfer to agent via JobRouter
                 }
                 else
                 {
@@ -122,6 +122,7 @@ namespace CustomerSupportServiceSample.Services
                     await AssignAgentToCustomerDirectly(recognizeCompleted.OperationContext!, targetParticipant);
                 }
             }
+
             // 3. Detect if customer is ready to end call
             else if (await DetectEndCallIntent(speech_result))
             {
@@ -167,7 +168,26 @@ namespace CustomerSupportServiceSample.Services
             await TranscribeBotVoice(replyText);
         }
 
-        public async Task AssignAgentToCustomerAsync(string agentId, string threadId, string customerPhoneNumber)
+        public async Task HandleEvent(CallEndedEvent callEndedEvent)
+        {
+            var groupId = callEndedEvent?.group?.id;
+            var cachedGroupId = cacheService.GetCache("GroupId");
+
+            if (!string.IsNullOrWhiteSpace(groupId) && groupId == cachedGroupId)
+            {
+                logger.LogInformation("Agent group call finished, groupCallId={}", groupId);
+
+                if (configuration.GetValue<bool>("UseJobRouter"))
+                {
+                    /*
+                    * TODO: If JobRouter is used to assign customer calls to available agents
+                    * then it's also necessary to close the jobs once agent has finished handling the call
+                    */
+                }
+            }
+        }
+
+        public async Task ConnectAgentWithCustomerAsync(string agentId, string threadId, string customerPhoneNumber)
         {
             // 1. Invite the agent to same chat thread; allow them to see past messages
             // As bot is the owner of the thread, it has permissions to add more participants
@@ -184,7 +204,7 @@ namespace CustomerSupportServiceSample.Services
             };
             await chatThreadClient.AddParticipantAsync(chatParticipant);
 
-            // 2. Send voip call join link via SMS to customer
+            // 2. Invite customer to join the call via SMS link
             var msgResp = await messageService.SendTextMessage($"{customerPhoneNumber.Trim()}".Trim());
             if (!msgResp.Successful)
             {
@@ -261,14 +281,26 @@ namespace CustomerSupportServiceSample.Services
 
         private async Task AssignAgentToCustomerDirectly(string threadId, string targetParticipant)
         {
+            var agentId = GetOrCreateAgentCommunicationUserId();
+            cacheService.UpdateCache("GroupId", Guid.NewGuid().ToString());
+            await ConnectAgentWithCustomerAsync(agentId, threadId, targetParticipant);
+        }
+
+        /*
+        * This sample creates new AgentId on the fly and caches it to memcache.
+        * Emulating a pool of agents with one agent.
+        * Production scenario would include external directory of agents, including their assigned communication identitites
+        */
+        private string GetOrCreateAgentCommunicationUserId()
+        {
             var agentId = cacheService.GetCache("AgentId");
             if (string.IsNullOrEmpty(agentId))
             {
                 agentId = identityService.GetNewUserId();
                 cacheService.UpdateCache("AgentId", agentId);
             }
-            cacheService.UpdateCache("GroupId", Guid.NewGuid().ToString());
-            await AssignAgentToCustomerAsync(agentId, threadId, targetParticipant);
+
+            return agentId;
         }
     }
 }
