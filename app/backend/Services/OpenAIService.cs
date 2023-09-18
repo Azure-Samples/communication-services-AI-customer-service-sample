@@ -40,13 +40,13 @@ namespace CustomerSupportServiceSample.Services
         • 'Less sunlight', 'short days', 'rainy': Fewer sunlight hours.
         """;
 
-        private const string callingBotInstructions = """
-        Escalation to an agent
-        If you do not have an answer for the customer or are uncertain, ask the customer if they want to be connected to an expert. If they yes, then say "Great. Thank you for your time. I will now connect you to an expert"
-        If they say no, then say "Acknowledged. I am sorry I cannot help you further with it. Call in again when you change your mind and I will connect you with an agent or drop us an email.
-        """;        
+        //private const string callingBotInstructions = """
+        //Escalation to an agent
+        //If you do not have an answer for the customer or are uncertain, ask the customer if they want to be connected to an expert. If they yes, then say "Great. Thank you for your time. I will now connect you to an expert"
+        //If they say no, then say "Acknowledged. I am sorry I cannot help you further with it. Call in again when you change your mind and I will connect you with an agent or drop us an email.
+        //""";        
 
-        private const string callingBotSystemPrompt = SystemAnswerPrompt  + callingBotInstructions + """For context, here is the chat history so far: {0}""";
+        //private const string callingBotSystemPrompt = SystemAnswerPrompt  + callingBotInstructions + """For context, here is the chat history so far: {0}""";
 
         private const string SystemAnswerPromptWithHistory =
             SystemAnswerPrompt + """For context, here is the chat history so far: {0}""";
