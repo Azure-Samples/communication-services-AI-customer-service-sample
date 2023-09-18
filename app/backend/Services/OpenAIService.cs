@@ -89,7 +89,7 @@ namespace CustomerSupportServiceSample.Services
             // Step1: Retrieve any related documents from Azure Search based on userQuery
             // Any matching documents will be included as additional context to LLM prompt
             var relatedDocs = await RetrieveRelatedDocumentAsync(userQuery) ?? string.Empty;
-            if (string.IsNullOrEmpty(relatedDocs))
+            if (!string.IsNullOrEmpty(relatedDocs))
             {
                 relatedDocs = "Context: " + relatedDocs;
             }
@@ -115,7 +115,7 @@ namespace CustomerSupportServiceSample.Services
             // Note: the userQuery is part of the history as last message. There is no need to append it separately
             foreach (var message in history)
             {
-                if (message.SenderDisplayName == "Bot")
+                if (message.SenderDisplayName == "Bot" || message.SenderDisplayName == "VoiceBot")
                 {
                     chatCompletionsOptions.Messages.Add(new ChatMessage(ChatRole.Assistant, message.Content));
                 }
