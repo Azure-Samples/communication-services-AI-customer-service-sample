@@ -1,4 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
+﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT License.
 
 namespace CustomerSupportServiceSample.Services
 {
@@ -72,7 +73,7 @@ namespace CustomerSupportServiceSample.Services
             };
         }
 
-        public async Task HandleEvents(AcsChatMessageReceivedInThreadEventData chatEvent)
+        public async Task HandleEvent(AcsChatMessageReceivedInThreadEventData chatEvent)
         {
             var eventSender = chatEvent.SenderCommunicationIdentifier.RawId;
             var eventMessage = chatEvent.MessageBody;
@@ -94,6 +95,11 @@ namespace CustomerSupportServiceSample.Services
                 return; // don't respond to call transcript messages
             }
 
+            if (eventSenderType != null && eventSenderType.Equals("bot", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
             (var chatThreadClient, _) = await GetOrCreateBotChatThreadClient(eventThreadId);
 
             // 1. Handle handoff to voice call
@@ -106,6 +112,7 @@ namespace CustomerSupportServiceSample.Services
                     Content = "Thank you, I'm calling you now, and you can close this chat if you'd like.",
                     MessageType = ChatMessageType.Text
                 };
+                sendChatMessageOptions.Metadata.Add("SenderType", "bot");
 
                 await chatThreadClient.SendMessageAsync(sendChatMessageOptions);
                 await InitiateCallFromBot(phoneNumber, eventThreadId);
@@ -114,6 +121,12 @@ namespace CustomerSupportServiceSample.Services
             else
             {
                 var chatGptResponse = await openAIService.AnswerAsync(eventMessage, GetFormattedChatHistory(chatThreadClient));
+                var sendChatMessageOptions = new SendChatMessageOptions()
+                {
+                    Content = chatGptResponse,
+                    MessageType = ChatMessageType.Text
+                };
+                sendChatMessageOptions.Metadata.Add("SenderType", "bot");
                 await chatThreadClient.SendMessageAsync(chatGptResponse, ChatMessageType.Text);
             }
         }
@@ -154,7 +167,7 @@ namespace CustomerSupportServiceSample.Services
 
         private static bool TryGetPhoneNumber(string message, out string phoneNumber)
         {
-            Regex regex = new(PSTNRegex);
+            Regex regex = new (PSTNRegex);
             MatchCollection matches = regex.Matches(message);
             if (matches.Count > 0)
             {

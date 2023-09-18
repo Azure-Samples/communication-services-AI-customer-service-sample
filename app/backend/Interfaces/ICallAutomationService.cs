@@ -1,4 +1,5 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT License.
 
 namespace CustomerSupportServiceSample.Interfaces
 {
@@ -15,5 +16,7 @@ namespace CustomerSupportServiceSample.Interfaces
         Task HandleEvent(PlayCompleted playCompletedEvent, string targetParticipant);
 
         Task HandleEvent(PlayFailed playFailedEvent, string targetParticipant);
+
+        Task HandleEvent(CallEndedEvent callEndedEvent);
     }
 }

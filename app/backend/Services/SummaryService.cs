@@ -1,6 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-
-using System.Text;
+﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT License.
 
 namespace CustomerSupportServiceSample.Services
 {
@@ -8,21 +7,33 @@ namespace CustomerSupportServiceSample.Services
     {
         private readonly IChatService chatService;
         private readonly IOpenAIService openAIService;
+        private readonly IConfiguration configuration;
         private readonly ILogger logger;
+        private readonly string acsConnectionString;
+        private readonly string sender;
+        private readonly string recipient;
 
         public SummaryService(
             IChatService chatService,
             IOpenAIService openAIService,
+            IConfiguration configuration,
             ILogger<SummaryService> logger)
         {
             this.chatService = chatService;
             this.openAIService = openAIService;
             this.logger = logger;
+            this.configuration = configuration;
+            acsConnectionString = this.configuration["AcsSettings:AcsConnectionString"] ?? "";
+            sender = this.configuration["AcsEmailSettings:Sender"] ?? "";
+            recipient = this.configuration["AcsEmailSettings:Recipient"] ?? "";
+            ArgumentException.ThrowIfNullOrEmpty(acsConnectionString);
+            ArgumentException.ThrowIfNullOrEmpty(sender);
+            ArgumentException.ThrowIfNullOrEmpty(recipient);
         }
 
         public async Task<ConversationInsights> GetConversationInsights(string threadId)
         {
-            var messages = await GetCombinedConversationFromThread(threadId);
+            var messages = await GetConversations(threadId);
             var response = await openAIService.GenerateChatInsights(messages);
             if (response != null)
             {
@@ -34,83 +45,46 @@ namespace CustomerSupportServiceSample.Services
 
         public async Task<string> GetEmailSummary(string threadId)
         {
-            var messages = await GetCombinedConversationFromThread(threadId);
-            return await openAIService.GenerateChatInsightsForEmail(messages, "Alice", "Agent");
+            var messages = await this.GetConversations(threadId);
+            return await this.openAIService.GenerateChatInsightsForEmail(messages, "Alice", "Agent");
         }
 
-        public Task<string> SendSummaryEmail(SummaryRequest summary)
+        public async Task<string> SendSummaryEmail(SummaryRequest summary)
         {
-            throw new NotImplementedException();
-        }
-
-        private async Task<string> GetCombinedConversationFromThread(string threadId, string optRecordingPath = "")
-        {
-            StringBuilder sbFinalConversation = new StringBuilder();
-            string chatVoiceConvrsn = string.Empty;
-            string voipConvrsn = string.Empty;
+            var htmlContent = summary.Body;
             try
             {
-                chatVoiceConvrsn = await GetChatHistoryFromThreadId(threadId);
+                logger.LogInformation("Sending email: to={}, from={}, body={}", recipient, sender, htmlContent);
+                // Note: 
+                // This quickstart sample uses receiver email address from app configuration for simplicity
+                // In production scenario customer would provide their preferred email address
+                EmailClient emailClient = new (this.acsConnectionString);
+                EmailSendOperation emailSendOperation = await emailClient.SendAsync(
+                    WaitUntil.Completed,
+                    sender,
+                    recipient,
+                    "Follow up on support conversation",
+                    htmlContent);
+                return emailSendOperation.Value.Status.ToString();
             }
-            catch (Exception ex)
+            catch (RequestFailedException ex)
             {
-                logger.LogError($"Exception while Combining chat conversation from thread : {ex.Message}");
+                this.logger.LogError($"Email send operation failed with error code: {ex.ErrorCode}, message: {ex.Message}");
+                return ex.ErrorCode ?? "EmailSendFailed";
             }
+       }
 
-            try
-            {
-                if (!string.IsNullOrWhiteSpace(optRecordingPath))
-                {
-                    voipConvrsn = await GetVoipHistoryFromThreadId(threadId, optRecordingPath);
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.LogError($"Exception while Combining voip conversation from thread : {ex.Message}");
-            }
-
-            if (!string.IsNullOrWhiteSpace(chatVoiceConvrsn))
-            {
-                sbFinalConversation.AppendLine(chatVoiceConvrsn);
-            }
-
-            if (!string.IsNullOrWhiteSpace(voipConvrsn))
-            {
-                sbFinalConversation.AppendLine(voipConvrsn);
-            }
-
-            return sbFinalConversation.ToString();
-        }
-
-        private async Task<string> GetChatHistoryFromThreadId(string threadId)
+        private async Task<string> GetConversations(string threadId)
         {
-            var chatHistory = await chatService.GetChatHistory(threadId);
-
-            var history = new List<IDictionary<string, string>>();
-            foreach (ChatHistory chat in chatHistory)
-            {
-                var log = new Dictionary<string, string>
-                {
-                    { "speaker", string.IsNullOrEmpty(chat.SenderDisplayName) ? string.Empty : chat.SenderDisplayName },
-                    { "text", string.IsNullOrEmpty(chat.Content) ? string.Empty : chat.Content },
-                };
-                history.Add(log);
-            }
-
+            var conversationHistory = await chatService.GetChatHistory(threadId);
             StringBuilder sbConversation = new StringBuilder();
-            foreach (var convItem in history)
+            foreach (var conversation in conversationHistory)
             {
-                string speakerName = convItem["speaker"];
-                sbConversation.AppendLine($"{speakerName}:{convItem["text"]}");
+                sbConversation.Append($"{conversation.SenderDisplayName}: {conversation.Content}");
+                sbConversation.AppendLine();
             }
 
             return sbConversation.ToString();
-        }
-
-        private Task<string> GetVoipHistoryFromThreadId(string threadId, string recordFilePath = "")
-        {
-            // TODO: retrieve voip call transcript
-            return Task.FromResult(string.Empty);
         }
     }
 }

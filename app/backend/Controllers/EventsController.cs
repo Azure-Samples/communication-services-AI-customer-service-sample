@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT License.
 
 namespace CustomerSupportServiceSample.Controllers
 {
@@ -10,6 +11,8 @@ namespace CustomerSupportServiceSample.Controllers
         private readonly ICallAutomationService callAutomationService;
         private readonly IChatService chatService;
         private readonly ILogger logger;
+        private readonly EventConverter eventConverter;
+
 
         public EventsController(
             ICacheService cacheService,
@@ -21,6 +24,7 @@ namespace CustomerSupportServiceSample.Controllers
             this.callAutomationService = callAutomationService;
             this.chatService = chatService;
             this.logger = logger;
+            eventConverter = new EventConverter();
         }
 
         /* Route for Azure Communication Service eventgrid webhooks */
@@ -41,34 +45,24 @@ namespace CustomerSupportServiceSample.Controllers
 
                         return Ok(responseData);
                     }
-                    else if (eventData is AcsChatMessageReceivedInThreadEventData chatEventData)
-                    {
-                        await chatService.HandleEvents(chatEventData);
-                    }
                 }
-                else if (eventGridEvent.EventType == "Microsoft.Communication.CallStarted")
-                {
-                    var callEventData = eventGridEvent.Data.ToObjectFromJson<CallStartedEventData>();
-                    var groupId = callEventData?.group?.id;
-                    var cachedGroupId = cacheService.GetCache("GroupId");
 
-                    if (!string.IsNullOrEmpty(groupId) && groupId == cachedGroupId)
-                    {
-                        logger.LogInformation("Group call started, groupCallId={}", groupId);
-                    }
-                }
-                else if (eventGridEvent.EventType == "Microsoft.Communication.CallEnded")
+                var data = eventConverter.Convert(eventGridEvent);
+                switch (data)
                 {
-                    var callEventData = eventGridEvent.Data.ToObjectFromJson<CallStartedEventData>();
-                    var groupId = callEventData?.group?.id;
-                    var cachedGroupId = cacheService.GetCache("GroupId");
+                    case null:
+                        continue;
 
-                    if (!string.IsNullOrWhiteSpace(groupId) && groupId == cachedGroupId)
-                    {
-                        logger.LogInformation("Group call finished, groupCallId={}", groupId);
-                    }
+                    case AcsChatMessageReceivedInThreadEventData chatMessageReceived:
+                        await chatService.HandleEvent(chatMessageReceived);
+                        break;
+
+                    case CallEndedEvent callEnded:
+                        await callAutomationService.HandleEvent(callEnded);
+                        break;
                 }
             }
+
             return Ok();
         }
 
@@ -114,17 +108,8 @@ namespace CustomerSupportServiceSample.Controllers
                         break;
                 }
             }
+
             return Ok();
-        }
-        private class CallStartedEventData
-        {
-            public string? serverCallId { get; set; }
-            public Group? group { get; set; }
-            public string? correlationId { get; set; }
-        }
-        private class Group
-        {
-            public string? id { get; set; }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT License.
 
 namespace CustomerSupportServiceSample.Helpers
 {
@@ -7,12 +8,12 @@ namespace CustomerSupportServiceSample.Helpers
         public static List<ChatHistory> GetChatHistoryWithThreadClient(ChatThreadClient chatThreadClient)
         {
             var chatMessages = chatThreadClient.GetMessages();
-            List<ChatHistory> chatHistoryList = new();
+            List<ChatHistory> chatHistoryList = new ();
             foreach (var chatMessage in chatMessages)
             {
                 if (chatMessage.Sender?.RawId is not null)
                 {
-                    ChatHistory chatHistory = new()
+                    ChatHistory chatHistory = new ()
                     {
                         MessageId = chatMessage.Id,
                         Content = chatMessage.Content?.Message,
