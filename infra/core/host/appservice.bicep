@@ -23,18 +23,9 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
         siteConfig: {
             netFrameworkVersion: netFrameworkVersion
             nodeVersion: nodeVersion
-      
     }
   }
 }
-
-//module config 'appservice-appsettings.bicep' = if (!empty(appSettings)) {
-//  name: '${name}-appSettings'
-//  params: {
-//    name: appService.name
-//    appSettings: appSettings
-//  }
-//}
 
 output name string = appService.name
 output uri string = 'https://${appService.properties.defaultHostName}'
