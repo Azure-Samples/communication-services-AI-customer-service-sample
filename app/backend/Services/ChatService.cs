@@ -33,7 +33,6 @@ namespace CustomerSupportServiceSample.Services
             this.acsEndpoint = this.configuration["AcsEndpoint"] ?? "";
             this.acsOutboundCallerId = this.configuration["AcsPhoneNumber"] ?? "";
             ArgumentException.ThrowIfNullOrEmpty(acsEndpoint);
-            ArgumentException.ThrowIfNullOrEmpty(acsOutboundCallerId);
 
             botUserId = identityService.GetNewUserId();
             cacheService.UpdateCache("BotUserId", botUserId);
@@ -107,15 +106,27 @@ namespace CustomerSupportServiceSample.Services
             // For more accurate results, it could be sent to OpenAI for analysis
             if (TryGetPhoneNumber(eventMessage, out var phoneNumber))
             {
+                // If outbound phonenumber is not configured, fail gracefully
+                if (string.IsNullOrEmpty(this.acsOutboundCallerId))
+                {
+                    var errorMsg = new SendChatMessageOptions()
+                    {
+                        Content = "I'm unable to call you, my developer hasn't enabled outbound calls",
+                        MessageType = ChatMessageType.Text
+                    };
+                    errorMsg.Metadata.Add("SenderType", "bot");
+                    await chatThreadClient.SendMessageAsync(errorMsg);
+                    return;
+                }
+
                 var sendChatMessageOptions = new SendChatMessageOptions()
                 {
                     Content = "Thank you, I'm calling you now, and you can close this chat if you'd like.",
                     MessageType = ChatMessageType.Text
                 };
                 sendChatMessageOptions.Metadata.Add("SenderType", "bot");
-
                 await chatThreadClient.SendMessageAsync(sendChatMessageOptions);
-                await InitiateCallFromBot(phoneNumber, eventThreadId);
+                await callAutomationService.CreateCallAsync(acsOutboundCallerId, phoneNumber, eventThreadId);
             }
             // 2. Respond with openAI generated response
             else
@@ -183,9 +194,5 @@ namespace CustomerSupportServiceSample.Services
             phoneNumber = "";
             return false;
         }
-
-        private async Task InitiateCallFromBot(string phoneNumber, string threadId) =>
-            await callAutomationService.CreateCallAsync(acsOutboundCallerId, phoneNumber, threadId);
-
     }
 }
