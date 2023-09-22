@@ -34,7 +34,7 @@ namespace CustomerSupportServiceSample.Services
         public async Task<ConversationInsights> GetConversationInsights(string threadId)
         {
             var messages = await GetConversations(threadId);
-            var response = await openAIService.GenerateChatInsights(messages);
+            var response = await openAIService.GenerateChatInsightsAsync(messages);
             if (response != null)
             {
                 response.ThreadId = threadId;
@@ -46,7 +46,7 @@ namespace CustomerSupportServiceSample.Services
         public async Task<string> GetEmailSummary(string threadId)
         {
             var messages = await this.GetConversations(threadId);
-            return await this.openAIService.GenerateChatInsightsForEmail(messages, "Alice", "Agent");
+            return await this.openAIService.GenerateChatInsightsForEmailAsync(messages, "Alice", "Agent");
         }
 
         public async Task<string> SendSummaryEmail(SummaryRequest summary)

@@ -216,10 +216,10 @@ namespace CustomerSupportServiceSample.Services
             client.GetCallConnection(callConnectionId);
 
         private async Task<bool> DetectEscalateToAgentIntent(string speechText) =>
-            await openAIService.HasIntent(userQuery: speechText, intentDescription: "talk to power company technician");
+            await openAIService.HasIntentAsync(userQuery: speechText, intentDescription: "talk to power company technician");
 
         private async Task<bool> DetectEndCallIntent(string speechText) =>
-            await openAIService.HasIntent(userQuery: speechText, intentDescription: "end call, hang up, end the call, goodbye");
+            await openAIService.HasIntentAsync(userQuery: speechText, intentDescription: "end call, hang up, end the call, goodbye");
 
         private async Task TranscribeCustomerVoice(string text) =>
             await transcriptionService.TranscribeVoiceMessageToChat(
