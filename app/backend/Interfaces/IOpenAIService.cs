@@ -9,7 +9,7 @@ namespace CustomerSupportServiceSample.Interfaces
         Task<bool> HasIntentAsync(string userQuery, string intentDescription);
 
         /* Generates a response to user query */
-        Task<string> AnswerAsync(string userQuery, List<ChatHistory>? history = null, int maxTokens = 1000);
+        Task<string> AnswerAsync(string userQuery, List<ChatHistory>? history = null);
 
         /* Generates summary, highlights and actions from chat conversation */
         Task<ConversationInsights> GenerateChatInsightsAsync(string text);

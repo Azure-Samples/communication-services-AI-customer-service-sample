@@ -26,6 +26,7 @@ namespace CustomerSupportServiceSample.Services
         their roof condition and how much sunlight they receive, You try to make them
         see the value of installing solar and also by helping them figure which option
         is best for them considering the roof condition and the sunlight quantity.
+
         Concise Communication:
         • Start a conversation with a greeting and ask the customer how you may help them.
         • Please answer briefly and limit it to two sentences.
@@ -53,6 +54,8 @@ namespace CustomerSupportServiceSample.Services
         Sunlight Interpretation:
         • 'A lot of sunlight', 'well lit', 'very sunny': 5-7 hours.
         • 'Less sunlight', 'short days', 'rainy': Fewer sunlight hours.
+
+        If {0} is not a question, respond like a friendly agent. If {0} is a question, in less than 50 words answer it using this content {1}.
         """;
 
         private const string EmailSummaryPromptTemplate = """
@@ -81,38 +84,37 @@ namespace CustomerSupportServiceSample.Services
         /* Use chat completion APIs to generate a response to user question, using knowledgebase documents and chat history as extra context */
         public async Task<string> AnswerAsync(
             string userQuery,
-            List<ChatHistory>? history = null,
-            int maxTokens = 1000)
+            List<ChatHistory>? history = null)
         {
             history ??= new List<ChatHistory>();
 
-            // Step1: Retrieve any related documents from Azure Search based on userQuery
-            // Any matching documents will be included as additional context to LLM prompt
-            var relatedDocs = await RetrieveRelatedDocumentAsync(userQuery) ?? string.Empty;
-            if (!string.IsNullOrEmpty(relatedDocs))
-            {
-                relatedDocs = "Context: " + relatedDocs;
-            }
+            // Step1: Retrieve any related documents from Azure Search based on user input
+            // They will be be added as additional context to LLM prompt
+            var matchingDocs = await RetrieveRelatedDocumentAsync(userQuery) ?? "";
 
             // Step2: Compose system message
             // Chat models take a list of messages as input and return a model-generated message as output
             // First message is so called 'system message', which sets the behaviour of assistant
-            var systemMessage = new ChatMessage(
-                role: ChatRole.System,
-                content: string.Format(AnswerPromptSystemTemplate, relatedDocs)
-            );
+            var systemPrompt = string.Format(AnswerPromptSystemTemplate, userQuery, matchingDocs);
 
+            // Step3: Prepare LLM query, startin with system message
             var chatCompletionsOptions = new ChatCompletionsOptions()
             {
-                Messages = { systemMessage },
-                MaxTokens = maxTokens,
+                Messages = {},
+                MaxTokens = 200,
                 ChoiceCount = 1,
             };
 
-            // Step3: Add chat history messages
+            chatCompletionsOptions.Messages.Add(
+                new ChatMessage(
+                    role: ChatRole.System,
+                    content: systemPrompt
+                ));
+
+            // Step4: Add chat history messages
             // This sample will keep on appending the message history until you hit the model's token limit
             // In production scenarios you would control the number of messages appended and take only recent conversation
-            // Note: the userQuery is part of the history as last message. There is no need to append it separately
+            // Note: the userQuery is part of the history list as last message. There is no need to append it separately
             foreach (var message in history)
             {
                 if (message.SenderDisplayName == "Bot" || message.SenderDisplayName == "VoiceBot")
@@ -125,7 +127,7 @@ namespace CustomerSupportServiceSample.Services
                 }
             }
 
-            // Step4: Invoke LLM
+            // Step5: Invoke LLM
             var response = await openAIClient.GetChatCompletionsAsync(
                 deploymentOrModelName: openAIDeploymentName,
                 chatCompletionsOptions);
@@ -134,7 +136,7 @@ namespace CustomerSupportServiceSample.Services
             return response_content;
         }
 
-        /* Using chat completion APIs to detect matching meaning between two texts */
+        /* Use chat completion APIs to detect matching meaning between two texts */
         public async Task<bool> HasIntentAsync(string userQuery, string intentDescription)
         {
             var systemPrompt = "You are a helpful assistant";
@@ -148,7 +150,7 @@ namespace CustomerSupportServiceSample.Services
             return isMatch;
         }
 
-        /* Using chat completion APIs to extract insights from chat history */ 
+        /* Use chat completion APIs to extract insights from chat history */ 
         public async Task<ConversationInsights> GenerateChatInsightsAsync(string text)
         {
             var systemPrompt = "You are a helpful assistant";
@@ -171,7 +173,7 @@ namespace CustomerSupportServiceSample.Services
             };
         }
 
-        /* Using chat completion APIs to extract insights from chat history (email friendly output) */ 
+        /* Use chat completion APIs to extract insights from chat history (email friendly output) */ 
         public async Task<string> GenerateChatInsightsForEmailAsync(string text, string recipient, string sender)
         {
             var systemPrompt = "You are a helpful assistant";
