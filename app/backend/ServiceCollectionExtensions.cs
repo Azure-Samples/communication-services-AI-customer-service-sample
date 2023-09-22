@@ -11,14 +11,14 @@ internal static class ServiceCollectionExtensions
         {
             var config = sp.GetRequiredService<IConfiguration>();
             var (azureSearchServiceEndpoint, azureSearchIndex, azureSearchKey) =
-                (config["CognitiveServiceSettings:CognitiveSearchEndpoint"],
-                 config["CognitiveServiceSettings:IndexName"],
-                 config["CognitiveServiceSettings:CognitiveSearchKey"]);
+                (config["AzureSearchEndpoint"],
+                 config["AzureSearchIndexName"],
+                 config["AzureSearchKey"]);
 
             ArgumentException.ThrowIfNullOrEmpty(azureSearchServiceEndpoint);
             ArgumentException.ThrowIfNullOrEmpty(azureSearchKey);
 
-            Azure.AzureKeyCredential credential = new (azureSearchKey);
+            Azure.AzureKeyCredential credential = new(azureSearchKey);
 
             var searchClient = new SearchClient(
                 new Uri(azureSearchServiceEndpoint), azureSearchIndex, credential);
@@ -30,8 +30,8 @@ internal static class ServiceCollectionExtensions
         {
             var config = sp.GetRequiredService<IConfiguration>();
             var (azureOpenAiServiceEndpoint, azureOpenAiKey) =
-                (config["OpenAISettings:OpenAIEndpoint"],
-                config["OpenAISettings:OpenAIKey"]);
+                (config["AzureOpenAIEndpoint"],
+                config["AzureOpenAIKey"]);
 
             ArgumentException.ThrowIfNullOrEmpty(azureOpenAiServiceEndpoint);
             ArgumentException.ThrowIfNullOrEmpty(azureOpenAiKey);

@@ -58,7 +58,7 @@ namespace CustomerSupportServiceSample.Services
             this.openAIClient = openAIClient;
             this.logger = logger;
 
-            openAIDeploymentName = configuration["OpenAISettings:OpenAIDeploymentName"]!;
+            openAIDeploymentName = configuration["AzureOpenAIDeploymentName"]!;
         }
 
         public async Task<bool> HasIntent(string userQuery, string intentDescription)
@@ -150,7 +150,7 @@ namespace CustomerSupportServiceSample.Services
         {
             string? result = null;
 
-            SearchOptions options = new () { Size = 3 };
+            SearchOptions options = new() { Size = 3 };
             var searchResultResponse = await searchClient.SearchAsync<SearchDocument>(text, options);
             SearchResults<SearchDocument> searchResult = searchResultResponse.Value;
 

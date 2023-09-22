@@ -15,8 +15,8 @@ namespace CustomerSupportServiceSample.Services
             ILogger<MessageService> logger)
         {
             this.logger = logger;
-            smsClient = new SmsClient(configuration["AcsSettings:AcsConnectionString"]);
-            senderPhoneNumber = configuration["AcsSettings:AcsPhonenumber"]!;
+            smsClient = new SmsClient(configuration["AcsConnectionString"]);
+            senderPhoneNumber = configuration["AcsPhonenumber"]!;
 
             // Note: As this sample supports only one conversation at a time
             // there is no need to embed call identifier to url. So the URL is static

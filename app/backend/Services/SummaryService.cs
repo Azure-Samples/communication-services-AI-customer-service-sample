@@ -23,9 +23,9 @@ namespace CustomerSupportServiceSample.Services
             this.openAIService = openAIService;
             this.logger = logger;
             this.configuration = configuration;
-            acsConnectionString = this.configuration["AcsSettings:AcsConnectionString"] ?? "";
-            sender = this.configuration["AcsEmailSettings:Sender"] ?? "";
-            recipient = this.configuration["AcsEmailSettings:Recipient"] ?? "";
+            acsConnectionString = this.configuration["AcsConnectionString"] ?? "";
+            sender = this.configuration["EmailSender"] ?? "";
+            recipient = this.configuration["EmailRecipient"] ?? "";
             ArgumentException.ThrowIfNullOrEmpty(acsConnectionString);
             ArgumentException.ThrowIfNullOrEmpty(sender);
             ArgumentException.ThrowIfNullOrEmpty(recipient);
@@ -58,7 +58,7 @@ namespace CustomerSupportServiceSample.Services
                 // Note: 
                 // This quickstart sample uses receiver email address from app configuration for simplicity
                 // In production scenario customer would provide their preferred email address
-                EmailClient emailClient = new (this.acsConnectionString);
+                EmailClient emailClient = new(this.acsConnectionString);
                 EmailSendOperation emailSendOperation = await emailClient.SendAsync(
                     WaitUntil.Completed,
                     sender,
@@ -72,7 +72,7 @@ namespace CustomerSupportServiceSample.Services
                 this.logger.LogError($"Email send operation failed with error code: {ex.ErrorCode}, message: {ex.Message}");
                 return ex.ErrorCode ?? "EmailSendFailed";
             }
-       }
+        }
 
         private async Task<string> GetConversations(string threadId)
         {

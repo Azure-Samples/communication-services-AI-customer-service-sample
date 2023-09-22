@@ -9,7 +9,7 @@ namespace CustomerSupportServiceSample.Services
 
         public IdentityService(IConfiguration configuration)
         {
-            var acsConnectionString = configuration["AcsSettings:AcsConnectionString"];
+            var acsConnectionString = configuration["AcsConnectionString"];
             ArgumentException.ThrowIfNullOrEmpty(acsConnectionString);
             client = new CommunicationIdentityClient(acsConnectionString);
         }

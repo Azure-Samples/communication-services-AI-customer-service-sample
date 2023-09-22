@@ -35,7 +35,7 @@ namespace CustomerSupportServiceSample.Controllers
             var threadId = cacheService.GetCache("ThreadId");
             var callId = cacheService.GetCache("GroupId");
             var token = await identityService.GetTokenForUserId(agentId);
-            var endPointUrl = configuration["AcsSettings:AcsEndpoint"] ?? "";
+            var endPointUrl = configuration["AcsEndpoint"] ?? "";
 
             var response = new Dictionary<string, string>()
             {

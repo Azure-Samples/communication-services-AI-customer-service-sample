@@ -37,7 +37,7 @@ namespace CustomerSupportServiceSample.Controllers
         [Route("callToPstn")]
         public async Task<IActionResult> CreateCall(string targetPSTNNumber = "", string threadId = "")
         {
-            string callerId = configuration["AcsSettings:AcsPhoneNumber"] ?? "";
+            string callerId = configuration["AcsPhoneNumber"] ?? "";
             return Ok(await callAutomationService.CreateCallAsync(callerId, targetPSTNNumber, threadId));
         }
 
