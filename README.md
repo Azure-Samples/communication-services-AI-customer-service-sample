@@ -15,41 +15,102 @@ The code sample includes a sample web app that simulates a scenario where a cust
 - Azure Communication Call Automation to convert voice to text and vice versa.
 - An AI copilot that generates summaries, emails, and answers using the Azure OpenAI Service and Azure AI Service.
 
+## Running the sample
 
-## Prerequisites
-- Create an Azure account with an active subscription. For details, see [Create an account for free](https://azure.microsoft.com/free/)
-- Create an Azure Communication Services resource. For details, see [Create an Azure Communication Resource](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource). You'll need to record your resource **connection string** for this sample.
-- A Calling and SMS enabled telephone number. [Get a phone number](https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/telephony/get-phone-number?tabs=windows&pivots=platform-azp).
-- Azure Dev Tunnels CLI. For details, see  [Enable dev tunnel](https://docs.tunnels.api.visualstudio.com/cli)
-- Create an Azure Cognitive Services resource. For details, see [Create an Azure Cognitive Services Resource](https://learn.microsoft.com/en-us/azure/cognitive-services/cognitive-services-apis-create-account)
-- An Azure OpenAI Resource and Deployment Model. See [instructions](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/create-resource?pivots=web-portal).
+### Pre-requisites
+- An Azure account with an active subscription. For details, see [Create an account for free](https://azure.microsoft.com/free/)  
 
-## Setup Instructions – Local environment
-Before running this sample, you'll need to setup the resources above with the following configuration updates:
+- For local run: Install Azure Dev Tunnels CLI. For details, see [Create and host dev tunnel](https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/get-started?tabs=windows) 
 
-##### 1. Setup and host your Azure DevTunnel
+- .NET 7 https://dotnet.microsoft.com/download
+- Powershell 7+ (pwsh) - For Windows users only.
+   * Important: Ensure you can run pwsh.exe from a PowerShell command. If this fails, you will likely need to upgrade PowerShell.
+- Azure CLI
+
+
+> **Note**<br> 
+> In order to deploy and run this example, you'll need an **Azure subscription with access enabled for the Azure OpenAI service**. You can request access [here](https://aka.ms/oaiapply). You can also visit [here](https://azure.microsoft.com/free/cognitive-search/) to get some free Azure credits to get you started. 
+
+## Deploying to Azure Cloud 
+
+### Starting from scratch
+Execute the following steps, if you don't have any pre-existing Azure services and want to start from a fresh deployment.
+
+> **Note**<br>
+> This application uses the `gpt-35-turbo` model. When choosing which region to deploy to, make sure they're available in that region (i.e. EastUS). For more information, see the [Azure OpenAI Service documentation](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/concepts/models#gpt-3-models-1). 
+
+1. Clone the project to a new folder
+2. Open new powershell terminal and run `.\start.ps1` for Windows or `start.sh` (for Linux and Mac)
+    <br />Enter the desired subscription, location and a short descriptive environment name.
+3. This command will:
+    1. Create the required Azure resources necessary to run the sample 
+    2. Automatically include any of the PDF files in `data/` folder to Azure Search index as knowledgebase
+    3. Build and deploy backend and frontend webapps necessary for hosting the sample
+    4. Register the backend application to receive notifications from Azure Communication Service events
+4. After the application has been successfully deployed you will see an URL for frontend printed to the console. Click that URL to interact with the application in your browser.
+
+Sample output:
+```
+You can view the resources created under the resource group <your rg name> in Azure Portal: https:/portal.azure.com/#@/...
+
+Backend endpoint: https://app-app... 
+Frontend endpoint: https://wapp-app-web-...
+```
+
+> **Note**<br >
+> It may take a few minutes for the application to be fully deployed.
+
+### Additional steps
+Before using the email and phone calling capabilities of the sample, you'll need to configure the above resources with following additional updates:
+
+1. Add a Calling and SMS enabled telephone number to your Communication resource. [Get a phone number](https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/telephony/get-phone-number?tabs=windows&pivots=platform-azp).
+
+2. Set up the email service as per the document [TODO]. Make note of the DoNotReply address generated for you.
+
+3. Update the backend App Service application settings
+    1. Open the web app resource created for backend application and navigate to the Environment variables blade.
+    2. Update values for `AcsPhoneNumber` and `EmailSender` with the phone number and sender email address obtained in previous steps.
+    3. Update the value for `EmailRecipient` with your email address where you would like to receive emails sent out by the sample applications.
+    4. Remember to save settings.
+
+  
+## Setup Instructions – Local environment  
+
+#### 1. Setup and host your Azure DevTunnel
 [Azure DevTunnels](https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/overview) is an Azure service that enables you to share local web services hosted on the internet. Use the commands below to connect your local development environment to the public internet. This creates a tunnel with a persistent endpoint URL and which allows anonymous access. We will then use this endpoint to notify your application of chat and job router events from the Azure Communication Service.
 ```bash
 devtunnel create --allow-anonymous
-devtunnel port create -p 5165
+devtunnel port create -p 7108 --protocol https
 devtunnel host
 ```
-##### 2. Add a Managed Identity to the Azure Communication Resource that connects to the Cognitive Services resource
-Follow the instructions in this [documentation](https://learn.microsoft.com/en-us/azure/communication-services/concepts/call-automation/azure-communication-services-azure-cognitive-services-integration).
-##### 3. Add the required API Keys and endpoints
-Open the appsettings.json file to configure the following settings:
-    - `DevTunnelUri`: your dev tunnel endpoint
-    - `AcsConnectionString`: Azure Communication Service resource's connection string.
-    - `AcsConnectionEndpoint`: Azure Communication Service resource's endpoint.
-    - `AzureOpenAIServiceKey`: Open AI's Service Key
-    - `AzureOpenAIServiceEndpoint`: Open AI's Service Endpoint
-    - `AzureOpenAIDeploymentModelName`: Open AI's Model name
-    - `CognitiveServiceEndpoint`: The Cognitive Services endpoint
-    - `CognitiveServiceKey`: The Cognitive Service Key
+Make a note of the devtunnel URI. You will need it at later steps.
 
+#### 2. Run the `start.ps1` or `start.sh` to provision your resources, if not done before.
 
-## Running the application
-1. Azure DevTunnel: Ensure your AzureDevTunnel URI is active and points to the correct port of your localhost application
+#### 3. Update dev tunnel uri in `backend\app\appsettings.json` 
+
+##  Running the backend application locally
+1. Ensure your Azure Dev tunnel URI is active and points to the correct port of your localhost application
+
 2. Run `dotnet run` to build and run the sample application
+
 3. Register an EventGrid Webhook for the ChatMessageReceivedInThread event that points to your DevTunnel URI and route “/api/chat/incoming/events”. Read more about Azure Event Grid webhooks [here](https://learn.microsoft.com/en-us/azure/event-grid/event-schema-communication-services).
 
+4. Navigate to https://locahost:7108/swagger to familiarize yourself with available API routes on the backend application
+
+
+## Running the frontend application locally
+1. Navigate to `app/frontend`
+2. Install dependencies
+
+    ```bash
+    npm install
+    ```
+
+3. Start the frontend app
+
+    ```bash
+    npm run start
+    ```
+
+    This will open a client server on port 3000 that serves the website files. By default it will connect to the localhost backend server running on port 7108
