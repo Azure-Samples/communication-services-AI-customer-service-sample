@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
+// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT License.
 
 namespace CustomerSupportServiceSample.Services
@@ -166,6 +166,18 @@ namespace CustomerSupportServiceSample.Services
             var recognizeOptions = GetMediaRecognizeSpeechOptions(replyText, targetParticipant, recognizeFailedEvent.OperationContext!);
             await callMedia.StartRecognizingAsync(recognizeOptions);
             await TranscribeBotVoice(replyText);
+        }
+
+        public async Task HandleEvent(PlayFailed playFailedEvent, string targetParticipant)
+        {
+            var callConnection = this.GetCallConnection(playFailedEvent.CallConnectionId);
+            var callMedia = callConnection.GetCallMedia();
+            var resultInformation = playFailedEvent.ResultInformation;
+            logger.LogError("Encountered error during play, message={msg}, code={code}, subCode={subCode}", resultInformation?.Message, resultInformation?.Code, resultInformation?.SubCode);
+            var reasonCode = playFailedEvent.ReasonCode;
+
+            // In production, depending on the reason code (playFailedEvent.ReasonCode)  we could try to retry the play operation or do some more robust error handling to have a better customer experience
+            await callConnection.HangUpAsync(true);
         }
 
         public async Task HandleEvent(CallEndedEvent callEndedEvent)

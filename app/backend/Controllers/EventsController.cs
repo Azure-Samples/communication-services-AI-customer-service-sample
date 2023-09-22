@@ -100,6 +100,10 @@ namespace CustomerSupportServiceSample.Controllers
                         await callAutomationService.HandleEvent(playCompleted, targetParticipant);
                         break;
 
+                    case PlayFailed playFailed:
+                        await callAutomationService.HandleEvent(playFailed, targetParticipant);
+                        break;
+
                     default:
                         break;
                 }
