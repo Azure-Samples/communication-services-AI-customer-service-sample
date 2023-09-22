@@ -42,9 +42,9 @@ namespace CustomerSupportServiceSample.Services
             this.transcriptionService = transcriptionService;
             this.logger = logger;
 
-            var acsConnectionString = configuration["AcsSettings:AcsConnectionString"];
-            acsEndpoint = configuration["AcsSettings:AcsEndpoint"] ?? "";
-            cgsEndpoint = configuration["CognitiveServiceSettings:CognitiveServiceEndpoint"] ?? "";
+            var acsConnectionString = configuration["AcsConnectionString"];
+            acsEndpoint = configuration["AcsEndpoint"] ?? "";
+            cgsEndpoint = configuration["AzureAIServiceEndpoint"] ?? "";
             baseUrl = configuration["HostUrl"] ?? "";
             ArgumentException.ThrowIfNullOrEmpty(acsConnectionString);
             ArgumentException.ThrowIfNullOrEmpty(acsEndpoint);

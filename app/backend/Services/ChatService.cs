@@ -30,8 +30,8 @@ namespace CustomerSupportServiceSample.Services
             this.callAutomationService = callAutomationService;
             this.configuration = configuration;
             this.logger = logger;
-            this.acsEndpoint = this.configuration["AcsSettings:AcsEndpoint"] ?? "";
-            this.acsOutboundCallerId = this.configuration["AcsSettings:AcsPhoneNumber"] ?? "";
+            this.acsEndpoint = this.configuration["AcsEndpoint"] ?? "";
+            this.acsOutboundCallerId = this.configuration["AcsPhoneNumber"] ?? "";
             ArgumentException.ThrowIfNullOrEmpty(acsEndpoint);
             ArgumentException.ThrowIfNullOrEmpty(acsOutboundCallerId);
 
@@ -167,7 +167,7 @@ namespace CustomerSupportServiceSample.Services
 
         private static bool TryGetPhoneNumber(string message, out string phoneNumber)
         {
-            Regex regex = new (PSTNRegex);
+            Regex regex = new(PSTNRegex);
             MatchCollection matches = regex.Matches(message);
             if (matches.Count > 0)
             {

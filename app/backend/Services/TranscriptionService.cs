@@ -13,7 +13,7 @@ namespace CustomerSupportServiceSample.Services
             IIdentityService identityService)
         {
             this.identityService = identityService;
-            acsEndpoint = configuration["AcsSettings:AcsEndpoint"] ?? "";
+            acsEndpoint = configuration["AcsEndpoint"] ?? "";
             ArgumentException.ThrowIfNullOrEmpty(acsEndpoint);
         }
 
