@@ -17,6 +17,23 @@ The code sample includes a web app that simulates a scenario where a customer in
 
 ## Running the sample
 
+### Cost Estimation
+Pricing varies per region and usage, so it isn't possible to predict exact costs for your usage. However, you can try the Azure pricing calculator for the resources below.
+
+•	Azure OpenAI: Standard tier, ChatGPT and Ada models. Pricing per 1K tokens used, and at least 1K tokens are used per question. [Pricing](https://aka.ms/Mech-OpenAIpricing)
+•	Azure Cognitive Search: Standard tier, 1 replica, free level of semantic search. Pricing per hour. [Pricing](https://aka.ms/Mech-CogSearchpricing)
+•	Form Recognizer: SO (Standard) tier using pre-built layout. Pricing per document page, sample documents have 261 pages total. [Pricing](https://aka.ms/Mech-formpricing)
+•	Azure Blob Storage: Standard tier with ZRS (Zone-redundant storage). Pricing per storage and read operations. [Pricing](https://aka.ms/mech-blobpricing)
+•	Azure Communication Services : [Pricing](https://aka.ms/Mech-acspricing)
+    •	Email - Pay as you go tier
+    •	Calling, Recording and Video
+    •	Phone Number
+    •	Azure Communication Services Job Router: $0,01 per job created. First 100 jobs are 
+      free.
+To reduce costs, you can switch to free SKUs for Azure Cognitive Search. There are some limits to consider; for example, you can have up to 1 free Cognitive Search resource per subscription, and the free Form Recognizer resource only analyzes the first 2 pages of each document. You can also reduce costs associated with the Form Recognizer by reducing the number of documents in the data folder, or by removing the post provision hook in azure.yaml that runs the prepdocs.py script. 
+
+Azure Communication Services offer free [trial phone numbers](https://aka.ms/Mech-trialnumbers) for calling. The trial period is for 30 days. Note that the trial numbers does not support SMS.
+
 ### Pre-requisites
 - An Azure account with an active subscription. For details, see [Create an account for free](https://aka.ms/Mech-Azureaccount)  
 
@@ -60,14 +77,14 @@ Frontend endpoint: https://wapp-app-web-...
 > **Note**<br >
 > It may take several minutes for the application to get fully deployed. Go grab a cup of coffee or listen to your favourite song.
 
-### Additional steps
-For configuring email and phone calling capabilities, you will need to open the [Azure portal](https://portal.azure.com) and do the following steps manually - 
+### Manual steps
+Almost there! You need to do three simple steps manually in the [Azure portal](https://portal.azure.com)- 
 
-1. Add a Calling and SMS enabled telephone number to your Communication resource. [Get a phone number](https://aka.ms/Mech-getPhone).
+1. [Connect Azure AI service to Azure communication service resource](https://aka.ms/Mech-connectACSWithAI).
+2. Add a Calling and SMS enabled telephone number to your Communication resource. [Get a phone number](https://aka.ms/Mech-getPhone).
+3. [Set up the email service](https://aka.ms/Mech-EmailService). [Create a managed Azure email domain](https://aka.ms/Mech-emaildomain) that will be used for sending emails. 
 
-2. [Set up the email service](https://aka.ms/Mech-EmailService). [Create a managed Azure email domain](https://aka.ms/Mech-emaildomain) that will be used for sending emails. 
-
-3. Update the backend App Service application settings
+4. Update the backend App Service application settings
     1. Open the web app resource created for backend application and navigate to the Environment variables blade.
     2. Update values for `AcsPhoneNumber` and `EmailSender` with the phone number and sender email address obtained in previous steps.
     3. Update the value for `EmailRecipient` with your email address where you would like to receive emails sent out by the sample applications.
