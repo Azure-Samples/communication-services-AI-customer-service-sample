@@ -14,7 +14,8 @@ The code sample includes a sample web app that simulates a scenario where a cust
 - A job router that assigns the job to the most suitable technician based on skills, availability, and location.
 - Azure Communication Call Automation to convert voice to text and vice versa.
 - An AI copilot that generates summaries, emails, and answers using the Azure OpenAI Service and Azure AI Service.
-
+  
+![AIFeatures](https://github.com/Azure-Samples/communication-services-AI-customer-service-sample/assets/124406136/fbe37899-af4d-49b6-83f0-3d4ccd282f1e)
 
 ## Prerequisites
 - Create an Azure account with an active subscription. For details, see [Create an account for free](https://azure.microsoft.com/free/)
