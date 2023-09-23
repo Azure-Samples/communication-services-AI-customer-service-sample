@@ -50,7 +50,6 @@ Write-Output "Setting user environment variables for the created azure resources
 [Environment]::SetEnvironmentVariable('AZURE_AI_SERVICE_ENDPOINT', $outputs.AZURE_AI_SERVICE_ENDPOINT.Value, [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable('AZURE_AI_SERVICE_KEY', $outputs.AZURE_AI_SERVICE_KEY.Value, [System.EnvironmentVariableTarget]::User)
 
-
 [Environment]::SetEnvironmentVariable('ACS_CONNECTIONSTRING', $outputs.ACS_CONNECTIONSTRING.Value, [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable('ACS_ENDPOINT', $outputs.ACS_ENDPOINT.Value, [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable('ACS_SERVICE_NAME', $outputs.ACS_SERVICE_NAME.Value, [System.EnvironmentVariableTarget]::User)
@@ -62,7 +61,6 @@ Write-Output "Setting user environment variables for the created azure resources
 [Environment]::SetEnvironmentVariable('WEB_SERVICE_NAME', $outputs.WEB_SERVICE_NAME.Value, [System.EnvironmentVariableTarget]::User)
 
 [Environment]::SetEnvironmentVariable('AZURE_RESOURCE_GROUP', $outputs.AZURE_RESOURCE_GROUP.Value, [System.EnvironmentVariableTarget]::User)
-
 
 #Run predocs
 ./scripts/prepdocs.ps1 -AZURE_STORAGE_BLOB_CONNSTRING $outputs.AZURE_STORAGE_ACCOUNT_CONNECTIONSTRING.Value`
@@ -97,10 +95,9 @@ if($deployToAzure)
      Write-Output "Creating events for the azure communication service $($acsServiceName)"
     .\scripts\event-subscription-creation.ps1 -resourceGroupName $resourceGroupName -subscriptionId $subscriptionId -communicationServiceName $acsServiceName -hostUrl $backendHostUrl
 
-
     Write-Output "You can view the resources created under the resource group $($outputs.AZURE_RESOURCE_GROUP.Value) in Azure Portal: https:/portal.azure.com/#@/resource/subscriptions/$subscriptionId/resourceGroups/$($outputs.AZURE_RESOURCE_GROUP.Value)/overview"
-
 
     Write-Output "Backend endpoint: $($outputs.API_ENDPOINT.Value)/swagger"
     Write-Output "Frontend endpoint: $($outputs.WEB_ENDPOINT.Value)"
 }
+
