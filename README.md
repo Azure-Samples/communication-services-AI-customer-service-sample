@@ -29,7 +29,7 @@ The code sample includes a web app that simulates a scenario where a customer in
 
 
 > **Note**<br> 
-> In order to deploy and run this example, you'll need an **Azure subscription with access enabled for the Azure OpenAI service**. You can request access [here](https://aka.ms/Mech-OpenAI). You can also visit [here](https://aka.ms/Mech-CogsSearch1) to get some free Azure credits to get you started. 
+> In order to deploy and run this example, you'll need an **Azure subscription with access enabled for the Azure OpenAI service**. Request access [here](https://aka.ms/Mech-OpenAI). You can also visit [here](https://aka.ms/Mech-CogsSearch1) to get free Azure credits to get you started. 
 
 ## Deploying to Azure Cloud 
 
@@ -39,15 +39,15 @@ Execute the following steps, if you don't have any pre-existing Azure services a
 > **Note**<br>
 > This application uses the `gpt-35-turbo` model. When choosing which region to deploy to, make sure they're available in that region (i.e. EastUS). For more information, see the [Azure OpenAI Service documentation](https://aka.ms/Mech-OpenAIdocs). 
 
-1. Clone the project to a new folder
-2. Open new powershell terminal and run `.\start.ps1` for Windows or `start.sh` (for Linux and Mac)
+1. Clone the project to a new folder.
+2. Open a new powershell terminal and run `.\start.ps1` for Windows or `start.sh` (for Linux and Mac)
     <br />Enter the desired subscription, location and a short descriptive environment name.
 3. This command will:
-    1. Create the required Azure resources necessary to run the sample 
-    2. Automatically include any of the PDF files in `data/` folder to Azure Search index as knowledgebase
-    3. Build and deploy backend and frontend webapps necessary for hosting the sample
-    4. Register the backend application to receive notifications from Azure Communication Service events
-4. After the application has been successfully deployed you will see an URL for frontend printed to the console. Click that URL to interact with the application in your browser.
+    1. Create the required Azure resources necessary to run the sample. 
+    2. Automatically include any of the PDF files in `data/` folder to Azure Search index as the knowledge base that is referred by the bot.
+    3. Build and deploy backend and frontend webapps necessary for hosting the sample webapp.
+    4. Register the backend application to receive notifications from Azure Communication Service events.
+4. After the application is deployed, you will see a URL for frontend in the console output. Click that URL to interact with the application in your browser.
 
 Sample output:
 ```
@@ -58,10 +58,10 @@ Frontend endpoint: https://wapp-app-web-...
 ```
 
 > **Note**<br >
-> It may take a few minutes for the application to be fully deployed.
+> It may take several minutes for the application to get fully deployed. Go grab a cup of coffee or listen to your favourite song.
 
 ### Additional steps
-For using the email and phone calling capabilities of the sample, you will need to these additional steps - 
+For configuring email and phone calling capabilities, you will need to open the [Azure portal](https://portal.azure.com) and do the following steps manually - 
 
 1. Add a Calling and SMS enabled telephone number to your Communication resource. [Get a phone number](https://aka.ms/Mech-getPhone).
 
@@ -72,7 +72,6 @@ For using the email and phone calling capabilities of the sample, you will need 
     2. Update values for `AcsPhoneNumber` and `EmailSender` with the phone number and sender email address obtained in previous steps.
     3. Update the value for `EmailRecipient` with your email address where you would like to receive emails sent out by the sample applications.
     4. Remember to save settings.
-
   
 ## Setup Instructions – Local environment  
 
