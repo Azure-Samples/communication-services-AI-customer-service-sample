@@ -2,7 +2,7 @@
 
 In this code sample, you will learn how to combine Azure Communication Services with Azure OpenAI Service and Azure AI Services (previously known as Cognitive Services) to create an intelligent customer service solution. You will see how to create a natural language communication experience that can answer questions, initiate calls, and provide summaries using your company’s knowledge base and customer conversation data. You will use the Retrieval Augmented Generation pattern, which leverages Azure Cognitive Search to retrieve relevant information from your data sources and feed it to the GPT-35-turbo model, one of the large language models available in Azure OpenAI Service.
 
-The code sample includes a sample web app that simulates a scenario where a customer interacts with a chatbot, a voice bot and an escalation path to human technician from a fictitious company called Contoso Energy, which specializes in green energy and solar power. You will be able to run the app end to end and customize it to fit your own scenario and data.
+The code sample includes a web app that simulates a scenario where a customer interacts with a chatbot, a voice bot and an escalation path to a human technician from a fictitious company called Contoso Energy, which specializes in green energy and solar power. You will be able to run the app end to end by following the deployment instructions. We are excited for you to try it out and customize it to fit your own scenarios and data.
 
 ![Architecture diagram](docs/architecture-diagram.png)
 
@@ -18,18 +18,18 @@ The code sample includes a sample web app that simulates a scenario where a cust
 ## Running the sample
 
 ### Pre-requisites
-- An Azure account with an active subscription. For details, see [Create an account for free](https://azure.microsoft.com/free/)  
+- An Azure account with an active subscription. For details, see [Create an account for free](https://aka.ms/Mech-Azureaccount)  
 
 - For local run: Install Azure Dev Tunnels CLI. For details, see [Create and host dev tunnel](https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/get-started?tabs=windows) 
 
-- .NET 7 https://dotnet.microsoft.com/download
+- [.NET 7](https://dotnet.microsoft.com/download)
 - Powershell 7+ (pwsh) - For Windows users only.
    * Important: Ensure you can run pwsh.exe from a PowerShell command. If this fails, you will likely need to upgrade PowerShell.
 - Azure CLI
 
 
 > **Note**<br> 
-> In order to deploy and run this example, you'll need an **Azure subscription with access enabled for the Azure OpenAI service**. You can request access [here](https://aka.ms/oaiapply). You can also visit [here](https://azure.microsoft.com/free/cognitive-search/) to get some free Azure credits to get you started. 
+> In order to deploy and run this example, you'll need an **Azure subscription with access enabled for the Azure OpenAI service**. You can request access [here](https://aka.ms/Mech-OpenAI). You can also visit [here](https://aka.ms/Mech-CogsSearch1) to get some free Azure credits to get you started. 
 
 ## Deploying to Azure Cloud 
 
@@ -37,7 +37,7 @@ The code sample includes a sample web app that simulates a scenario where a cust
 Execute the following steps, if you don't have any pre-existing Azure services and want to start from a fresh deployment.
 
 > **Note**<br>
-> This application uses the `gpt-35-turbo` model. When choosing which region to deploy to, make sure they're available in that region (i.e. EastUS). For more information, see the [Azure OpenAI Service documentation](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/concepts/models#gpt-3-models-1). 
+> This application uses the `gpt-35-turbo` model. When choosing which region to deploy to, make sure they're available in that region (i.e. EastUS). For more information, see the [Azure OpenAI Service documentation](https://aka.ms/Mech-OpenAIdocs). 
 
 1. Clone the project to a new folder
 2. Open new powershell terminal and run `.\start.ps1` for Windows or `start.sh` (for Linux and Mac)
@@ -61,11 +61,11 @@ Frontend endpoint: https://wapp-app-web-...
 > It may take a few minutes for the application to be fully deployed.
 
 ### Additional steps
-Before using the email and phone calling capabilities of the sample, you'll need to configure the above resources with following additional updates:
+For using the email and phone calling capabilities of the sample, you will need to these additional steps - 
 
-1. Add a Calling and SMS enabled telephone number to your Communication resource. [Get a phone number](https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/telephony/get-phone-number?tabs=windows&pivots=platform-azp).
+1. Add a Calling and SMS enabled telephone number to your Communication resource. [Get a phone number](https://aka.ms/Mech-getPhone).
 
-2. Set up the email service as per the document [TODO]. Make note of the DoNotReply address generated for you.
+2. [Set up the email service](https://aka.ms/Mech-EmailService). [Create a managed Azure email domain](https://aka.ms/Mech-emaildomain) that will be used for sending emails. 
 
 3. Update the backend App Service application settings
     1. Open the web app resource created for backend application and navigate to the Environment variables blade.
@@ -90,14 +90,13 @@ Make a note of the devtunnel URI. You will need it at later steps.
 #### 3. Update dev tunnel uri in `backend\app\appsettings.json` 
 
 ##  Running the backend application locally
-1. Ensure your Azure Dev tunnel URI is active and points to the correct port of your localhost application
+1. Ensure your Azure Dev tunnel URI is active and points to the correct port of your localhost application.
 
-2. Run `dotnet run` to build and run the sample application
+2. Run `dotnet run` to build and run the sample application.
 
 3. Register an EventGrid Webhook for the ChatMessageReceivedInThread event that points to your DevTunnel URI and route “/api/chat/incoming/events”. Read more about Azure Event Grid webhooks [here](https://learn.microsoft.com/en-us/azure/event-grid/event-schema-communication-services).
 
-4. Navigate to https://locahost:7108/swagger to familiarize yourself with available API routes on the backend application
-
+4. Navigate to https://locahost:7108/swagger to familiarize yourself with available API routes on the backend application.
 
 ## Running the frontend application locally
 1. Navigate to `app/frontend`
@@ -106,11 +105,14 @@ Make a note of the devtunnel URI. You will need it at later steps.
     ```bash
     npm install
     ```
-
 3. Start the frontend app
 
     ```bash
     npm run start
     ```
-
     This will open a client server on port 3000 that serves the website files. By default it will connect to the localhost backend server running on port 7108
+
+> **Note**<br >
+>The [Voice recognition with speech-to-text](https://aka.ms/Mech-SpeechToText) feature used in the demo is in public preview. This preview version is provided without a service-level agreement, and we don't recommend it for production workloads. Certain features might not be supported or might have constrained capabilities. For more information, see Supplemental Terms of Use for Microsoft Azure Previews.
+
+>The PDF documents used in this demo contain information generated using a language model (Azure OpenAI Service). The information contained in these documents is only for demonstration purposes and does not reflect the opinions or beliefs of Microsoft. Microsoft makes no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, suitability, or availability with respect to the information contained in this document. All rights reserved to Microsoft.
