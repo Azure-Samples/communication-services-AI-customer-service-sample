@@ -15,7 +15,8 @@ The code sample includes a web app that simulates a scenario where a customer in
 - Azure Communication Call Automation to convert voice to text and vice versa.
 - An AI copilot that generates summaries, emails, and answers using the Azure OpenAI Service and Azure AI Service.
 
-![Features](docs/AI-Enabled-Customer-Service.png)
+![AIFeatures](https://github.com/Azure-Samples/communication-services-AI-customer-service-sample/assets/124406136/fbe37899-af4d-49b6-83f0-3d4ccd282f1e)
+
 ## Running the sample
 
 ### Cost Estimation
