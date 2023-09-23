@@ -32,7 +32,8 @@ Compress-Archive -Path ".\build\*" -DestinationPath "app.zip" -Force
 
 
 # Deploy the ZIP archive to the Azure Web App
-az webapp deployment source config-zip --resource-group $resourceGroupName --name $appServiceName --src "app.zip"
+az webapp deployment source config-zip --resource-group $resourceGroupName --name $appServiceName --src "app.zip" --v
+ Write-Output "Fronend deployment completed"
 
 # Clean up the ZIP archive
 Remove-Item "app.zip" -Force
@@ -40,4 +41,4 @@ Remove-Item "app.zip" -Force
 Pop-Location
 
 # Optional: Restart the Azure Web App to apply changes
-az webapp restart --name $appServiceName --resource-group $resourceGroupName
+az webapp restart --name $appServiceName --resource-group $resourceGroupName --v
