@@ -15,6 +15,7 @@ The code sample includes a web app that simulates a scenario where a customer in
 - Azure Communication Call Automation to convert voice to text and vice versa.
 - An AI copilot that generates summaries, emails, and answers using the Azure OpenAI Service and Azure AI Service.
 
+![Features](docs/AI-Enabled-Customer-Service.png)
 ## Running the sample
 
 ### Cost Estimation
@@ -127,6 +128,14 @@ Make a note of the devtunnel URI. You will need it at later steps.
     npm run start
     ```
     This will open a client server on port 3000 that serves the website files. By default it will connect to the localhost backend server running on port 7108
+
+## Resources
+•	[Azure Communication Services Blog](https://aka.ms/Mech-TechBlog) on AI infused customer service usecase
+•	Microsoft Mechanics Youtube video showcasing this sample app
+•	[Azure Communication Services](https://aka.ms/Mech-acsdocs)
+•	[Azure Cognitive Search](https://aka.ms/Mech-CogSearch)
+•	[Azure OpenAI Service[(https://learn.microsoft.com/azure/cognitive-services/openai/overview)
+
 
 > **Note**<br >
 >The [Voice recognition with speech-to-text](https://aka.ms/Mech-SpeechToText) feature used in the demo is in public preview. This preview version is provided without a service-level agreement, and we don't recommend it for production workloads. Certain features might not be supported or might have constrained capabilities. For more information, see Supplemental Terms of Use for Microsoft Azure Previews.
