@@ -22,30 +22,26 @@ The code sample includes a web app that simulates a scenario where a customer in
 ### Cost Estimation
 Pricing varies per region and usage, so it isn't possible to predict exact costs for your usage. However, you can try the Azure pricing calculator for the resources below.
 
-•	Azure OpenAI: Standard tier, ChatGPT and Ada models. Pricing per 1K tokens used, and at least 1K tokens are used per question. [Pricing](https://aka.ms/Mech-OpenAIpricing)
-•	Azure Cognitive Search: Standard tier, 1 replica, free level of semantic search. Pricing per hour. [Pricing](https://aka.ms/Mech-CogSearchpricing)
-•	Form Recognizer: SO (Standard) tier using pre-built layout. Pricing per document page, sample documents have 261 pages total. [Pricing](https://aka.ms/Mech-formpricing)
-•	Azure Blob Storage: Standard tier with ZRS (Zone-redundant storage). Pricing per storage and read operations. [Pricing](https://aka.ms/mech-blobpricing)
-•	Azure Communication Services : [Pricing](https://aka.ms/Mech-acspricing)
-    •	Email - Pay as you go tier
-    •	Calling, Recording and Video
-    •	Phone Number
-    •	Azure Communication Services Job Router: $0,01 per job created. First 100 jobs are 
-      free.
+- Azure OpenAI: Standard tier, ChatGPT and Ada models. Pricing per 1K tokens used, and at least 1K tokens are used per question. [Pricing](https://aka.ms/Mech-OpenAIpricing)
+- Azure Cognitive Search: Standard tier, 1 replica, free level of semantic search. Pricing per hour. [Pricing](https://aka.ms/Mech-CogSearchpricing)
+- Form Recognizer: SO (Standard) tier using pre-built layout. Pricing per document page, sample documents have 261 pages total. [Pricing](https://aka.ms/Mech-formpricing)
+- Azure Blob Storage: Standard tier with ZRS (Zone-redundant storage). Pricing per storage and read operations. [Pricing](https://aka.ms/mech-blobpricing)
+- Azure Communication Services : [Pricing](https://aka.ms/Mech-acspricing)
+    - Email - Pay as you go tier
+    - Calling, Recording and Video
+    - Phone Number
+    - Azure Communication Services Job Router: $0,01 per job created. First 100 jobs are free.
 To reduce costs, you can switch to free SKUs for Azure Cognitive Search. There are some limits to consider; for example, you can have up to 1 free Cognitive Search resource per subscription, and the free Form Recognizer resource only analyzes the first 2 pages of each document. You can also reduce costs associated with the Form Recognizer by reducing the number of documents in the data folder, or by removing the post provision hook in azure.yaml that runs the prepdocs.py script. 
 
 Azure Communication Services offer free [trial phone numbers](https://aka.ms/Mech-trialnumbers) for calling. The trial period is for 30 days. Note that the trial numbers does not support SMS.
 
 ### Pre-requisites
-- An Azure account with an active subscription. For details, see [Create an account for free](https://aka.ms/Mech-Azureaccount)  
-
+- An Azure account with an active subscription. For details, see [Create an account for free](https://aka.ms/Mech-Azureaccount) 
 - For local run: Install Azure Dev Tunnels CLI. For details, see [Create and host dev tunnel](https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/get-started?tabs=windows) 
-
 - [.NET 7](https://dotnet.microsoft.com/download)
 - Powershell 7+ (pwsh) - For Windows users only.
    * Important: Ensure you can run pwsh.exe from a PowerShell command. If this fails, you will likely need to upgrade PowerShell.
 - Azure CLI
-
 
 > **Note**<br> 
 > In order to deploy and run this example, you'll need an **Azure subscription with access enabled for the Azure OpenAI service**. Request access [here](https://aka.ms/Mech-OpenAI). You can also visit [here](https://aka.ms/Mech-CogsSearch1) to get free Azure credits to get you started. 
@@ -58,15 +54,15 @@ Execute the following steps, if you don't have any pre-existing Azure services a
 > **Note**<br>
 > This application uses the `gpt-35-turbo` model. When choosing which region to deploy to, make sure they're available in that region (i.e. EastUS). For more information, see the [Azure OpenAI Service documentation](https://aka.ms/Mech-OpenAIdocs). 
 
-1. Clone the project to a new folder.
-2. Open a new powershell terminal and run `.\start.ps1` for Windows or `start.sh` (for Linux and Mac)
+- Clone the project to a new folder.
+- Open a new powershell terminal and run `.\start.ps1` for Windows or `start.sh` (for Linux and Mac)
     <br />Enter the desired subscription, location and a short descriptive environment name.
-3. This command will:
-    1. Create the required Azure resources necessary to run the sample. 
-    2. Automatically include any of the PDF files in `data/` folder to Azure Search index as the knowledge base that is referred by the bot.
-    3. Build and deploy backend and frontend webapps necessary for hosting the sample webapp.
-    4. Register the backend application to receive notifications from Azure Communication Service events.
-4. After the application is deployed, you will see a URL for frontend in the console output. Click that URL to interact with the application in your browser.
+- This command will:
+   - Create the required Azure resources necessary to run the sample. 
+   - Automatically include any of the PDF files in `data/` folder to Azure Search index as the knowledge base that is referred by the bot.
+   - Build and deploy backend and frontend webapps necessary for hosting the sample webapp.
+   - Register the backend application to receive notifications from Azure Communication Service events.
+- After the application is deployed, you will see a URL for frontend in the console output. Click that URL to interact with the application in your browser.
 
 Sample output:
 ```
@@ -75,22 +71,20 @@ You can view the resources created under the resource group <your rg name> in Az
 Backend endpoint: https://app-app... 
 Frontend endpoint: https://wapp-app-web-...
 ```
-
 > **Note**<br >
 > It may take several minutes for the application to get fully deployed. Go grab a cup of coffee or listen to your favourite song.
 
 ### Manual steps
 Almost there! You need to do three simple steps manually in the [Azure portal](https://portal.azure.com)- 
 
-1. [Connect Azure AI service to Azure communication service resource](https://aka.ms/Mech-connectACSWithAI).
-2. Add a Calling and SMS enabled telephone number to your Communication resource. [Get a phone number](https://aka.ms/Mech-getPhone).
-3. [Set up the email service](https://aka.ms/Mech-EmailService). [Create a managed Azure email domain](https://aka.ms/Mech-emaildomain) that will be used for sending emails. 
-
-4. Update the backend App Service application settings
-    1. Open the web app resource created for backend application and navigate to the Environment variables blade.
-    2. Update values for `AcsPhoneNumber` and `EmailSender` with the phone number and sender email address obtained in previous steps.
-    3. Update the value for `EmailRecipient` with your email address where you would like to receive emails sent out by the sample applications.
-    4. Remember to save settings.
+- [Connect Azure AI service to Azure communication service resource](https://aka.ms/Mech-connectACSWithAI).
+- Add a Calling and SMS enabled telephone number to your Communication resource. [Get a phone number](https://aka.ms/Mech-getPhone).
+- [Set up the email service](https://aka.ms/Mech-EmailService). [Create a managed Azure email domain](https://aka.ms/Mech-emaildomain) that will be used for sending emails. 
+- Update the backend App Service application settings
+   - Open the web app resource created for backend application and navigate to the Environment variables blade.
+   - Update values for `AcsPhoneNumber` and `EmailSender` with the phone number and sender email address obtained in previous steps.
+   - Update the value for `EmailRecipient` with your email address where you would like to receive emails sent out by the sample applications.
+   - Remember to save settings.
   
 ## Setup Instructions – Local environment  
 
@@ -108,35 +102,30 @@ Make a note of the devtunnel URI. You will need it at later steps.
 #### 3. Update dev tunnel uri in `backend\app\appsettings.json` 
 
 ##  Running the backend application locally
-1. Ensure your Azure Dev tunnel URI is active and points to the correct port of your localhost application.
-
-2. Run `dotnet run` to build and run the sample application.
-
-3. Register an EventGrid Webhook for the ChatMessageReceivedInThread event that points to your DevTunnel URI and route “/api/chat/incoming/events”. Read more about Azure Event Grid webhooks [here](https://learn.microsoft.com/en-us/azure/event-grid/event-schema-communication-services).
-
-4. Navigate to https://locahost:7108/swagger to familiarize yourself with available API routes on the backend application.
+- Ensure your Azure Dev tunnel URI is active and points to the correct port of your localhost application.
+- Run `dotnet run` to build and run the sample application.
+- Register an EventGrid Webhook for the ChatMessageReceivedInThread event that points to your DevTunnel URI and route “/api/chat/incoming/events”. Read more about Azure Event Grid webhooks [here](https://learn.microsoft.com/en-us/azure/event-grid/event-schema-communication-services).
+- Navigate to https://locahost:7108/swagger to familiarize yourself with available API routes on the backend application.
 
 ## Running the frontend application locally
-1. Navigate to `app/frontend`
-2. Install dependencies
+- Navigate to `app/frontend`
+- Install dependencies
 
     ```bash
     npm install
     ```
-3. Start the frontend app
-
+- Start the frontend app
     ```bash
     npm run start
     ```
     This will open a client server on port 3000 that serves the website files. By default it will connect to the localhost backend server running on port 7108
 
 ## Resources
-•	[Azure Communication Services Blog](https://aka.ms/Mech-TechBlog) on AI infused customer service usecase
-•	Microsoft Mechanics Youtube video showcasing this sample app
-•	[Azure Communication Services](https://aka.ms/Mech-acsdocs)
-•	[Azure Cognitive Search](https://aka.ms/Mech-CogSearch)
-•	[Azure OpenAI Service[(https://learn.microsoft.com/azure/cognitive-services/openai/overview)
-
+- [Azure Communication Services Blog](https://aka.ms/Mech-TechBlog) on AI infused customer service usecase
+- Microsoft Mechanics Youtube video showcasing this sample app
+- [Azure Communication Services](https://aka.ms/Mech-acsdocs)
+- [Azure Cognitive Search](https://aka.ms/Mech-CogSearch)
+- [Azure OpenAI Service](https://learn.microsoft.com/azure/cognitive-services/openai/overview)
 
 > **Note**<br >
 >The [Voice recognition with speech-to-text](https://aka.ms/Mech-SpeechToText) feature used in the demo is in public preview. This preview version is provided without a service-level agreement, and we don't recommend it for production workloads. Certain features might not be supported or might have constrained capabilities. For more information, see Supplemental Terms of Use for Microsoft Azure Previews.
