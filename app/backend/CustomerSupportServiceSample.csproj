@@ -4,7 +4,8 @@
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <UserSecretsId>b7e69c7b-b434-48e3-9533-5e43b67d7e11</UserSecretsId>
+        <UserSecretsId>a7e69c7b-b434-48e3-9533-5e43b67d7e11</UserSecretsId>
+        <NoWarn>CS8618, CS1998</NoWarn>
   </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Azure.AI.Language.Conversations" Version="1.1.0" />

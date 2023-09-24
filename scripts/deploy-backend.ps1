@@ -11,7 +11,7 @@ $publishFolder ="publish" # Replace with the name of the publish folder
 Push-Location $appPath\backend
 
 # Publish the .NET project
-dotnet publish  --property WarningLevel=1 ".\CustomerSupportServiceSample.csproj" -o $publishFolder
+dotnet publish ".\CustomerSupportServiceSample.csproj" -o $publishFolder
 
 # Zip the published files
 Compress-Archive -Path ".\publish\*" -DestinationPath "app.zip" -Force
