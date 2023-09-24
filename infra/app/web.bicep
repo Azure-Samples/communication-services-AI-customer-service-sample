@@ -4,7 +4,7 @@ param location string
 var webSiteName = toLower('wapp-${name}')
 param appServicePlanId string
 
-module web '../core/host/appService.bicep' = {
+module web '../core/host/appservice.bicep' = {
     name: webSiteName
     params: {
         name: webSiteName
