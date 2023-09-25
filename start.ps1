@@ -9,9 +9,23 @@
     Write-Output "Logged in successfully."
 }
 
-$subscriptionName = Read-Host "Please enter the subscription name"
+# Get the list of subscriptions
+$subscriptions = az account list --all --output json | ConvertFrom-Json
+
+if ($subscriptions.Count -eq 1) {
+    # If there is only one subscription, use it
+    $subscriptionId = $subscriptions[0].id
+    az account set --subscription $subscriptionId
+} else {
+    # If there are multiple subscriptions, ask the user to enter the subscription name
+    $subscriptionName = Read-Host "Please enter the subscription name"
+    # Set the subscription to the entered name
+    az account set --subscription $subscriptionName
+    $subscriptionId = (az account show | ConvertFrom-Json).id
+}
+
 $location = Read-Host "Please enter the region for azure resources creation"
-$environmentName = Read-Host "Please enter the environment name"
+$environmentName = Read-Host "Please enter an app name"
 $deployToAzure = $false
 
 $msg = 'Do you want to deploy application to azure app service? [Y/N]'
