@@ -25,20 +25,29 @@ do {
 az account set --subscription $subscriptionName
 $subscriptionId = (az account show | ConvertFrom-Json).id
 
-Write-Output "Deploying to subscription id $subscriptionId"
+Write-Output "`nDeploying to subscription id $subscriptionId`n"
 
 $mainBicepPath = ".\infra"
 $scriptsPath =".\scripts"
 $appPath =".\app"
 # deploy resources
-$result = az deployment sub create --location $location --name bicepDeployment --template-file $mainBicepPath\main.bicep --parameters $mainBicepPath\main.parameters.json `
---parameters environmentName=$environmentName location=$location --verbose| ConvertFrom-Json 
+
+$result = az deployment sub create --location $location `
+   --name bicepDeployment `
+   --template-file $mainBicepPath\main.bicep `
+   --parameters $mainBicepPath\main.parameters.json `
+   --parameters environmentName=$environmentName location=$location --verbose| ConvertFrom-Json 
+
+$ErrorActionPreference='Stop'
+if($LASTEXITCODE){ 
+  Write-Error "Error az deployment, could not create resources"
+  Throw "Error creating azure resources"
+} 
 
 $outputs = $result.properties.outputs
 
-Write-Output "Created resources to resourcegroup $($outputs.AZURE_RESOURCE_GROUP.Value)"
-
-Write-Output "Setting user environment variables for the created azure resources"
+Write-Output "`nCreated resources to resourcegroup $($outputs.AZURE_RESOURCE_GROUP.Value)"
+Write-Output "Setting user environment variables for the created azure resources`n"
 
 [Environment]::SetEnvironmentVariable('AZURE_STORAGE_CONTAINER', $outputs.AZURE_STORAGE_CONTAINER.Value, [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable('AZURE_STORAGE_ACCOUNT_CONNECTIONSTRING', $outputs.AZURE_STORAGE_ACCOUNT_CONNECTIONSTRING.Value, [System.EnvironmentVariableTarget]::User)
