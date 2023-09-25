@@ -27,8 +27,6 @@ namespace CustomerSupportServiceSample.Services
             sender = this.configuration["EmailSender"] ?? "";
             recipient = this.configuration["EmailRecipient"] ?? "";
             ArgumentException.ThrowIfNullOrEmpty(acsConnectionString);
-            ArgumentException.ThrowIfNullOrEmpty(sender);
-            ArgumentException.ThrowIfNullOrEmpty(recipient);
         }
 
         public async Task<ConversationInsights> GetConversationInsights(string threadId)
@@ -55,6 +53,8 @@ namespace CustomerSupportServiceSample.Services
             try
             {
                 logger.LogInformation("Sending email: to={}, from={}, body={}", recipient, sender, htmlContent);
+                ArgumentException.ThrowIfNullOrEmpty(sender);
+                ArgumentException.ThrowIfNullOrEmpty(recipient);
                 // Note: 
                 // This quickstart sample uses receiver email address from app configuration for simplicity
                 // In production scenario customer would provide their preferred email address

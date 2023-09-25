@@ -155,6 +155,15 @@ namespace CustomerSupportServiceSample.Services
             var callMedia = callConnection.GetCallMedia();
             var resultInformation = recognizeFailedEvent.ResultInformation;
             logger.LogError("Encountered error during recognize, message={msg}, code={code}, subCode={subCode}", resultInformation?.Message, resultInformation?.Code, resultInformation?.SubCode);
+
+            // Do not retry on 401 errors
+            if (resultInformation?.Code == 401)
+            {
+                await TranscribeBotVoice("Unable to establish call.");
+                logger.LogError("Unable to use provided cognitive services resource. Please check the linking between communication and cognitive services resource");
+                await callConnection.HangUpAsync(true);
+                throw new ArgumentException(cgsEndpoint);
+            }
             var reasonCode = recognizeFailedEvent.ReasonCode;
             string replyText = reasonCode switch
             {

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentName": {
+      "value": ""
+    },
+    "location": {
+      "value": ""
+    },
+    "resourceGroupName": {
+      "value": ""
+    },
+    "acsServiceResourceGroupName": {
+      "value": ""
+    },
+    "acsServiceName": {
+      "value": ""
+    },
+    "aiServiceResourceGroupName": {
+      "value": ""
+    },
+    "aiServiceName": {
+      "value": ""
+    },
+    "aiServiceSkuName": {
+      "value": "S0"
+    },
+    "searchServiceName": {
+      "value": ""
+    },
+    "searchServiceResourceGroupName": {
+      "value": ""
+    },
+    "searchServiceSkuName": {
+      "value": "standard"
+    },
+    "storageAccountName": {
+      "value": ""
+    },
+    "storageResourceGroupName": {
+      "value": ""
+    },
+    "openAiResourceGroupName": {
+      "value": ""
+    },
+    "openAiServiceName": {
+      "value": ""
+    },
+    "openAiSkuName": {
+      "value": "S0"
+    }
+  }
+}
