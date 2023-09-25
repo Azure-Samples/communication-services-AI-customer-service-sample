@@ -211,11 +211,14 @@ namespace CustomerSupportServiceSample.Services
                     var job = await this.jobRouterService.GetJobAsync(groupId);
                     var assignmentId = job.Assignments.First().Key;
 
-                    /* Complete the job */
-                    await jobRouterService.CompleteJobAsync(job.Id, assignmentId);
+                    if (job.Status == RouterJobStatus.Assigned)
+                    {
+                        /* Complete the job */
+                        await jobRouterService.CompleteJobAsync(job.Id, assignmentId);
 
-                    /* Close the job */
-                    await jobRouterService.CloseJobAsync(job.Id, assignmentId, dispositionCode: "Resolved");
+                        /* Close the job */
+                        await jobRouterService.CloseJobAsync(job.Id, assignmentId, dispositionCode: "Resolved");
+                    }
                 }
             }
         }
