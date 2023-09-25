@@ -10,19 +10,21 @@ namespace CustomerSupportServiceSample.Controllers
         private readonly ICacheService cacheService;
         private readonly ICallAutomationService callAutomationService;
         private readonly IChatService chatService;
+        private readonly IJobRouterEventsService jobRouterEventsService;
         private readonly ILogger logger;
         private readonly EventConverter eventConverter;
-
 
         public EventsController(
             ICacheService cacheService,
             ICallAutomationService callAutomationService,
+            IJobRouterEventsService jobRouterEventsService,
             IChatService chatService,
             ILogger<EventsController> logger)
         {
             this.cacheService = cacheService;
             this.callAutomationService = callAutomationService;
             this.chatService = chatService;
+            this.jobRouterEventsService = jobRouterEventsService;
             this.logger = logger;
             eventConverter = new EventConverter();
         }
@@ -55,6 +57,14 @@ namespace CustomerSupportServiceSample.Controllers
 
                     case AcsChatMessageReceivedInThreadEventData chatMessageReceived:
                         await chatService.HandleEvent(chatMessageReceived);
+                        break;
+
+                    case OfferIssuedEvent offerIssued:
+                        await jobRouterEventsService.HandleEvent(offerIssued);
+                        break;
+
+                    case OfferAcceptedEvent offerAccepted:
+                        await jobRouterEventsService.HandleEvent(offerAccepted);
                         break;
 
                     case CallEndedEvent callEnded:

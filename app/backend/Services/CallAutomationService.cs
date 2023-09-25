@@ -11,6 +11,7 @@ namespace CustomerSupportServiceSample.Services
         private readonly IMessageService messageService;
         private readonly IOpenAIService openAIService;
         private readonly ITranscriptionService transcriptionService;
+        private readonly IJobRouterService jobRouterService;
         private readonly ICacheService cacheService;
         private readonly ILogger logger;
 
@@ -32,6 +33,7 @@ namespace CustomerSupportServiceSample.Services
             IMessageService messageService,
             IOpenAIService openAIService,
             ITranscriptionService transcriptionService,
+            IJobRouterService jobRouterService,
             ILogger<CallAutomationService> logger)
         {
             this.cacheService = cacheService;
@@ -40,6 +42,7 @@ namespace CustomerSupportServiceSample.Services
             this.messageService = messageService;
             this.openAIService = openAIService;
             this.transcriptionService = transcriptionService;
+            this.jobRouterService = jobRouterService;
             this.logger = logger;
 
             var acsConnectionString = configuration["AcsConnectionString"];
@@ -114,7 +117,8 @@ namespace CustomerSupportServiceSample.Services
                 // Invoke transfer to agent
                 if (configuration.GetValue<bool>("UseJobRouter") == true)
                 {
-                    // TODO: transfer to agent via JobRouter
+                    // invoke transfer to agent via JobRouter
+                    await AssignAgentViaJobRouter(recognizeCompleted.OperationContext!, targetParticipant);
                 }
                 else
                 {
@@ -201,14 +205,22 @@ namespace CustomerSupportServiceSample.Services
                 if (configuration.GetValue<bool>("UseJobRouter"))
                 {
                     /*
-                    * TODO: If JobRouter is used to assign customer calls to available agents
+                    * If JobRouter is used to assign customer calls to available agents
                     * then it's also necessary to close the jobs once agent has finished handling the call
                     */
+                    var job = await this.jobRouterService.GetJobAsync(groupId);
+                    var assignmentId = job.Assignments.First().Key;
+
+                    /* Complete the job */
+                    await jobRouterService.CompleteJobAsync(job.Id, assignmentId);
+
+                    /* Close the job */
+                    await jobRouterService.CloseJobAsync(job.Id, assignmentId, dispositionCode: "Resolved");
                 }
             }
         }
 
-        public async Task ConnectAgentWithCustomerAsync(string agentId, string threadId, string customerPhoneNumber)
+        public async Task ConnectAgentToCustomerAsync(string agentId, string threadId, string customerPhoneNumber)
         {
             // 1. Invite the agent to same chat thread; allow them to see past messages
             // As bot is the owner of the thread, it has permissions to add more participants
@@ -304,7 +316,15 @@ namespace CustomerSupportServiceSample.Services
         {
             var agentId = GetOrCreateAgentCommunicationUserId();
             cacheService.UpdateCache("GroupId", Guid.NewGuid().ToString());
-            await ConnectAgentWithCustomerAsync(agentId, threadId, targetParticipant);
+            await ConnectAgentToCustomerAsync(agentId, threadId, targetParticipant);
+        }
+
+        private async Task AssignAgentViaJobRouter(string threadId, string targetParticipant)
+        {
+            var agentId = GetOrCreateAgentCommunicationUserId();
+            var groupId = Guid.NewGuid().ToString();
+            cacheService.UpdateCache("GroupId", groupId);
+            await jobRouterService.CreateJobAsync(groupId, threadId, targetParticipant, agentId);
         }
 
         /*

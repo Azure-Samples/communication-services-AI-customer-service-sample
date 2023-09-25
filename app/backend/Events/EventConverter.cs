@@ -9,6 +9,8 @@ namespace CustomerSupportServiceSample.Events
     */
     public sealed class EventConverter
     {
+        internal const string OfferIssuedEventName = "RouterWorkerOfferIssued";
+        internal const string OfferAcceptedEventName = "RouterWorkerOfferAccepted";
         internal const string CallEndedEventName = "CallEnded";
         internal const string ChatMessageReceivedInThreadName = "ChatMessageReceivedInThread";
 
@@ -21,6 +23,8 @@ namespace CustomerSupportServiceSample.Events
 
             return ParseEventType(eventGridEvent.EventType) switch
             {
+                OfferIssuedEventName => data.ToObjectFromJson<OfferIssuedEvent>(JsonOptions),
+                OfferAcceptedEventName => data.ToObjectFromJson<OfferAcceptedEvent>(JsonOptions),
                 ChatMessageReceivedInThreadName => data.ToObjectFromJson<AcsChatMessageReceivedInThreadEventData>(JsonOptions),
                 CallEndedEventName => data.ToObjectFromJson<CallEndedEvent>(JsonOptions),
                 _ => null

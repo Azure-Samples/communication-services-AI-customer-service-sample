@@ -18,5 +18,7 @@ namespace CustomerSupportServiceSample.Interfaces
         Task HandleEvent(PlayFailed playFailedEvent, string targetParticipant);
 
         Task HandleEvent(CallEndedEvent callEndedEvent);
+
+        Task ConnectAgentToCustomerAsync(string agentId, string threadId, string customerPhoneNumber);
     }
 }

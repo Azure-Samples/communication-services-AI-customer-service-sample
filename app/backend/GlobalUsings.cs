@@ -8,6 +8,8 @@ global using Azure.Communication.CallAutomation;
 global using Azure.Communication.Chat;
 global using Azure.Communication.Email;
 global using Azure.Communication.Identity;
+global using Azure.Communication.JobRouter;
+global using Azure.Communication.JobRouter.Models;
 global using Azure.Communication.Sms;
 global using Azure.Messaging;
 global using Azure.Messaging.EventGrid;
