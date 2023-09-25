@@ -122,7 +122,7 @@ Make a note of the devtunnel URI. You will need it at later steps.
 
 ## Resources
 - [Azure Communication Services Blog](https://aka.ms/Mech-TechBlog) on AI infused customer service usecase
-- Microsoft Mechanics Youtube video showcasing this sample app
+- [Microsoft Mechanics Youtube video showcasing this sample app](https://aka.ms/Mech-ytvideo)
 - [Azure Communication Services](https://aka.ms/Mech-acsdocs)
 - [Azure Cognitive Search](https://aka.ms/Mech-CogSearch)
 - [Azure OpenAI Service](https://learn.microsoft.com/azure/cognitive-services/openai/overview)
