@@ -104,7 +104,7 @@ Make a note of the devtunnel URI. You will need it at later steps.
 ##  Running the backend application locally
 - Ensure your Azure Dev tunnel URI is active and points to the correct port of your localhost application.
 - Run `dotnet run` to build and run the sample application.
-- Register an EventGrid Webhook for the ChatMessageReceivedInThread event that points to your DevTunnel URI and route “/api/chat/incoming/events”. Read more about Azure Event Grid webhooks [here](https://learn.microsoft.com/en-us/azure/event-grid/event-schema-communication-services).
+- Register an EventGrid Webhook for the `ChatMessageReceivedInThread`, `RouterWorkerOfferIssued`, `RouterWorkerOfferAccepted` and `CallEnded` events that points to your DevTunnel URI and route “/api/events”. Read more about Azure Event Grid webhooks [here](https://learn.microsoft.com/en-us/azure/event-grid/event-schema-communication-services).
 - Navigate to https://locahost:7108/swagger to familiarize yourself with available API routes on the backend application.
 
 ## Running the frontend application locally
