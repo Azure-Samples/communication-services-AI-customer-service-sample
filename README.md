@@ -120,6 +120,17 @@ Make a note of the devtunnel URI. You will need it at later steps.
     ```
     This will open a client server on port 3000 that serves the website files. By default it will connect to the localhost backend server running on port 7108
 
+## Application Flow
+Click on "Customer Service" button to start conversing with the bot via chat.
+
+![customer_start_view](docs/customer_start_view.png)
+
+Voip Call - The application will send a voip call join link to the phone number you share in the chat with the bot. However, if you do not have a verified Azure Communication Services phone number, your Telco may block the SMS as it includes a url. As a workaround, browse <url>/?callerType=Customer to get the join link. Replace url with the frontend url or the localhost url depending on if you are running locally or the deployed application. 
+
+Agent View - The agent view includes chat history with the customer and AI assistant panel that can generate summary, action items and more. It gets active only after an agent gets involved in the flow. Browse <url>/?callerType=Agent to launch the agent view. 
+
+![agent_view](docs/agent_view.png)
+
 ## Resources
 - [Azure Communication Services Blog](https://aka.ms/Mech-TechBlog) on AI infused customer service usecase
 - [Microsoft Mechanics Youtube video showcasing this sample app](https://aka.ms/Mech-ytvideo)
