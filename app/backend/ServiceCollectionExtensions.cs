@@ -20,8 +20,16 @@ internal static class ServiceCollectionExtensions
 
             Azure.AzureKeyCredential credential = new(azureSearchKey);
 
+            var options = new SearchClientOptions
+            {
+                Diagnostics = {
+                    IsTelemetryEnabled = true,
+                    ApplicationId = "ACSMechanicsDemo"
+                }
+            };
+
             var searchClient = new SearchClient(
-                new Uri(azureSearchServiceEndpoint), azureSearchIndex, credential);
+                new Uri(azureSearchServiceEndpoint), azureSearchIndex, credential, options);
 
             return searchClient;
         });
