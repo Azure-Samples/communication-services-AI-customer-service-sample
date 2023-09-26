@@ -31,6 +31,7 @@ Pricing varies per region and usage, so it isn't possible to predict exact costs
     - Calling, Recording and Video
     - Phone Number
     - Azure Communication Services Job Router: $0,01 per job created. First 100 jobs are free.
+
 To reduce costs, you can switch to free SKUs for Azure Cognitive Search. There are some limits to consider; for example, you can have up to 1 free Cognitive Search resource per subscription, and the free Form Recognizer resource only analyzes the first 2 pages of each document. You can also reduce costs associated with the Form Recognizer by reducing the number of documents in the data folder, or by removing the post provision hook in azure.yaml that runs the prepdocs.py script. 
 
 Azure Communication Services offer free [trial phone numbers](https://aka.ms/Mech-trialnumbers) for calling. The trial period is for 30 days. Note that the trial numbers does not support SMS.
