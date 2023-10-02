@@ -128,7 +128,7 @@ From here, you have two options to implement ACS AI customer service sample.
 6. Go to Communication Service Resource and follow [this direction](https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/sms/handle-sms-events) to create EventGrid
 7. For step 5 of the instruction above, choose 'ChatMessageReceivedInThread', 'RouterWorkerOfferIssued', 'RouterWorkerOfferAccepted,' and 'CallEnded for Event Types.'
 8. For step 8 of the instruction above, enter your devtunnel URL and add “/api/events” at the end. Read more about Azure Event Grid webhooks [here](https://learn.microsoft.com/en-us/azure/event-grid/event-schema-communication-services).
-9. Navigate to https://locahost:7108/swagger to familiarize yourself with available API routes on the backend application.
+9. Navigate to https://localhost:7108/swagger to familiarize yourself with available API routes on the backend application.
     * Important: You can go to your devtunnel URL + "swagger" to check if you land on the same page. You should land on the same page.
 
 ### Running the frontend application locally
