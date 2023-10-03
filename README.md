@@ -54,8 +54,10 @@ Azure Communication Services offer free [trial phone numbers](https://aka.ms/Mec
 
 From here, you have two options to implement ACS AI customer service sample. 
 1. Deploying to Azure Cloud  
-2. Deploying to Local Environment. 
-* Important: If you want to try both methods, you can not duplicate deployments under the same subscription. You can either 1. use two different subscriptions for each method OR 2. delete the deployment completely after following one method and re-deploy to follow the second method. If you have trouble re-deploying, go to FAQ section.
+2. Deploying to a Local Environment. 
+    * If you want to try both methods, you cannot duplicate deployments under the same subscription. You can either:
+    1. Use two different subscriptions for each method OR
+    2. Delete the deployment completely after following one method and re-deploy to follow the second method. If you have trouble re-deploying, refer to the FAQ section.
 
 ## Option 1: Deploying to Azure Cloud 
 
@@ -67,7 +69,7 @@ From here, you have two options to implement ACS AI customer service sample.
 1. Clone the project to a new folder.
 2. Open a new powershell terminal and run `.\start.ps1` for Windows or `start.sh` (for Linux and Mac) 
     * Important: The directory to run this code should be the downloaded repository folder
-3. Enter the name of the subscription that received AI access approval, service location and a new descriptive environment name (this will be the name of the new resource group).
+3. Enter the name of the subscription that received AI access approval, the service location, and a new descriptive environment name (this will be the name of the new resource group).
     * Important: You can put locations like "eastus," "eastus2"
     - This command will:
         - Create the required Azure resources necessary to run the sample under the new resource group. 
@@ -84,11 +86,11 @@ From here, you have two options to implement ACS AI customer service sample.
         Frontend endpoint: https://wapp-app-web-...
         ```
 > **Note**<br >
-> It may take several minutes for the application to get fully deployed. Go grab a cup of coffee or listen to your favourite song. If the deployment fails, delete the deployment completely and redeploy. If the deployment fails, go to FAQ section.
+> It may take several minutes for the application to get fully deployed. Go grab a cup of coffee or listen to your favourite song. If the deployment fails, delete the deployment completely and redeploy. For troubleshooting deployment issues, refer to the FAQ section.
 
 ###  Azure Portal Resource Setup
 4. After deployment is completed, go to [Azure portal](https://portal.azure.com) and go to the resource group you created.
-5. Selecte Communication Services Resource and follow [Connect Azure AI service to Azure communication service resource](https://aka.ms/Mech-connectACSWithAI)
+5. Select Communication Services Resource and follow [Connect Azure AI service to Azure communication service resource](https://aka.ms/Mech-connectACSWithAI)
 6. Add a Calling and SMS enabled telephone number to your Communication resource. [Get a phone number](https://aka.ms/Mech-getPhone).
 7. [Set up the email service](https://aka.ms/Mech-EmailService) to the resource group you created. 
 8. [Create a managed Azure email domain](https://aka.ms/Mech-emaildomain) that will be used for sending emails. 
@@ -98,7 +100,7 @@ From here, you have two options to implement ACS AI customer service sample.
    - Update the value for `EmailRecipient` with your personal email address where you would like to receive emails sent out by the sample applications.
    - Remember to save settings.
   
-## Option 2: Deploying to Local environment  
+## Option 2: Deploying to a Local environment  
 > **Note**<br >
     > [Azure DevTunnels](https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/overview) is an Azure service that enables you to share local web services hosted on the internet. Use the commands below to connect your local development environment to the public internet. This creates a tunnel with a persistent endpoint URL and which allows anonymous access. We will then use this endpoint to notify your application of chat and job router events from the Azure Communication Service.
 
@@ -113,10 +115,10 @@ From here, you have two options to implement ACS AI customer service sample.
     Make a note of the devtunnel URI. You will need it at later steps.
 
 2. Run the `start.ps1` or `start.sh` to deploy the repository and create all resources to local environment.
-    * Important: You will still see the deployment on your Azure portal.
+    * Important: You will still be able to view the deployment on your Azure portal.
         > **Note**<br >
         > It may take several minutes for the application to get fully deployed. Go grab a cup of coffee or listen to your favourite song.
-3. Navigate to app\backend\appsettings.json and change the "HostUrl" variable with the devtunnel URI from the previous step. 
+3. Go to app\backend\appsettings.json and update the value of the 'HostUrl' variable with the devtunnel URI from the previous step. 
     * Important: If other variables are empty, run the code below
         ```bash
         ./scripts/update-local-appsettings.ps1
@@ -128,7 +130,7 @@ From here, you have two options to implement ACS AI customer service sample.
 6. Go to Communication Service Resource and follow [this direction](https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/sms/handle-sms-events) to create EventGrid
 7. For step 5 of the instruction above, choose 'ChatMessageReceivedInThread', 'RouterWorkerOfferIssued', 'RouterWorkerOfferAccepted,' and 'CallEnded for Event Types.'
 8. For step 8 of the instruction above, enter your devtunnel URL and add “/api/events” at the end. Read more about Azure Event Grid webhooks [here](https://learn.microsoft.com/en-us/azure/event-grid/event-schema-communication-services).
-9. Navigate to https://localhost:7108/swagger to familiarize yourself with available API routes on the backend application.
+9. Navigate to https://locahost:7108/swagger to familiarize yourself with available API routes on the backend application.
     * Important: You can go to your devtunnel URL + "swagger" to check if you land on the same page. You should land on the same page.
 
 ### Running the frontend application locally
@@ -156,16 +158,16 @@ From here, you have two options to implement ACS AI customer service sample.
     ![agent_view](docs/agent_view.png)
 
 ## FAQ
-- How can I delete failed deployment?
+- How can I delete a failed deployment?
     1. Delete the resource group from the resource group page.
-    2. Go to subsciprtion that you created resource group for
-    3. Navigate to "Deployments" panel on the left
-    4. Under "Deployment details," select all deployments you attempted and click delete
-    5. You completely deleted the deployments. You can re-deploy now.
-- I don't see customer support button. What do I do?
-    1. Go to app\frontend\src\appsettings
-    2. Replace "baseUrl" with "https://localhost:7108"
-    3. Refresh the "http://localhost:3000/" and you will see the button on bottom right.
+    2. Go to the subscription where you created the resource group.
+    3. Navigate to the "Deployments" panel on the left.
+    4. Under "Deployment details," select all the deployments you attempted and click "delete."
+    5. You have now completely deleted the deployments and can re-deploy.
+- I don't see the customer support button. What should I do?
+    1. Go to app\frontend\src\appsettings.
+    2. Replace "baseUrl" with "https://localhost:7108."
+    3. Refresh "http://localhost:3000/" and you will see the button in the bottom right corner.
 
 ## Resources
 - [Azure Communication Services Blog](https://aka.ms/Mech-TechBlog) on AI infused customer service usecase
