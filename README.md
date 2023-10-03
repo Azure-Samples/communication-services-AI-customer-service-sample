@@ -47,7 +47,7 @@ Azure Communication Services offer free [trial phone numbers](https://aka.ms/Mec
    * Important: Ensure you can run pwsh.exe from a PowerShell command. If this fails, you will likely need to upgrade PowerShell.
 - Azure CLI. To install, navigate to "Installation" section of [this guide](https://learn.microsoft.com/en-us/cli/azure/).
 - In order to deploy and run this example, you'll need an **Azure subscription with access enabled for the Azure OpenAI service**. Request access [here](https://aka.ms/Mech-OpenAI). 
-    * Important: Please note that although the survey says it can take up to 10 days, it usually takes no more than a few hours. Please do not proceed further before receiving the access approval email.
+    * Important: Note that although the survey says it can take up to 10 days, it usually takes no more than a few hours. The Open AI access will be necessary for using the AI capabilities of this sample.
 
 
 ## Running the sample
@@ -97,7 +97,7 @@ From here, you have two options to implement ACS AI customer service sample.
 9. Update the backend App Service application settings
    - Open the resource that starts with "app-..." and navigate to the "Confirguration" blade.
    - Update values for `AcsPhoneNumber` and `EmailSender` with the phone number and sender email address obtained in previous steps.
-   - Update the value for `EmailRecipient` with your personal email address where you would like to receive emails sent out by the sample applications.
+   - Update the value for `EmailRecipient` with your email address where you would like to receive emails sent out by the sample applications.
    - Remember to save settings.
   
 ## Option 2: Deploying to a Local environment  
