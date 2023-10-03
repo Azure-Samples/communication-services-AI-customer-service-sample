@@ -46,6 +46,7 @@ Azure Communication Services offer free [trial phone numbers](https://aka.ms/Mec
 - Powershell 7+ (pwsh) - For Windows users only. To install, navigate to "Installing the MSI package" section of [this guide](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.3).
    * Important: Ensure you can run pwsh.exe from a PowerShell command. If this fails, you will likely need to upgrade PowerShell.
 - Azure CLI. To install, navigate to "Installation" section of [this guide](https://learn.microsoft.com/en-us/cli/azure/).
+- Node.Js. To install, You can use installer to download it [here](https://nodejs.org/en/download).
 - In order to deploy and run this example, you'll need an **Azure subscription with access enabled for the Azure OpenAI service**. Request access [here](https://aka.ms/Mech-OpenAI). 
     * Important: Note that although the survey says it can take up to 10 days, it usually takes no more than a few hours. The Open AI access will be necessary for using the AI capabilities of this sample.
 
