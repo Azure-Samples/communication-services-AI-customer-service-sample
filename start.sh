@@ -29,7 +29,7 @@ fi
 # Check if the user is logged in or not
 az account show > /dev/null 2>&1
 
-# give your subscriptionId and press enter and give preffered location to create amazon resources
+# give your subscriptionId and press enter and give preffered location to create Azure resources
 read -p "Please enter the subscription id or name: " subscriptionName
 read -p "Please enter the region for Azure resources creation: " location
 read -p "Please enter the environment name: " environmentName
