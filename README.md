@@ -11,7 +11,7 @@ The code sample includes a web app that simulates a scenario where a customer in
 - A retrieval augmented generation (RAG) pattern that leverages Azure Cognitive Search to retrieve relevant information from data sources and feed it to Azure Open AI Service.
 - A sample web app for the customer to interact with the chat bot.
 - An escalation from chat conversation to a PSTN call initiated by the bot on customer’s request.
-- A job router that assigns the job to the most suitable technician based on skills, availability, and location.
+- Job router assigns the job to the most suitable technician based on skills, availability, and location.
 - Azure Communication Call Automation to convert voice to text and vice versa.
 - An AI copilot that generates summaries, emails, and answers using the Azure OpenAI Service and Azure AI Service.
 
