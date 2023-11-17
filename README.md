@@ -17,9 +17,7 @@ The code sample includes a web app that simulates a scenario where a customer in
 
 ![AIFeatures](docs/AI_Enabled_Customer_Service.png)
 
-## Running the sample
-
-### Cost Estimation
+## Cost Estimation
 Pricing varies per region and usage, so it isn't possible to predict exact costs for your usage. However, you can try the Azure pricing calculator for the resources below.
 
 - Azure OpenAI: Standard tier, ChatGPT and Ada models. Pricing per 1K tokens used, and at least 1K tokens are used per question. [Pricing](https://aka.ms/Mech-OpenAIpricing)
@@ -36,101 +34,141 @@ To reduce costs, you can switch to free SKUs for Azure Cognitive Search. There a
 
 Azure Communication Services offer free [trial phone numbers](https://aka.ms/Mech-trialnumbers) for calling. The trial period is for 30 days. Note that the trial numbers does not support SMS.
 
-### Pre-requisites
-- An Azure account with an active subscription. For details, see [Create an account for free](https://aka.ms/Mech-Azureaccount) 
-- For local run: Install Azure Dev Tunnels CLI. For details, see [Create and host dev tunnel](https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/get-started?tabs=windows) 
-- [.NET 7](https://dotnet.microsoft.com/download)
-- Powershell 7+ (pwsh) - For Windows users only.
-   * Important: Ensure you can run pwsh.exe from a PowerShell command. If this fails, you will likely need to upgrade PowerShell.
-- Azure CLI
-
+## Pre-requisites
 > **Note**<br> 
-> In order to deploy and run this example, you'll need an **Azure subscription with access enabled for the Azure OpenAI service**. Request access [here](https://aka.ms/Mech-OpenAI). You can also visit [here](https://aka.ms/Mech-CogsSearch1) to get free Azure credits to get you started. 
+>  If you need Azure credits, you can visit [here](https://aka.ms/Mech-CogsSearch1) to get free credits to get you started. 
+- An Azure account with an active subscription. For details, see [Create an account for free](https://aka.ms/Mech-Azureaccount) 
+- For local run: Install Azure Dev Tunnels CLI by running the code below. For details, see [Create and host dev tunnel](https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/get-started?tabs=windows) 
+    ```
+    winget install Microsoft.Devtunnel
+    ```
+- [.NET 7](https://dotnet.microsoft.com/download)
+- Powershell 7+ (pwsh) - For Windows users only. To install, navigate to "Installing the MSI package" section of [this guide](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.3).
+   * Important: Ensure you can run pwsh.exe from a PowerShell command. If this fails, you will likely need to upgrade PowerShell.
+- Azure CLI. To install, navigate to "Installation" section of [this guide](https://learn.microsoft.com/en-us/cli/azure/).
+- Node.Js. To install, You can use installer to download it [here](https://nodejs.org/en/download).
+- In order to deploy and run this example, you'll need an **Azure subscription with access enabled for the Azure OpenAI service**. Request access [here](https://aka.ms/Mech-OpenAI). 
+    * Important: Note that although the survey says it can take up to 10 days, it usually takes no more than a few hours. The Open AI access will be necessary for using the AI capabilities of this sample.
 
-## Deploying to Azure Cloud 
 
-### Starting from scratch
-Execute the following steps, if you don't have any pre-existing Azure services and want to start from a fresh deployment.
+## Running the sample
+
+From here, you have two options to implement ACS AI customer service sample. 
+1. Deploying to Azure Cloud  
+2. Deploying to a Local Environment. 
+    * If you want to try both methods, you cannot duplicate deployments under the same subscription. You can either:
+    1. Use two different subscriptions for each method OR
+    2. Delete the deployment completely after following one method and re-deploy to follow the second method. If you have trouble re-deploying, refer to the FAQ section.
+
+## Option 1: Deploying to Azure Cloud 
 
 > **Note**<br>
 > This application uses the `gpt-35-turbo` model. When choosing which region to deploy to, make sure they're available in that region (i.e. EastUS). For more information, see the [Azure OpenAI Service documentation](https://aka.ms/Mech-OpenAIdocs). 
 
-- Clone the project to a new folder.
-- Open a new powershell terminal and run `.\start.ps1` for Windows or `start.sh` (for Linux and Mac)
-    <br />Enter the desired subscription, location and a short descriptive environment name.
-- This command will:
-   - Create the required Azure resources necessary to run the sample. 
-   - Automatically include any of the PDF files in `data/` folder to Azure Search index as the knowledge base that is referred by the bot.
-   - Build and deploy backend and frontend webapps necessary for hosting the sample webapp.
-   - Register the backend application to receive notifications from Azure Communication Service events.
-- After the application is deployed, you will see a URL for frontend in the console output. Click that URL to interact with the application in your browser.
+###  Deploy the sample to Azure subscription
 
-Sample output:
-```
-You can view the resources created under the resource group <your rg name> in Azure Portal: https:/portal.azure.com/#@/...
+1. Clone the project to a new folder.
+2. Open a new powershell terminal and run `.\start.ps1` for Windows or `start.sh` (for Linux and Mac) 
+    * Important: The directory to run this code should be the downloaded repository folder
+3. Enter the name of the subscription that received AI access approval, the service location, and a new descriptive environment name (this will be the name of the new resource group).
+    * Important: You can put locations like "eastus," "eastus2"
+    - This command will:
+        - Create the required Azure resources necessary to run the sample under the new resource group. 
+        - Automatically include any of the PDF files in `data/` folder to Azure Search index as the knowledge base that is referred by the bot.
+        - Build and deploy backend and frontend webapps necessary for hosting the sample webapp.
+        - Register the backend application to receive notifications from Azure Communication Service events.
+        - After the application is deployed, you will see a URL for frontend in the console output. Click that URL to interact with the application in your browser.
 
-Backend endpoint: https://app-app... 
-Frontend endpoint: https://wapp-app-web-...
-```
+        Sample output:
+        ```
+        You can view the resources created under the resource group <your rg name> in Azure Portal: https:/portal.azure.com/#@/...
+
+        Backend endpoint: https://app-app... 
+        Frontend endpoint: https://wapp-app-web-...
+        ```
 > **Note**<br >
-> It may take several minutes for the application to get fully deployed. Go grab a cup of coffee or listen to your favourite song.
+> It may take several minutes for the application to get fully deployed. Go grab a cup of coffee or listen to your favourite song. If the deployment fails, delete the deployment completely and redeploy. For troubleshooting deployment issues, refer to the FAQ section.
 
-### Manual steps
-Almost there! You need to do three simple steps manually in the [Azure portal](https://portal.azure.com)- 
-
-- [Connect Azure AI service to Azure communication service resource](https://aka.ms/Mech-connectACSWithAI).
-- Add a Calling and SMS enabled telephone number to your Communication resource. [Get a phone number](https://aka.ms/Mech-getPhone).
-- [Set up the email service](https://aka.ms/Mech-EmailService). [Create a managed Azure email domain](https://aka.ms/Mech-emaildomain) that will be used for sending emails. 
-- Update the backend App Service application settings
-   - Open the web app resource created for backend application and navigate to the Environment variables blade.
+###  Azure Portal Resource Setup
+4. After deployment is completed, go to [Azure portal](https://portal.azure.com) and go to the resource group you created.
+5. Select Communication Services Resource and follow [Connect Azure AI service to Azure communication service resource](https://aka.ms/Mech-connectACSWithAI)
+6. Add a Calling and SMS enabled telephone number to your Communication resource. [Get a phone number](https://aka.ms/Mech-getPhone).
+7. [Set up the email service](https://aka.ms/Mech-EmailService) to the resource group you created. 
+8. [Create a managed Azure email domain](https://aka.ms/Mech-emaildomain) that will be used for sending emails. 
+9. Update the backend App Service application settings
+   - Open the resource that starts with "app-..." and navigate to the "Confirguration" blade.
    - Update values for `AcsPhoneNumber` and `EmailSender` with the phone number and sender email address obtained in previous steps.
    - Update the value for `EmailRecipient` with your email address where you would like to receive emails sent out by the sample applications.
    - Remember to save settings.
   
-## Setup Instructions – Local environment  
+## Option 2: Deploying to a Local environment  
+> **Note**<br >
+    > [Azure DevTunnels](https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/overview) is an Azure service that enables you to share local web services hosted on the internet. Use the commands below to connect your local development environment to the public internet. This creates a tunnel with a persistent endpoint URL and which allows anonymous access. We will then use this endpoint to notify your application of chat and job router events from the Azure Communication Service.
 
-#### 1. Setup and host your Azure DevTunnel
-[Azure DevTunnels](https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/overview) is an Azure service that enables you to share local web services hosted on the internet. Use the commands below to connect your local development environment to the public internet. This creates a tunnel with a persistent endpoint URL and which allows anonymous access. We will then use this endpoint to notify your application of chat and job router events from the Azure Communication Service.
-```bash
-devtunnel create --allow-anonymous
-devtunnel port create -p 7108 --protocol https
-devtunnel host
-```
-Make a note of the devtunnel URI. You will need it at later steps.
+###  DevTunnel URI Setup
+1. Setup and host your Azure DevTunnel
 
-#### 2. Run the `start.ps1` or `start.sh` to provision your resources, if not done before.
+    ```bash
+    devtunnel create --allow-anonymous
+    devtunnel port create -p 7108 --protocol https
+    devtunnel host
+    ```
+    Make a note of the devtunnel URI. You will need it at later steps.
 
-#### 3. Update dev tunnel uri in `backend\app\appsettings.json` 
+2. Run the `start.ps1` or `start.sh` to deploy the repository and create all resources to local environment.
+    * Important: You will still be able to view the deployment on your Azure portal.
+        > **Note**<br >
+        > It may take several minutes for the application to get fully deployed. Go grab a cup of coffee or listen to your favourite song.
+3. Go to app\backend\appsettings.json and update the value of the 'HostUrl' variable with the devtunnel URI from the previous step. 
+    * Important: If other variables are empty, run the code below
+        ```bash
+        ./scripts/update-local-appsettings.ps1
+        ```
 
-##  Running the backend application locally
-- Ensure your Azure Dev tunnel URI is active and points to the correct port of your localhost application.
-- Run `dotnet run` to build and run the sample application.
-- Register an EventGrid Webhook for the `ChatMessageReceivedInThread`, `RouterWorkerOfferIssued`, `RouterWorkerOfferAccepted` and `CallEnded` events that points to your DevTunnel URI and route “/api/events”. Read more about Azure Event Grid webhooks [here](https://learn.microsoft.com/en-us/azure/event-grid/event-schema-communication-services).
-- Navigate to https://locahost:7108/swagger to familiarize yourself with available API routes on the backend application.
+###  Running the backend application locally
+4. Ensure your Azure Dev tunnel URI is active and points to the correct port of your localhost application.
+5. Open a new terminal and run `dotnet run` to build and run the sample application.
+6. Go to Communication Service Resource and follow [this direction](https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/sms/handle-sms-events) to create EventGrid
+7. For step 5 of the instruction above, choose 'ChatMessageReceivedInThread', 'RouterWorkerOfferIssued', 'RouterWorkerOfferAccepted,' and 'CallEnded for Event Types.'
+8. For step 8 of the instruction above, enter your devtunnel URL and add “/api/events” at the end. Read more about Azure Event Grid webhooks [here](https://learn.microsoft.com/en-us/azure/event-grid/event-schema-communication-services).
+9. Navigate to https://locahost:7108/swagger to familiarize yourself with available API routes on the backend application.
+    * Important: You can go to your devtunnel URL + "swagger" to check if you land on the same page. You should land on the same page.
 
-## Running the frontend application locally
-- Navigate to `app/frontend`
-- Install dependencies
+### Running the frontend application locally
+10. Open a new terminal (third terminal) and navigate to `app/frontend`
+11. Install dependencies
 
     ```bash
     npm install
     ```
-- Start the frontend app
+12. Start the frontend app
     ```bash
     npm run start
     ```
     This will open a client server on port 3000 that serves the website files. By default it will connect to the localhost backend server running on port 7108
 
-## Application Flow
-Click on "Customer Service" button to start conversing with the bot via chat.
+### Application Flow
+13. Click on "Customer Service" button to start conversing with the bot via chat. If you don't see the button, go to FAQ section.
 
-![customer_start_view](docs/customer_start_view.png)
+    ![customer_start_view](docs/customer_start_view.png)
 
-Voip Call - The application will send a voip call join link to the phone number you share in the chat with the bot. However, if you do not have a verified Azure Communication Services phone number, your Telco may block the SMS as it includes a url. As a workaround, browse <url>/?callerType=Customer to get the join link. Replace url with the frontend url or the localhost url depending on if you are running locally or the deployed application. 
+- Voip Call - The application will send a voip call join link to the phone number you share in the chat with the bot. However, if you do not have a verified Azure Communication Services phone number, your Telco may block the SMS as it includes a url. As a workaround, browse <url>/?callerType=Customer to get the join link. Replace url with the frontend url or the localhost url depending on if you are running locally or the deployed application. 
 
-Agent View - The agent view includes chat history with the customer and AI assistant panel that can generate summary, action items and more. It gets active only after an agent gets involved in the flow. Browse <url>/?callerType=Agent to launch the agent view. 
+- Agent View - The agent view includes chat history with the customer and AI assistant panel that can generate summary, action items and more. It gets active only after an agent gets involved in the flow. Browse <url>/?callerType=Agent to launch the agent view. 
 
-![agent_view](docs/agent_view.png)
+    ![agent_view](docs/agent_view.png)
+
+## FAQ
+- How can I delete a failed deployment?
+    1. Delete the resource group from the resource group page.
+    2. Go to the subscription where you created the resource group.
+    3. Navigate to the "Deployments" panel on the left.
+    4. Under "Deployment details," select all the deployments you attempted and click "delete."
+    5. You have now completely deleted the deployments and can re-deploy.
+- I don't see the customer support button. What should I do?
+    1. Go to app\frontend\src\appsettings.
+    2. Replace "baseUrl" with "https://localhost:7108."
+    3. Refresh "http://localhost:3000/" and you will see the button in the bottom right corner.
 
 ## Resources
 - [Azure Communication Services Blog](https://aka.ms/Mech-TechBlog) on AI infused customer service usecase
