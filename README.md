@@ -131,6 +131,14 @@ Voip Call - The application will send a voip call join link to the phone number 
 Agent View - The agent view includes chat history with the customer and AI assistant panel that can generate summary, action items and more. It gets active only after an agent gets involved in the flow. Browse <url>/?callerType=Agent to launch the agent view. 
 
 ![agent_view](docs/agent_view.png)
+## Troubleshooting
+### Check the logs of the backend application
+- Navigate to the Azure portal and open the `resource group` created by the deployment script.
+- Open the `App Service` resource created for the backend application.
+- Navigate to `Advanced Tools > Go > Debug console > PowerShell`.
+- Navigate to `LogFiles` folder to view the logs.
+- tail -n 100 eventlog.xml
+![kudo_logs](docs/kudo_logs.png)
 
 ## Resources
 - [Azure Communication Services Blog](https://aka.ms/Mech-TechBlog) on AI infused customer service usecase
