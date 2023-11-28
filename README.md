@@ -8,7 +8,7 @@ The code sample includes a web app that simulates a scenario where a customer in
 
 ## Features
 - A chat bot that can converse with customer in natural language using Contoso Energy’s knowledge base.
-- A retrieval augmented generation (RAG) pattern that leverages Azure Cognitive Search to retrieve relevant information from data sources and feed it to Azure Open AI Service.
+- A retrieval augmented generation (RAG) pattern that leverages Azure Cognitive Search to retrieve relevant information from data sources and feed it to Azure OpenAI Service.
 - A sample web app for the customer to interact with the chat bot.
 - An escalation from chat conversation to a PSTN call initiated by the bot on customer’s request.
 - Job router assigns the job to the most suitable technician based on skills, availability, and location.
