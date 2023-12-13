@@ -61,8 +61,10 @@ const SummaryWindow: React.FC = () => {
     };
 
     const response = await SendSummaryDetails(email);
-    if (response.status !== 'Succeeded') {
+    if (response.result !== 'Succeeded') {
       alert('Email failed with error code: ' + response.status);
+    } else {
+      console.log('Email sent succesfully!');
     }
   };
 

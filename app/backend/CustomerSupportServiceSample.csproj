@@ -17,13 +17,13 @@
         <PackageReference Include="Azure.Communication.Identity" Version="1.2.0" />
         <PackageReference Include="Azure.Communication.JobRouter" Version="1.0.0-beta.1" />
         <PackageReference Include="Azure.Communication.Sms" Version="1.0.1" />
-        <PackageReference Include="Azure.Identity" Version="1.10.2" />
+        <PackageReference Include="Azure.Identity" Version="1.10.3" />
         <PackageReference Include="Azure.Messaging.EventGrid" Version="4.13.0" />
         <PackageReference Include="Azure.Search.Documents" Version="11.4.0" />
         <PackageReference Include="Microsoft.Azure.Search.Data" Version="10.1.0" />
         <PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.31.0" />
         <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0" />
-        <PackageReference Include="Microsoft.Identity.Client" Version="4.55.0" />
+        <PackageReference Include="Microsoft.Identity.Client" Version="4.56.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
     </ItemGroup>

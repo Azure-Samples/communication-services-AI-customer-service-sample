@@ -22,12 +22,14 @@ export const SendSummaryDetails = async (summaryDetails: SummaryEmailData) => {
       body: JSON.stringify(summaryDetails)
     });
     if (response.ok) {
-      return response.json();
+      return await response.json();
     } else {
       console.error('Failed to send summary data');
+      return { result: 'Failed' };
     }
   } catch (error) {
     console.error('An error occurred:', error);
+    return { result: 'Failed' };
   }
 };
 
