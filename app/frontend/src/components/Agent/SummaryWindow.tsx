@@ -66,6 +66,8 @@ const SummaryWindow: React.FC = () => {
     } else {
       console.log('Email sent succesfully!');
     }
+
+    setIsModalOpen(false);
   };
 
   return (
