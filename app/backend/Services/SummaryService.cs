@@ -11,7 +11,6 @@ namespace CustomerSupportServiceSample.Services
         private readonly ILogger logger;
         private readonly string acsConnectionString;
         private readonly string sender;
-        private readonly string recipient;
 
         public SummaryService(
             IChatService chatService,
@@ -25,7 +24,6 @@ namespace CustomerSupportServiceSample.Services
             this.configuration = configuration;
             acsConnectionString = this.configuration["AcsConnectionString"] ?? "";
             sender = this.configuration["EmailSender"] ?? "";
-            recipient = this.configuration["EmailRecipient"] ?? "";
             ArgumentException.ThrowIfNullOrEmpty(acsConnectionString);
         }
 
@@ -52,17 +50,15 @@ namespace CustomerSupportServiceSample.Services
             var htmlContent = summary.Body;
             try
             {
-                logger.LogInformation("Sending email: to={}, from={}, body={}", recipient, sender, htmlContent);
+                logger.LogInformation("Sending email: to={}, from={}, body={}", summary.Address, sender, htmlContent);
                 ArgumentException.ThrowIfNullOrEmpty(sender);
-                ArgumentException.ThrowIfNullOrEmpty(recipient);
-                // Note: 
-                // This quickstart sample uses receiver email address from app configuration for simplicity
-                // In production scenario customer would provide their preferred email address
+                ArgumentException.ThrowIfNullOrEmpty(summary.Address);
+
                 EmailClient emailClient = new(this.acsConnectionString);
                 EmailSendOperation emailSendOperation = await emailClient.SendAsync(
                     WaitUntil.Completed,
                     sender,
-                    recipient,
+                    summary.Address,
                     "Follow up on support conversation",
                     htmlContent);
                 return emailSendOperation.Value.Status.ToString();

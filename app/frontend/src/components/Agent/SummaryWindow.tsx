@@ -30,6 +30,8 @@ const SummaryWindow: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [summaryDetails, setSummaryDetails] = useState<ConversationalInsights>();
   const [summaryConversation, setSummaryConversation] = useState<FinalSummary>();
+  const [customerEmailAddress, setCustomerEmail] = useState('');
+
   const chatThreadId = localStorage.getItem('chatThreadId');
   useEffect(() => {
     if (isModalOpen) {
@@ -57,6 +59,7 @@ const SummaryWindow: React.FC = () => {
   const handleSendSummary = async () => {
     const emailBodyTemplate = await getEmailTemplate(summaryConversation?.result);
     const email: SummaryEmailData = {
+      address: customerEmailAddress,
       body: emailBodyTemplate
     };
 
@@ -68,6 +71,10 @@ const SummaryWindow: React.FC = () => {
     }
 
     setIsModalOpen(false);
+  };
+
+  const handleEmailUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomerEmail(event.target.value);
   };
 
   return (
@@ -89,6 +96,10 @@ const SummaryWindow: React.FC = () => {
         <section className="summary-section">
           <h2>Summary</h2>
           <p className="bordered-content">{summaryDetails?.summaryItems[0].description}</p>
+        </section>
+        <section className="email-address-section">
+          <h2>Customer email address</h2>
+          <input className="email-address-input" value={customerEmailAddress} onChange={handleEmailUpdate} />
         </section>
         <section className="tasks-section">
           <h2>Tasks</h2>

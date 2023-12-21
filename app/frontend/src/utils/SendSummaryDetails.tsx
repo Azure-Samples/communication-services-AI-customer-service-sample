@@ -5,6 +5,7 @@ import config from '../appsettings.json';
 const BASE_URL = config.baseUrl;
 
 export interface SummaryEmailData {
+  address: string;
   body: string;
 }
 
