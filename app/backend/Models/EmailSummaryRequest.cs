@@ -5,7 +5,8 @@ namespace CustomerSupportServiceSample.Models
 {
     public class SummaryRequest
     {
-        [JsonPropertyName("body")]
+        public string? Address { get; set; }
+
         public string? Body { get; set; }
     }
 }

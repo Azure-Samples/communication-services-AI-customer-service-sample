@@ -84,7 +84,6 @@ Almost there! You need to do three simple steps manually in the [Azure portal](h
 - Update the backend App Service application settings
    - Open the web app resource created for backend application and navigate to the Environment variables blade.
    - Update values for `AcsPhoneNumber` and `EmailSender` with the phone number and sender email address obtained in previous steps.
-   - Update the value for `EmailRecipient` with your email address where you would like to receive emails sent out by the sample applications.
    - Remember to save settings.
   
 ## Setup Instructions – Local environment  
