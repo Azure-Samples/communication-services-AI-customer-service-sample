@@ -30,7 +30,7 @@ const SummaryWindow: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [summaryDetails, setSummaryDetails] = useState<ConversationalInsights>();
   const [summaryConversation, setSummaryConversation] = useState<FinalSummary>();
-  const [customerEmailAddress, setCustomerEmail] = useState('');
+  const [customerEmailAddress, setCustomerEmailAddress] = useState('');
 
   const chatThreadId = localStorage.getItem('chatThreadId');
   useEffect(() => {
@@ -74,7 +74,7 @@ const SummaryWindow: React.FC = () => {
   };
 
   const handleEmailUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCustomerEmail(event.target.value);
+    setCustomerEmailAddress(event.target.value);
   };
 
   return (
