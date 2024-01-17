@@ -6,6 +6,10 @@ The code sample includes a web app that simulates a scenario where a customer in
 
 ![Architecture diagram](docs/architecture-diagram.png)
 
+## ❤️ Feedback
+
+We appreciate your feedback and energy helping us improve our services. [If you've tried the service, please give us feedback through this survey](https://microsoft.qualtrics.com/jfe/form/SV_9WTOR2ItSo0oFee). 
+
 ## Features
 - A chat bot that can converse with customer in natural language using Contoso Energy’s knowledge base.
 - A retrieval augmented generation (RAG) pattern that leverages Azure Cognitive Search to retrieve relevant information from data sources and feed it to Azure OpenAI Service.
