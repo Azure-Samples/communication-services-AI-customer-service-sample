@@ -80,7 +80,7 @@ Almost there! You need to do three simple steps manually in the [Azure portal](h
 
 - [Connect Azure AI service to Azure communication service resource](https://aka.ms/Mech-connectACSWithAI).
 - Add a Calling and SMS enabled telephone number to your Communication resource. [Get a phone number](https://aka.ms/Mech-getPhone).
-- [Set up the email service](https://aka.ms/Mech-EmailService). [Create a managed Azure email domain](https://aka.ms/Mech-emaildomain) that will be used for sending emails. 
+- [Set up the email service](https://aka.ms/Mech-EmailService). [Create a managed Azure email domain](https://aka.ms/Mech-emaildomain) that will be used for sending emails. [Connect the domain to your Communication Service](https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/email/connect-email-communication-resource?pivots=azure-portal).
 - Update the backend App Service application settings
    - Open the web app resource created for backend application and navigate to the Environment variables blade.
    - Update values for `AcsPhoneNumber` and `EmailSender` with the phone number and sender email address obtained in previous steps.
