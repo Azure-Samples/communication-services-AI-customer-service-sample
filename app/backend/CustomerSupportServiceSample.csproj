@@ -11,7 +11,7 @@
         <PackageReference Include="Azure.AI.Language.Conversations" Version="1.1.0" />
         <PackageReference Include="Azure.AI.OpenAI" Version="1.0.0-beta.6" />
         <PackageReference Include="Azure.AI.TextAnalytics" Version="5.3.0" />
-        <PackageReference Include="Azure.Communication.CallAutomation" Version="1.1.0-beta.1" />
+        <PackageReference Include="Azure.Communication.CallAutomation" Version="1.1.0" />
         <PackageReference Include="Azure.Communication.Chat" Version="1.1.2" />
         <PackageReference Include="Azure.Communication.Email" Version="1.0.1" />
         <PackageReference Include="Azure.Communication.Identity" Version="1.2.0" />

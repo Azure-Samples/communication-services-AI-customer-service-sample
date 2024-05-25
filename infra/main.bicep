@@ -256,7 +256,7 @@ module backendAppSettings 'core/host/appservice-appsettings.bicep' = {
             AcsEndpoint: communicationServive.outputs.endpoint
             AcsPhoneNumber: ''
             EmailSender: ''
-            EmailReceipient: ''
+            EmailRecipient: ''
             HostUrl: backend.outputs.SERVICE_API_URI
             AzureSearchEndpoint: searchService.outputs.endpoint
             AzureSearchKey: searchService.outputs.key
