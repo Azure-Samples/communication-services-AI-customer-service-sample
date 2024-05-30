@@ -114,7 +114,11 @@ namespace CustomerSupportServiceSample.Services
             // Step4: Add chat history messages
             // This sample will keep on appending the message history until you hit the model's token limit
             // In production scenarios you would control the number of messages appended and take only recent conversation
-            // Note: the userQuery is part of the history list as last message. There is no need to append it separately
+            // Note: the userQuery is part of the history list as last message. There is no need to append it separately.
+            // There is also no guarantee that messages are in the correct order, so make sure to sort them, otherwise the
+            // model can get confused with the conversation flow.
+            history.Sort((h1, h2) => h1.CreatedOn.CompareTo(h2.CreatedOn));
+
             foreach (var message in history)
             {
                 if (message.SenderDisplayName == "Bot" || message.SenderDisplayName == "VoiceBot")
